@@ -31,22 +31,52 @@ class LevelSpec:
 
 @dataclass(frozen=True)
 class DpsPinConfig:
-    """Parsed DPSPINS entry from an EQNSET block."""
+    """Parsed DPSPINS entry from an EQNSET block.
+
+    Known fields are exposed as attributes; any unknown fields
+    discovered during parsing are stored in ``extra``.
+    """
     vout: str = ""
     ilimit: str = ""
     t_ms: str = ""
     vout_frc_rng: str = ""
     iout_clamp_rng: str = ""
     offcurr: str = ""
+    extra: Dict[str, str] = field(default_factory=dict)
+
+    def all_fields(self) -> Dict[str, str]:
+        """Return all non-empty fields (known + extra) as a flat dict."""
+        result: Dict[str, str] = {}
+        for key in ("vout", "ilimit", "t_ms", "vout_frc_rng", "iout_clamp_rng", "offcurr"):
+            val = getattr(self, key)
+            if val:
+                result[key] = val
+        result.update(self.extra)
+        return result
 
 
 @dataclass(frozen=True)
 class LevelSetPinConfig:
-    """Parsed PINS entry within a LEVELSET block."""
+    """Parsed PINS entry within a LEVELSET block.
+
+    Known fields are exposed as attributes; any unknown fields
+    discovered during parsing are stored in ``extra``.
+    """
     vih: str = ""
     vil: str = ""
     voh: str = ""
     vol: str = ""
+    extra: Dict[str, str] = field(default_factory=dict)
+
+    def all_fields(self) -> Dict[str, str]:
+        """Return all non-empty fields (known + extra) as a flat dict."""
+        result: Dict[str, str] = {}
+        for key in ("vih", "vil", "voh", "vol"):
+            val = getattr(self, key)
+            if val:
+                result[key] = val
+        result.update(self.extra)
+        return result
 
 
 @dataclass(frozen=True)
@@ -369,6 +399,8 @@ class LevelLoader:
                 val = val.split("#", 1)[0].strip()
             fields[key] = val
 
+        known = {"vout", "ilimit", "t_ms", "vout_frc_rng", "iout_clamp_rng", "offcurr"}
+        extra = {k: v for k, v in fields.items() if k not in known}
         return DpsPinConfig(
             vout=fields.get("vout", ""),
             ilimit=fields.get("ilimit", ""),
@@ -376,6 +408,7 @@ class LevelLoader:
             vout_frc_rng=fields.get("vout_frc_rng", ""),
             iout_clamp_rng=fields.get("iout_clamp_rng", ""),
             offcurr=fields.get("offcurr", ""),
+            extra=extra,
         )
 
     def parse_levelset(self, levelset_idx: int) -> Dict[str, LevelSetPinConfig]:
@@ -394,11 +427,14 @@ class LevelLoader:
         def flush_pins() -> None:
             nonlocal current_pins, current_fields
             if current_pins is not None:
+                known = {"vih", "vil", "voh", "vol"}
+                extra = {k: v for k, v in current_fields.items() if k not in known}
                 result[current_pins] = LevelSetPinConfig(
                     vih=current_fields.get("vih", ""),
                     vil=current_fields.get("vil", ""),
                     voh=current_fields.get("voh", ""),
                     vol=current_fields.get("vol", ""),
+                    extra=extra,
                 )
             current_pins = None
             current_fields = {}

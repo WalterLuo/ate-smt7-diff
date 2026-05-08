@@ -89,6 +89,25 @@ class TestParseDpsPins(unittest.TestCase):
         config = loader.parse_dpspins(0)
         self.assertEqual(config.vout, "V33")
 
+    def test_parse_dpspins_unknown_fields(self):
+        lines = [
+            'DPSPINS V33',
+            'vout = V33',
+            'ilimit = 500',
+            'slew = fast',
+            'edge = rise',
+            'DPSPINS DVDD09',
+        ]
+        loader = LevelLoader.__new__(LevelLoader)
+        loader.lines = lines
+        config = loader.parse_dpspins(0)
+        self.assertEqual(config.vout, "V33")
+        self.assertEqual(config.ilimit, "500")
+        self.assertEqual(config.extra.get("slew"), "fast")
+        self.assertEqual(config.extra.get("edge"), "rise")
+        self.assertIn("slew", config.all_fields())
+        self.assertIn("edge", config.all_fields())
+
 
 class TestParseLevelSet(unittest.TestCase):
     """Tests for LevelLoader.parse_levelset()."""
@@ -170,6 +189,26 @@ class TestParseLevelSet(unittest.TestCase):
         loader.lines = lines
         result = loader.parse_levelset(0)
         self.assertEqual(len(result), 0)
+
+    def test_parse_levelset_unknown_fields(self):
+        lines = [
+            'LEVELSET 1 "MDIO"',
+            'PINS NO_MDIO',
+            'vih = VIH',
+            'vil = VIL',
+            'voh = VOH',
+            'vol = VOL',
+            'slew = fast',
+            'edge = rise',
+            'EQNSET 8 "NEXT"',
+        ]
+        loader = LevelLoader.__new__(LevelLoader)
+        loader.lines = lines
+        result = loader.parse_levelset(0)
+        config = result["NO_MDIO"]
+        self.assertEqual(config.vih, "VIH")
+        self.assertEqual(config.extra.get("slew"), "fast")
+        self.assertEqual(config.extra.get("edge"), "rise")
 
 
 class TestParseEqnSetBlock(unittest.TestCase):
@@ -352,6 +391,37 @@ class TestDiffEqnSetBlocks(unittest.TestCase):
         self.assertIn(1, result.levelsets_changed)
         self.assertIn("GPIOA_1", result.levelsets_changed[1])
         self.assertIn("NO_MDIO", result.levelsets_changed[1])
+
+    def test_dpspins_extra_field_changed(self):
+        old = EqnSetBlock(
+            eqnset_index=7, eqnset_name="MDIO",
+            dpspins={"V33": DpsPinConfig(vout="3.3", extra={"slew": "fast"})},
+        )
+        new = EqnSetBlock(
+            eqnset_index=7, eqnset_name="MDIO",
+            dpspins={"V33": DpsPinConfig(vout="3.3", extra={"slew": "slow"})},
+        )
+        result = diff_eqnset_blocks("SUITE1", old, new)
+        self.assertIn("V33", result.dpspins_changed)
+        old_cfg, new_cfg = result.dpspins_changed["V33"]
+        self.assertEqual(old_cfg.extra["slew"], "fast")
+        self.assertEqual(new_cfg.extra["slew"], "slow")
+
+    def test_levelset_extra_field_changed(self):
+        old = EqnSetBlock(
+            eqnset_index=7, eqnset_name="MDIO",
+            levelsets={1: {"NO_MDIO": LevelSetPinConfig(vih="3.3", extra={"slew": "fast"})}},
+        )
+        new = EqnSetBlock(
+            eqnset_index=7, eqnset_name="MDIO",
+            levelsets={1: {"NO_MDIO": LevelSetPinConfig(vih="3.3", extra={"slew": "slow"})}},
+        )
+        result = diff_eqnset_blocks("SUITE1", old, new)
+        self.assertIn(1, result.levelsets_changed)
+        self.assertIn("NO_MDIO", result.levelsets_changed[1])
+        old_cfg, new_cfg = result.levelsets_changed[1]["NO_MDIO"]
+        self.assertEqual(old_cfg.extra["slew"], "fast")
+        self.assertEqual(new_cfg.extra["slew"], "slow")
 
 
 if __name__ == "__main__":

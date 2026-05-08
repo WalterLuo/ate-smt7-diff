@@ -496,46 +496,33 @@ def diff_flow_files(
 
 def _dpspin_fields_str(cfg: "DpsPinConfig") -> str:
     """Format DpsPinConfig fields as a compact string."""
-    parts = [
-        f"vout={cfg.vout}",
-        f"ilimit={cfg.ilimit}",
-        f"t_ms={cfg.t_ms}",
-        f"vout_frc_rng={cfg.vout_frc_rng}",
-        f"iout_clamp_rng={cfg.iout_clamp_rng}",
-        f"offcurr={cfg.offcurr}",
-    ]
-    return ", ".join(parts)
+    fields = cfg.all_fields()
+    return ", ".join(f"{k}={v}" for k, v in fields.items())
 
 
 def _collect_dpspin_changes(old_c: "DpsPinConfig", new_c: "DpsPinConfig") -> List[str]:
     """Collect changed fields between two DpsPinConfig objects."""
+    old_fields = old_c.all_fields()
+    new_fields = new_c.all_fields()
     changes = []
-    if old_c.vout != new_c.vout:
-        changes.append(f"vout {old_c.vout} -> {new_c.vout}")
-    if old_c.ilimit != new_c.ilimit:
-        changes.append(f"ilimit {old_c.ilimit} -> {new_c.ilimit}")
-    if old_c.t_ms != new_c.t_ms:
-        changes.append(f"t_ms {old_c.t_ms} -> {new_c.t_ms}")
-    if old_c.vout_frc_rng != new_c.vout_frc_rng:
-        changes.append(f"vout_frc_rng {old_c.vout_frc_rng} -> {new_c.vout_frc_rng}")
-    if old_c.iout_clamp_rng != new_c.iout_clamp_rng:
-        changes.append(f"iout_clamp_rng {old_c.iout_clamp_rng} -> {new_c.iout_clamp_rng}")
-    if old_c.offcurr != new_c.offcurr:
-        changes.append(f"offcurr {old_c.offcurr} -> {new_c.offcurr}")
+    for key in set(old_fields.keys()) | set(new_fields.keys()):
+        old_val = old_fields.get(key, "")
+        new_val = new_fields.get(key, "")
+        if old_val != new_val:
+            changes.append(f"{key} {old_val} -> {new_val}")
     return changes
 
 
 def _collect_levelset_changes(old_c: "LevelSetPinConfig", new_c: "LevelSetPinConfig") -> List[str]:
     """Collect changed fields between two LevelSetPinConfig objects."""
+    old_fields = old_c.all_fields()
+    new_fields = new_c.all_fields()
     changes = []
-    if old_c.vih != new_c.vih:
-        changes.append(f"vih {old_c.vih} -> {new_c.vih}")
-    if old_c.vil != new_c.vil:
-        changes.append(f"vil {old_c.vil} -> {new_c.vil}")
-    if old_c.voh != new_c.voh:
-        changes.append(f"voh {old_c.voh} -> {new_c.voh}")
-    if old_c.vol != new_c.vol:
-        changes.append(f"vol {old_c.vol} -> {new_c.vol}")
+    for key in set(old_fields.keys()) | set(new_fields.keys()):
+        old_val = old_fields.get(key, "")
+        new_val = new_fields.get(key, "")
+        if old_val != new_val:
+            changes.append(f"{key} {old_val} -> {new_val}")
     return changes
 
 
@@ -823,30 +810,27 @@ def format_markdown(report: DiffReport) -> str:
                 if diff.dpspins_added:
                     lines.append("**Added:**")
                     for name, cfg in diff.dpspins_added.items():
-                        lines.append(f"- `{name}`: vout={cfg.vout}, ilimit={cfg.ilimit}, t_ms={cfg.t_ms}, vout_frc_rng={cfg.vout_frc_rng}, iout_clamp_rng={cfg.iout_clamp_rng}, offcurr={cfg.offcurr}")
+                        fields_str = _dpspin_fields_str(cfg)
+                        lines.append(f"- `{name}`: {fields_str}")
                     lines.append("")
                 if diff.dpspins_removed:
                     lines.append("**Removed:**")
                     for name, cfg in diff.dpspins_removed.items():
-                        lines.append(f"- ~~`{name}`: vout={cfg.vout}, ilimit={cfg.ilimit}, t_ms={cfg.t_ms}, vout_frc_rng={cfg.vout_frc_rng}, iout_clamp_rng={cfg.iout_clamp_rng}, offcurr={cfg.offcurr}~~")
+                        fields_str = _dpspin_fields_str(cfg)
+                        lines.append(f"- ~~`{name}`: {fields_str}~~")
                     lines.append("")
                 if diff.dpspins_changed:
                     lines.append("**Changed:**")
                     lines.append("| Pin | Field | Old | New |")
                     lines.append("|-----|-------|-----|-----|")
                     for name, (old_c, new_c) in diff.dpspins_changed.items():
-                        if old_c.vout != new_c.vout:
-                            lines.append(f"| `{name}` | vout | `{old_c.vout}` | `{new_c.vout}` |")
-                        if old_c.ilimit != new_c.ilimit:
-                            lines.append(f"| `{name}` | ilimit | `{old_c.ilimit}` | `{new_c.ilimit}` |")
-                        if old_c.t_ms != new_c.t_ms:
-                            lines.append(f"| `{name}` | t_ms | `{old_c.t_ms}` | `{new_c.t_ms}` |")
-                        if old_c.vout_frc_rng != new_c.vout_frc_rng:
-                            lines.append(f"| `{name}` | vout_frc_rng | `{old_c.vout_frc_rng}` | `{new_c.vout_frc_rng}` |")
-                        if old_c.iout_clamp_rng != new_c.iout_clamp_rng:
-                            lines.append(f"| `{name}` | iout_clamp_rng | `{old_c.iout_clamp_rng}` | `{new_c.iout_clamp_rng}` |")
-                        if old_c.offcurr != new_c.offcurr:
-                            lines.append(f"| `{name}` | offcurr | `{old_c.offcurr}` | `{new_c.offcurr}` |")
+                        old_fields = old_c.all_fields()
+                        new_fields = new_c.all_fields()
+                        for key in sorted(set(old_fields.keys()) | set(new_fields.keys())):
+                            old_val = old_fields.get(key, "")
+                            new_val = new_fields.get(key, "")
+                            if old_val != new_val:
+                                lines.append(f"| `{name}` | {key} | `{old_val}` | `{new_val}` |")
             if diff.levelsets_added or diff.levelsets_removed or diff.levelsets_changed:
                 lines.append("")
                 lines.append("#### LEVELSET")
@@ -856,14 +840,16 @@ def format_markdown(report: DiffReport) -> str:
                     for idx, pins in diff.levelsets_added.items():
                         lines.append(f"- LEVELSET {idx}:")
                         for name, cfg in pins.items():
-                            lines.append(f"  - `{name}`: vih={cfg.vih}, vil={cfg.vil}, voh={cfg.voh}, vol={cfg.vol}")
+                            fields_str = ", ".join(f"{k}={v}" for k, v in cfg.all_fields().items())
+                            lines.append(f"  - `{name}`: {fields_str}")
                     lines.append("")
                 if diff.levelsets_removed:
                     lines.append("**Removed:**")
                     for idx, pins in diff.levelsets_removed.items():
                         lines.append(f"- LEVELSET {idx}:")
                         for name, cfg in pins.items():
-                            lines.append(f"  - ~~`{name}`: vih={cfg.vih}, vil={cfg.vil}, voh={cfg.voh}, vol={cfg.vol}~~")
+                            fields_str = ", ".join(f"{k}={v}" for k, v in cfg.all_fields().items())
+                            lines.append(f"  - ~~`{name}`: {fields_str}~~")
                     lines.append("")
                 if diff.levelsets_changed:
                     lines.append("**Changed:**")
@@ -871,14 +857,13 @@ def format_markdown(report: DiffReport) -> str:
                     lines.append("|----------|------|-------|-----|-----|")
                     for idx, pins in diff.levelsets_changed.items():
                         for name, (old_c, new_c) in pins.items():
-                            if old_c.vih != new_c.vih:
-                                lines.append(f"| {idx} | `{name}` | vih | `{old_c.vih}` | `{new_c.vih}` |")
-                            if old_c.vil != new_c.vil:
-                                lines.append(f"| {idx} | `{name}` | vil | `{old_c.vil}` | `{new_c.vil}` |")
-                            if old_c.voh != new_c.voh:
-                                lines.append(f"| {idx} | `{name}` | voh | `{old_c.voh}` | `{new_c.voh}` |")
-                            if old_c.vol != new_c.vol:
-                                lines.append(f"| {idx} | `{name}` | vol | `{old_c.vol}` | `{new_c.vol}` |")
+                            old_fields = old_c.all_fields()
+                            new_fields = new_c.all_fields()
+                            for key in sorted(set(old_fields.keys()) | set(new_fields.keys())):
+                                old_val = old_fields.get(key, "")
+                                new_val = new_fields.get(key, "")
+                                if old_val != new_val:
+                                    lines.append(f"| {idx} | `{name}` | {key} | `{old_val}` | `{new_val}` |")
 
     return "\n".join(lines)
 
@@ -975,45 +960,17 @@ def format_json(report: DiffReport) -> str:
                 "eqnset_name": diff.eqnset_name,
                 "dpspins": {
                     "added": {
-                        name: {
-                            "vout": cfg.vout,
-                            "ilimit": cfg.ilimit,
-                            "t_ms": cfg.t_ms,
-                            "vout_frc_rng": cfg.vout_frc_rng,
-                            "iout_clamp_rng": cfg.iout_clamp_rng,
-                            "offcurr": cfg.offcurr,
-                        }
+                        name: cfg.all_fields()
                         for name, cfg in diff.dpspins_added.items()
                     },
                     "removed": {
-                        name: {
-                            "vout": cfg.vout,
-                            "ilimit": cfg.ilimit,
-                            "t_ms": cfg.t_ms,
-                            "vout_frc_rng": cfg.vout_frc_rng,
-                            "iout_clamp_rng": cfg.iout_clamp_rng,
-                            "offcurr": cfg.offcurr,
-                        }
+                        name: cfg.all_fields()
                         for name, cfg in diff.dpspins_removed.items()
                     },
                     "changed": {
                         name: {
-                            "old": {
-                                "vout": old_c.vout,
-                                "ilimit": old_c.ilimit,
-                                "t_ms": old_c.t_ms,
-                                "vout_frc_rng": old_c.vout_frc_rng,
-                                "iout_clamp_rng": old_c.iout_clamp_rng,
-                                "offcurr": old_c.offcurr,
-                            },
-                            "new": {
-                                "vout": new_c.vout,
-                                "ilimit": new_c.ilimit,
-                                "t_ms": new_c.t_ms,
-                                "vout_frc_rng": new_c.vout_frc_rng,
-                                "iout_clamp_rng": new_c.iout_clamp_rng,
-                                "offcurr": new_c.offcurr,
-                            },
+                            "old": old_c.all_fields(),
+                            "new": new_c.all_fields(),
                         }
                         for name, (old_c, new_c) in diff.dpspins_changed.items()
                     },
@@ -1021,24 +978,14 @@ def format_json(report: DiffReport) -> str:
                 "levelsets": {
                     "added": {
                         str(idx): {
-                            name: {
-                                "vih": cfg.vih,
-                                "vil": cfg.vil,
-                                "voh": cfg.voh,
-                                "vol": cfg.vol,
-                            }
+                            name: cfg.all_fields()
                             for name, cfg in pins.items()
                         }
                         for idx, pins in diff.levelsets_added.items()
                     },
                     "removed": {
                         str(idx): {
-                            name: {
-                                "vih": cfg.vih,
-                                "vil": cfg.vil,
-                                "voh": cfg.voh,
-                                "vol": cfg.vol,
-                            }
+                            name: cfg.all_fields()
                             for name, cfg in pins.items()
                         }
                         for idx, pins in diff.levelsets_removed.items()
@@ -1046,18 +993,8 @@ def format_json(report: DiffReport) -> str:
                     "changed": {
                         str(idx): {
                             name: {
-                                "old": {
-                                    "vih": old_c.vih,
-                                    "vil": old_c.vil,
-                                    "voh": old_c.voh,
-                                    "vol": old_c.vol,
-                                },
-                                "new": {
-                                    "vih": new_c.vih,
-                                    "vil": new_c.vil,
-                                    "voh": new_c.voh,
-                                    "vol": new_c.vol,
-                                },
+                                "old": old_c.all_fields(),
+                                "new": new_c.all_fields(),
                             }
                             for name, (old_c, new_c) in pins.items()
                         }
