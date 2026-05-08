@@ -1,0 +1,1627 @@
+hp93000,timing,0.1
+SPST TIM,,"BSCAN",0
+SPST TIM,,"TOP_IDDQ",0
+SPST TIM,,"CPU_IDDQ",0
+SPST TIM,,"SWITCH_IDDQ",0
+SPST TIM,,"XSDS_IDDQ",0
+SPST TIM,,"MBIST",0
+SPST TIM,,"CPU_SCAN",0
+SPST TIM,,"SWITCH_SCAN",0
+SPST TIM,,"XSDS_SCAN",0
+SPST TIM,,"TOP_SCAN",0
+SPST TIM,,"C3_FUNC_FREQ",0
+SPST TIM,,"C4_FUNC_FREQ",0
+SPST TIM,,"C5_FUNC_FREQ",0
+PCLK 1,1,20,(@)
+CLKR 1,20,10
+BWDS 1,,,"",(P5_GIGA_MDIP,P5_GIGA_MDIN,P3_MDIP,P3_MDIN,P2_MDIP,P2_MDIN,P10_REFCLK_P,P10_REFCLK_N,FE_MDIPB,FE_MDINB,P4_MDIP,P4_MDIN,FE_MDIPA,FE_MDINA,P6_GIGA_MDIP,P6_GIGA_MDIN,P1_MDIP,P1_MDIN,ATN,ATP,DISB,GPIOA_0,GPIOA_1,GPIOA_2,GPIOA_3,GPIOB_0,GPIOB_1,GPIOB_2,GPIOC_0,GPIOC_1,GPIOC_2,GPIOC_3,GPIOC_4,GPIOC_5,GPIOD_0,GPIOD_1,INH,LED0,LED1,LED2,LED3,LED4,LED5,LED_FE0,LED_FE1,PCIE_CLKREQB,PCIE_ISOLATEB,PCIE_LANWAKEB,PCIE_RESETB,RESETB,RSET,RTT_CKDIG,SPI_CSB,SPI_SCK,SPI_SIO0,SPI_SIO1,SPI_SIO2,SPI_SIO3,WAKE,XI,XMII_0_COL,XMII_0_CRS,XMII_0_RXC,XMII_0_RXD0,XMII_0_RXD1,XMII_0_RXD2,XMII_0_RXD3,XMII_0_RXDV,XMII_0_RXER,XMII_0_TXC,XMII_0_TXD0,XMII_0_TXD1,XMII_0_TXD2,XMII_0_TXD3,XMII_0_TXEN,XMII_1_COL,XMII_1_CRS,XMII_1_RXC,XMII_1_RXD0,XMII_1_RXD1,XMII_1_RXD2,XMII_1_RXD3,XMII_1_RXDV,XMII_1_RXER,XMII_1_TXC,XMII_1_TXD0,XMII_1_TXD1,XMII_1_TXD2,XMII_1_TXD3,XMII_1_TXEN,XMII_2_TXD0,XMII_2_TXD1,XMII_2_TXD2,XMII_2_TXD3,XMII_2_TXEN,XO,LX_OUT_G1,WAKE_G1,INH_G1,MDIO_G1,MDC_G1,PHYRSTB_G1,LX_OUT_G2,WAKE_G2,INH_G2,MDIO_G2,MDC_G2,PHYRSTB_G2,CDCE_GPIO4,CDCE_SCL,CDCE_SDA,CDCE_GPIO1,CDCE_PDN,SCL_TEMP1,SDA_TEMP1,SDA_TEMP2,SCL_TEMP2)
+ETDS 1,1,,"",(P5_GIGA_MDIP,P5_GIGA_MDIN,P3_MDIP,P3_MDIN,P2_MDIP,P2_MDIN,P10_REFCLK_P,P10_REFCLK_N,FE_MDIPB,FE_MDINB,P4_MDIP,P4_MDIN,FE_MDIPA,FE_MDINA,P6_GIGA_MDIP,P6_GIGA_MDIN,P1_MDIP,P1_MDIN,ATN,ATP,DISB,GPIOA_0,GPIOA_1,GPIOA_2,GPIOA_3,GPIOB_0,GPIOB_1,GPIOB_2,GPIOC_0,GPIOC_1,GPIOC_2,GPIOC_3,GPIOC_4,GPIOC_5,GPIOD_0,GPIOD_1,INH,LED0,LED1,LED2,LED3,LED4,LED5,LED_FE0,LED_FE1,PCIE_CLKREQB,PCIE_ISOLATEB,PCIE_LANWAKEB,PCIE_RESETB,RESETB,RSET,RTT_CKDIG,SPI_CSB,SPI_SCK,SPI_SIO0,SPI_SIO1,SPI_SIO2,SPI_SIO3,WAKE,XI,XMII_0_COL,XMII_0_CRS,XMII_0_RXC,XMII_0_RXD0,XMII_0_RXD1,XMII_0_RXD2,XMII_0_RXD3,XMII_0_RXDV,XMII_0_RXER,XMII_0_TXC,XMII_0_TXD0,XMII_0_TXD1,XMII_0_TXD2,XMII_0_TXD3,XMII_0_TXEN,XMII_1_COL,XMII_1_CRS,XMII_1_RXC,XMII_1_RXD0,XMII_1_RXD1,XMII_1_RXD2,XMII_1_RXD3,XMII_1_RXDV,XMII_1_RXER,XMII_1_TXC,XMII_1_TXD0,XMII_1_TXD1,XMII_1_TXD2,XMII_1_TXD3,XMII_1_TXEN,XMII_2_TXD0,XMII_2_TXD1,XMII_2_TXD2,XMII_2_TXD3,XMII_2_TXEN,XO,LX_OUT_G1,WAKE_G1,INH_G1,MDIO_G1,MDC_G1,PHYRSTB_G1,LX_OUT_G2,WAKE_G2,INH_G2,MDIO_G2,MDC_G2,PHYRSTB_G2,CDCE_GPIO4,CDCE_SCL,CDCE_SDA,CDCE_GPIO1,CDCE_PDN,SCL_TEMP1,SDA_TEMP1,SDA_TEMP2,SCL_TEMP2)
+DCDT 1,""
+TSUX 1,1
+EQSP TIM,WVT,#9000064779WAVETBL "OS_FUNC"
+PINS ALL_IO
+0 "d1:0"		0
+1 "d1:Z r1:M"	M
+2 "d1:Z r1:X"	X
+
+brk ""
+f ""
+
+WAVETBL "Leakage"
+PINS ALL_IO
+0 "d1:Z"		Z
+
+
+
+WAVETBL "Temp_Sensor"
+
+PINS NO_Temp_Sensor
+0 	"d1:0"		0
+1 	"d1:1"		1
+f   "d1:1"
+brk "d1:1"
+
+PINS SCL_TEMP1 SCL_TEMP2
+0 	"d1:1"		0
+1 	"d1:0 d2:1"	1
+f 	"d1:1"
+brk "d1:1"
+
+PINS SDA_TEMP1 SDA_TEMP2
+0 	"d1:0"		0
+1 	"d1:1"		1
+2 	"d1:Z r1:C"	C
+3 	"d1:Z r1:L"	L
+4 	"d1:Z r1:H"	H
+6	"d1:0 d2:1"  	stop
+7   "d1:0" start
+f 	"d1:1"
+brk "d1:1"
+
+WAVETBL "MDIO"
+
+PINS NO_MDIO
+0 	"d1:0"		0
+1 	"d1:1"		1
+2	"d1:Z r1:X" X
+f   "d1:Z "
+brk "d1:Z "
+
+PINS GPIOA_1 	#MDC
+0 	"d1:1"		0
+1 	"d1:0 d2:1"	1
+f 	"d1:0 d2:1"
+brk "d1:0 d2:1"
+
+PINS GPIOA_2	#MDIO
+0 	"d1:0"		0
+1 	"d1:1"		1
+2 	"d1:Z r1:C"	C
+3 	"d1:Z r1:L"	L
+4 	"d1:Z r1:H"	H
+6	"d1:Z r1:X" X
+f 	"d1:Z "
+brk "d1:Z "
+
+WAVETBL "gen_tp1_BSCAN"                                     # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTables gen_tp1
+
+DEFINES BSCAN
+
+PINS GPIOC_1
+0 "d1:0" N                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+1 "d1:0 d2:F1N d3:F0N" 1                                    # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:Z r1:X" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_RXER XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+6 "d1:Z r1:X" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/BSCAN/JtagBscanPatterns.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+
+WAVETBL "NO_BSCAN"
+
+DEFINES NO_BSCAN
+
+PINS NO_BSCAN
+0 "d1:Z"  X 
+
+
+
+WAVETBL "gen_tp1_top_IDDQ"                              # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1 gen_tp2
+
+DEFINES IDDQ
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+
+PINS XMII_1_RXER GPIOC_1
+0 "d1:0" N_1                                                # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+1 "d1:0 d2:F1N d3:F0N" 1_1                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+6 "d1:1" 1_2                                                # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp2; WFC 1
+7 "d1:!Z" N_2                                               # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp2; WFC N
+
+PINS XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+3 "d1:Z" Z                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC Z
+
+
+WAVETBL "gen_tp1_cpu_IDDQ"                              # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1 gen_tp4
+
+DEFINES IDDQ
+
+PINS GPIOC_5
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L_1                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H_1                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T_1                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+7 "d1:Z r2:L" L_2                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+8 "d1:Z r2:H" H_2                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+9 "d1:Z r2:M" T_2                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+
+PINS XMII_1_RXER GPIOC_1
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1_1                                                # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+7 "d1:0 d2:F1N d3:F0N" 1_2                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+
+
+
+WAVETBL "gen_tp1_switch_IDDQ"                              # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1 gen_tp4
+
+DEFINES IDDQ
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+
+PINS XMII_1_RXER GPIOC_1
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1_1                                                # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+7 "d1:0 d2:F1N d3:F0N" 1_2                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+
+
+
+WAVETBL "gen_tp1_xsds_IDDQ"                              # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1 gen_tp4
+
+DEFINES IDDQ
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+
+PINS XMII_1_RXER GPIOC_1
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1_1                                                # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+7 "d1:0 d2:F1N d3:F0N" 1_2                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+
+WAVETBL "NO_IDDQ"
+
+DEFINES NO_IDDQ
+
+PINS NO_IDDQ
+0 "d1:Z"  X 
+
+
+WAVETBL "gen_tp1_MBIST"                                     # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTables gen_tp1
+
+DEFINES MBIST
+
+PINS GPIOC_1
+0 "d1:0" N                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+1 "d1:0 d2:F1N d3:F0N" 1                                    # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+
+PINS XMII_1_TXD0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOC_2 RESETB XMII_1_TXEN
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/MBIST/After/MemoryBist_cpuss_xmii1_wrapper.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+
+WAVETBL "NO_MBIST"
+
+DEFINES NO_MBIST
+
+PINS NO_MBIST
+0 "d1:Z"  X 
+
+
+
+
+WAVETBL "TOP_SCAN"                                      # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1
+
+DEFINES IDDQ
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+
+PINS XMII_1_RXER GPIOC_1
+0 "d1:0" N                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+1 "d1:0 d2:F1N d3:F0N" 1                                    # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+
+PINS XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+3 "d1:Z" Z                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_edt_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC Z
+
+
+
+WAVETBL "SCAN_CPU"                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1
+
+DEFINES SCAN_CPU
+
+PINS GPIOC_1 XMII_1_RXER
+0 "d1:0" N                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+1 "d1:0 d2:F1N d3:F0N" 1                                    # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+
+PINS XMII_1_TXD0 GPIOA_1 GPIOA_2 GPIOC_5 GPIOC_4 GPIOC_3 GPIOB_2 GPIOA_3 GPIOC_2 RESETB XMII_1_RXD1 XMII_1_RXD0 XMII_1_RXD2 GPIOA_0 XMII_1_TXEN GPIOB_1 GPIOB_0
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting1_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+
+
+
+WAVETBL "NO_SCAN_CPU"
+
+DEFINES NO_SCAN_CPU
+
+PINS NO_SCAN_CPU
+0 "d1:Z"  X 
+
+
+
+
+
+
+
+
+
+
+
+
+
+WAVETBL "SCAN_SWITCH"                               # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1
+
+DEFINES SCAN_SWITCH
+
+PINS XMII_1_RXER GPIOC_1
+0 "d1:0" N                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+1 "d1:0 d2:F1N d3:F0N" 1                                    # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+
+PINS XMII_0_TXD3 XMII_0_TXEN RESETB XMII_1_TXEN XMII_0_RXER XMII_1_TXD0 XMII_0_RXC LED0 XMII_0_RXD3 XMII_1_RXD1 XMII_0_RXD1 XMII_0_RXD0 XMII_0_TXC GPIOC_5 GPIOC_4 GPIOC_3 XMII_1_RXD0 GPIOC_2 XMII_2_TXEN XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_RXD2 XMII_0_RXDV LED1 XMII_2_TXD2 XMII_2_TXD3 XMII_2_TXD0 XMII_2_TXD1
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting2_mode_saf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+
+
+WAVETBL "NO_SCAN_SWITCH"
+
+DEFINES NO_SCAN_SWITCH
+
+PINS NO_SCAN_SWITCH
+0 "d1:Z"  X 
+
+
+
+
+WAVETBL "SCAN_XSDS"                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1
+
+DEFINES SCAN_XSDS
+
+PINS GPIOC_1 XMII_1_RXER
+0 "d1:0" N                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+1 "d1:0 d2:F1N d3:F0N" 1                                    # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+
+PINS XMII_1_TXD0 DISB SPI_CSB GPIOC_5 GPIOC_4 GPIOC_3 GPIOC_2 XMII_1_RXD1 SPI_SIO3 SPI_SIO2 SPI_SIO1 RESETB SPI_SIO0 SPI_SCK XMII_1_RXD0 GPIOC_0 XMII_1_TXEN XMII_1_RXDV
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/SCAN/AC/zhurong_top_retargeting3_mode_tdf_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+
+
+WAVETBL "NO_SCAN_XSDS"
+
+DEFINES NO_SCAN_XSDS
+
+PINS NO_SCAN_XSDS
+0 "d1:Z"  X 
+
+
+
+WAVETBL "TOP_IDDQ_MEAS"                              # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1 gen_tp2
+
+
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+
+PINS XMII_1_RXER GPIOC_1
+0 "d1:0" N_1                                                # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+1 "d1:0 d2:F1N d3:F0N" 1_1                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+4 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC X
+6 "d1:1" 1_2                                                # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp2; WFC 1
+7 "d1:!Z" N_2                                               # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp2; WFC N
+
+PINS XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+2 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC N
+3 "d1:Z" Z                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_edt_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC Z
+
+PINS NO_IDDQ
+0 "d1:Z" X        
+
+
+
+WAVETBL "CPU_IDDQ_MEAS"                              # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1 gen_tp4
+
+
+PINS GPIOC_5
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L_1                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H_1                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T_1                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+7 "d1:Z r2:L" L_2                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC L
+8 "d1:Z r2:H" H_2                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC H
+9 "d1:Z r2:M" T_2                                           # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC T
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+
+PINS XMII_1_RXER GPIOC_1
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1_1                                                # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+7 "d1:0 d2:F1N d3:F0N" 1_2                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting1_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+
+PINS NO_IDDQ
+0 "d1:Z" X  
+
+
+
+
+WAVETBL "SWITCH_IDDQ_MEAS"                              # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1 gen_tp4
+
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+
+PINS XMII_1_RXER GPIOC_1
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1_1                                                # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+7 "d1:0 d2:F1N d3:F0N" 1_2                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting2_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+
+PINS NO_IDDQ
+0 "d1:Z" X  
+
+
+WAVETBL "XSDS_IDDQ_MEAS"                              # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTables gen_tp1 gen_tp4
+
+
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+
+PINS XMII_1_RXER GPIOC_1
+0 "d1:0" 0                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 0
+1 "d1:1" 1_1                                                # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC 1
+2 "d1:Z r1:L" L                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC L
+3 "d1:Z r1:H" H                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC H
+4 "d1:!Z" N                                                 # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC N
+5 "d1:Z" X                                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC X
+6 "d1:Z r1:M" T                                             # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp4; WFC T
+7 "d1:0 d2:F1N d3:F0N" 1_2                                  # /export/home/YuboZhang/YT_PROG/YT9911CP/PAT/pattern/IDDQ/zhurong_top_retargeting3_mode_iddq_shift_25M.wgl.gz: default (undefined) timing; WaveformTable gen_tp1; WFC 1
+
+PINS NO_IDDQ
+0 "d1:Z" X  
+
+
+
+
+
+
+WAVETBL "FREQ_WVT"
+
+PINS NO_MDIO_GPIOC_1
+0 	"d1:0"		0
+1 	"d1:1"		1
+2	"d1:Z r1:X" X
+f   "d1:Z "
+brk "d1:Z "
+
+PINS GPIOA_1 	#MDC
+0 	"d1:1"		0
+1 	"d1:0 d2:1"	1
+f 	"d1:0 d2:1"
+brk "d1:0 d2:1"
+
+PINS GPIOA_2	#MDIO
+0 	"d1:0"		0
+1 	"d1:1"		1
+2 	"d1:Z r1:C"	C
+3 	"d1:Z r1:L"	L
+4 	"d1:Z r1:H"	H
+6	"d1:Z r1:X" X
+f 	"d1:Z "
+brk "d1:Z "
+
+
+PINS GPIOC_1
+1 "d1:0 d2:1" 1
+2 "d1:Z r1:C" C
+f "d1:Z"
+brk "d1:Z"
+
+
+
+
+@
+EQSP TIM,EQN,#9000013639EQNSET 1 "OS_FUNC"
+
+SPECS
+per
+
+TIMINGSET 1 "OS"
+period = per
+
+PINS ALL_IO
+d1 = 0 * per
+r1 = 0.7 * per
+
+
+EQNSET 2 "Temp_Sensor"
+
+SPECS
+I2C_Per
+
+TIMINGSET 1 "Temp_Sensor"
+period = I2C_Per
+
+PINS NO_Temp_Sensor
+d1 = 0 * I2C_Per
+
+PINS SCL_TEMP1 SCL_TEMP2
+d1 = 0   * 	I2C_Per
+d2 = 0.5 *  I2C_Per
+
+PINS SDA_TEMP1 SDA_TEMP2
+d1 = 0.25 * I2C_Per
+d2 = 0.75 * I2C_Per
+r1 = 0.75 * I2C_Per
+
+EQNSET 3 "MDIO"
+
+SPECS
+MDIO_Per
+
+TIMINGSET 1 "MDIO"
+period = MDIO_Per
+
+PINS NO_MDIO
+d1 = 0 * MDIO_Per
+
+PINS GPIOA_1 	#MDC
+d1 = 0 * MDIO_Per
+d2 = 0.5 * MDIO_Per
+
+PINS GPIOA_2	#MDIO
+d1 = 0 * MDIO_Per
+d2 = 0.5 * MDIO_Per
+r1 = 0.5 * MDIO_Per
+
+
+
+EQNSET 4 "gen_tp1_BSCAN"
+
+DEFINES BSCAN
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "gen_tp1_BSCAN"
+period=per_40
+
+PINS GPIOC_5
+d1 = 0.0*per_40
+r1 = 0.725*per_40
+
+
+PINS GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.25*per_40
+d3 = 0.75*per_40
+r1 = 0.225*per_40
+
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_RXER XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+d1 = 0.0*per_40
+r1 = 0.225*per_40
+
+
+
+EQNSET 5 "gen_tp1_top_IDDQ"
+
+DEFINES IDDQ
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "gen_tp1_top_IDDQ"
+period=per_40
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+d1 = 0.0*per_40
+r1 = 0.2*per_40
+
+
+PINS XMII_1_RXER GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.25*per_40
+d3 = 0.75*per_40
+r1 = 0.2*per_40
+
+
+PINS XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0
+d1 = 0.0*per_40
+
+
+EQNSET 6 "gen_tp1_cpu_IDDQ"
+
+DEFINES IDDQ
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "gen_tp1_cpu_IDDQ"
+period=per_40
+
+PINS GPIOC_5
+d1 = 0.0*per_40
+r1 = 0.075*per_40
+r2 = 0.6*per_40
+
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+d1 = 0.0*per_40
+r1 = 0.075*per_40
+
+
+PINS XMII_1_RXER GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.125*per_40
+d3 = 0.625*per_40
+r1 = 0.075*per_40
+
+
+
+EQNSET 7 "gen_tp1_switch_IDDQ"
+
+DEFINES IDDQ
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "gen_tp1_switch_IDDQ"
+period=per_40
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+d1 = 0.0*per_40
+r1 = 0.25*per_40
+
+
+PINS XMII_1_RXER GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.325*per_40
+d3 = 0.825*per_40
+r1 = 0.25*per_40
+
+
+EQNSET 8 "gen_tp1_xsds_IDDQ"
+
+DEFINES IDDQ
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "gen_tp1_xsds_IDDQ"
+period=per_40
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+d1 = 0.0*per_40
+r1 = 0.2*per_40
+
+
+PINS XMII_1_RXER GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.25*per_40
+d3 = 0.75*per_40
+r1 = 0.2*per_40
+
+
+
+EQNSET 9 "gen_tp1_MBIST"
+
+DEFINES MBIST
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "gen_tp1_MBIST"
+period=per_40
+
+PINS GPIOC_5
+d1 = 0.0*per_40
+r1 = 0.725*per_40
+
+
+PINS GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.25*per_40
+d3 = 0.75*per_40
+r1 = 0.225*per_40
+
+
+PINS XMII_1_TXD0 GPIOC_4 GPIOC_3 GPIOC_2 RESETB XMII_1_TXEN
+d1 = 0.0*per_40
+r1 = 0.225*per_40
+
+
+EQNSET 10 "TOP_SCAN"
+
+DEFINES IDDQ
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "TOP_SCAN"
+period=per_40
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+d1 = 0.0*per_40
+r1 = 0.2*per_40
+
+
+PINS XMII_1_RXER GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.25*per_40
+d3 = 0.75*per_40
+r1 = 0.2*per_40
+
+
+PINS XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0
+d1 = 0.0*per_40
+
+
+
+
+
+
+
+
+EQNSET 11 "SCAN_CPU"
+
+DEFINES SCAN_CPU
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "SCAN_CPU"
+period=per_40
+
+PINS GPIOC_5
+d1 = 0.0*per_40
+r1 = 0.6*per_40
+
+
+PINS GPIOC_1 XMII_1_RXER
+d1 = 0.0*per_40
+d2 = 0.125*per_40
+d3 = 0.625*per_40
+r1 = 0.075*per_40
+
+
+PINS XMII_1_TXD0 GPIOA_1 GPIOA_2 GPIOC_4 GPIOC_3 GPIOB_2 GPIOA_3 GPIOC_2 RESETB XMII_1_RXD1 XMII_1_RXD0 XMII_1_RXD2 GPIOA_0 XMII_1_TXEN GPIOB_1 GPIOB_0
+d1 = 0.0*per_40
+r1 = 0.075*per_40
+
+
+
+EQNSET 12 "SCAN_SWITCH"
+
+DEFINES SCAN_SWITCH
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "gen_tp1_SCAN_SWITCH"
+period=per_40
+
+PINS XMII_1_RXER GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.325*per_40
+d3 = 0.825*per_40
+r1 = 0.25*per_40
+
+
+PINS XMII_0_TXD3 XMII_0_TXEN RESETB XMII_1_TXEN XMII_0_RXER XMII_1_TXD0 XMII_0_RXC LED0 XMII_0_RXD3 XMII_1_RXD1 XMII_0_RXD1 XMII_0_RXD0 XMII_0_TXC GPIOC_5 GPIOC_4 GPIOC_3 XMII_1_RXD0 GPIOC_2 XMII_2_TXEN XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_RXD2 XMII_0_RXDV LED1 XMII_2_TXD2 XMII_2_TXD3 XMII_2_TXD0 XMII_2_TXD1
+d1 = 0.0*per_40
+r1 = 0.25*per_40
+
+
+
+EQNSET 13 "SCAN_XSDS"
+
+DEFINES SCAN_XSDS
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "SCAN_XSDS"
+period=per_40
+
+PINS GPIOC_1 XMII_1_RXER
+d1 = 0.0*per_40
+d2 = 0.25*per_40
+d3 = 0.75*per_40
+r1 = 0.2*per_40
+
+
+PINS XMII_1_TXD0 DISB SPI_CSB GPIOC_5 GPIOC_4 GPIOC_3 GPIOC_2 XMII_1_RXD1 SPI_SIO3 SPI_SIO2 SPI_SIO1 RESETB SPI_SIO0 SPI_SCK XMII_1_RXD0 GPIOC_0 XMII_1_TXEN XMII_1_RXDV
+d1 = 0.0*per_40
+r1 = 0.2*per_40
+
+EQNSET 14 "NO_BSCAN"
+
+DEFINES NO_BSCAN
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "NO_BSCAN"
+period=per_40
+
+PINS NO_BSCAN
+d1 = 0.0*per_40
+
+
+
+EQNSET 15 "NO_IDDQ"
+
+DEFINES NO_IDDQ
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "NO_IDDQ"
+period=per_40
+
+PINS NO_BSCAN
+d1 = 0.0*per_40
+
+
+EQNSET 16 "NO_MBIST"
+
+DEFINES NO_MBIST
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "NO_MBIST"
+period=per_40
+
+PINS NO_MBIST
+d1 = 0.0*per_40
+
+
+
+EQNSET 17 "NO_SCAN_CPU"
+
+DEFINES NO_SCAN_CPU
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "NO_SCAN_CPU"
+period=per_40
+
+PINS NO_SCAN_CPU
+d1 = 0.0*per_40
+
+
+
+EQNSET 18 "NO_SCAN_SWITCH"
+
+DEFINES NO_SCAN_SWITCH
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "NO_SCAN_SWITCH"
+period=per_40
+
+PINS NO_SCAN_SWITCH
+d1 = 0.0*per_40
+
+
+
+
+
+EQNSET 19 "NO_SCAN_XSDS"
+
+DEFINES NO_SCAN_XSDS
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "NO_SCAN_XSDS"
+period=per_40
+
+PINS NO_SCAN_XSDS
+d1 = 0.0*per_40
+
+
+
+
+
+
+EQNSET 20 "TOP_IDDQ_MEAS"
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "TOP_IDDQ_MEAS"
+period=per_40
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+d1 = 0.0*per_40
+r1 = 0.2*per_40
+
+
+PINS XMII_1_RXER GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.25*per_40
+d3 = 0.75*per_40
+r1 = 0.2*per_40
+
+
+PINS XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0
+d1 = 0.0*per_40
+
+
+PINS NO_IDDQ
+d1 = 0.0*per_40
+
+
+
+
+
+
+EQNSET 21 "CPU_IDDQ_MEAS"
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "CPU_IDDQ_MEAS"
+period=per_40
+
+PINS GPIOC_5
+d1 = 0.0*per_40
+r1 = 0.075*per_40
+r2 = 0.6*per_40
+
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+d1 = 0.0*per_40
+r1 = 0.075*per_40
+
+
+PINS XMII_1_RXER GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.125*per_40
+d3 = 0.625*per_40
+r1 = 0.075*per_40
+
+
+PINS NO_IDDQ
+d1 = 0.0*per_40
+
+
+
+
+EQNSET 22 "SWITCH_IDDQ_MEAS"
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "SWITCH_IDDQ_MEAS"
+period=per_40
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+d1 = 0.0*per_40
+r1 = 0.25*per_40
+
+
+PINS XMII_1_RXER GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.325*per_40
+d3 = 0.825*per_40
+r1 = 0.25*per_40
+
+PINS NO_IDDQ
+d1 = 0.0*per_40
+
+
+
+EQNSET 23 "XSDS_IDDQ_MEAS"
+
+
+SPECS
+per_40                         [ns] # 
+
+TIMINGSET 1 "XSDS_IDDQ_MEAS"
+period=per_40
+
+PINS XMII_0_COL LED1 XMII_0_RXD0 XMII_0_TXEN PCIE_LANWAKEB PCIE_ISOLATEB RESETB XMII_1_TXC XMII_1_TXEN PCIE_RESETB GPIOB_1 XMII_0_RXER XMII_1_TXD3 XMII_1_TXD2 XMII_1_TXD1 XMII_1_TXD0 XMII_0_RXC GPIOB_2 SPI_SIO3 SPI_SIO2 SPI_SIO1 SPI_SIO0 XMII_0_CRS DISB LED0 XMII_1_RXD0 XMII_0_RXD2 XMII_0_RXD1 XMII_1_RXD3 LED_FE0 LED_FE1 LED4 LED5 XMII_0_TXC XMII_1_RXD1 GPIOD_0 GPIOC_5 GPIOC_4 GPIOC_3 GPIOD_1 XMII_0_RXD3 GPIOC_2 XMII_0_TXD0 XMII_0_TXD1 XMII_0_TXD2 XMII_0_TXD3 GPIOA_3 GPIOA_2 GPIOA_1 GPIOA_0 GPIOC_0 XMII_0_RXDV XMII_1_RXDV GPIOB_0 XMII_2_TXEN XMII_1_RXD2 XMII_1_RXC SPI_CSB LED3 XMII_2_TXD2 PCIE_CLKREQB XMII_2_TXD0 XMII_2_TXD1 XMII_2_TXD3 XMII_1_CRS XMII_1_COL SPI_SCK LED2
+d1 = 0.0*per_40
+r1 = 0.2*per_40
+
+
+PINS XMII_1_RXER GPIOC_1
+d1 = 0.0*per_40
+d2 = 0.25*per_40
+d3 = 0.75*per_40
+r1 = 0.2*per_40
+
+PINS NO_IDDQ
+d1 = 0.0*per_40
+
+
+
+
+
+
+
+EQNSET 24 "FREQ"
+
+DEFINES FREQ
+
+SPECS
+freq	[MHz]
+
+EQUATIONS 
+Tcyc = 1000/freq
+
+TIMINGSET 1 "freq"
+period = Tcyc
+
+PINS GPIOC_1
+d1 = 0.0 * Tcyc
+d2 = 0.5 * Tcyc
+r1 = 0.0 * Tcyc
+
+EQNSET 25 "NON_FREQ"
+
+DEFINES NO_FREQ
+
+SPECS
+MDIO_Per
+
+TIMINGSET 1 "NON_FREQ"
+period = MDIO_Per
+
+PINS NO_MDIO_GPIOC_1
+d1 = 0 * MDIO_Per
+
+PINS GPIOA_1 	#MDC
+d1 = 0 * MDIO_Per
+d2 = 0.5 * MDIO_Per
+
+PINS GPIOA_2	#MDIO
+d1 = 0 * MDIO_Per
+d2 = 0.5 * MDIO_Per
+r1 = 0.5 * MDIO_Per
+
+@
+EQSP TIM,SPS,#9000009191
+
+
+EQNSET 2 "Temp_Sensor"
+
+
+WAVETBL "Temp_Sensor"
+
+CHECK all
+
+SPECSET 1 "Temp_Sensor"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+I2C_Per          2000                                               [   ] 
+
+
+SPECIFICATION "BSCAN"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 4 "gen_tp1_BSCAN"
+WAVETBL "gen_tp1_BSCAN"
+PORT BSCAN
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           50                                                 [ ns] 
+
+EQNSET 14 "NO_BSCAN"
+WAVETBL "NO_BSCAN"
+PORT NO_BSCAN
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+}
+
+
+SPECIFICATION "TOP_IDDQ"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 5 "gen_tp1_top_IDDQ"
+WAVETBL "gen_tp1_top_IDDQ"
+PORT IDDQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+
+EQNSET 15 "NO_IDDQ"
+WAVETBL "NO_IDDQ"
+PORT NO_IDDQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+}
+
+
+SPECIFICATION "CPU_IDDQ"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 6 "gen_tp1_cpu_IDDQ"
+WAVETBL "gen_tp1_cpu_IDDQ"
+PORT IDDQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+
+EQNSET 15 "NO_IDDQ"
+WAVETBL "NO_IDDQ"
+PORT NO_IDDQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+}
+
+
+SPECIFICATION "SWITCH_IDDQ"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 7 "gen_tp1_switch_IDDQ"
+WAVETBL "gen_tp1_switch_IDDQ"
+PORT IDDQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+
+EQNSET 15 "NO_IDDQ"
+WAVETBL "NO_IDDQ"
+PORT NO_IDDQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+}
+
+
+SPECIFICATION "XSDS_IDDQ"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 8 "gen_tp1_xsds_IDDQ"
+WAVETBL "gen_tp1_xsds_IDDQ"
+PORT IDDQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+
+EQNSET 15 "NO_IDDQ"
+WAVETBL "NO_IDDQ"
+PORT NO_IDDQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+}
+
+
+SPECIFICATION "MBIST"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 9 "gen_tp1_MBIST"
+WAVETBL "gen_tp1_MBIST"
+PORT MBIST
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           50                                                 [ ns] 
+
+EQNSET 16 "NO_MBIST"
+WAVETBL "NO_MBIST"
+PORT NO_MBIST
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+}
+
+
+SPECIFICATION "CPU_SCAN"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 17 "NO_SCAN_CPU"
+WAVETBL "NO_SCAN_CPU"
+PORT NO_SCAN_CPU
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+
+EQNSET 11 "SCAN_CPU"
+WAVETBL "SCAN_CPU"
+PORT SCAN_CPU
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           50                                                 [ ns] 
+}
+
+
+SPECIFICATION "SWITCH_SCAN"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 18 "NO_SCAN_SWITCH"
+WAVETBL "NO_SCAN_SWITCH"
+PORT NO_SCAN_SWITCH
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+
+EQNSET 12 "SCAN_SWITCH"
+WAVETBL "SCAN_SWITCH"
+PORT SCAN_SWITCH
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           50                                                 [ ns] 
+}
+
+
+SPECIFICATION "XSDS_SCAN"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 19 "NO_SCAN_XSDS"
+WAVETBL "NO_SCAN_XSDS"
+PORT NO_SCAN_XSDS
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+
+EQNSET 13 "SCAN_XSDS"
+WAVETBL "SCAN_XSDS"
+PORT SCAN_XSDS
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           50                                                 [ ns] 
+}
+
+
+SPECIFICATION "TOP_SCAN"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 10 "TOP_SCAN"
+WAVETBL "TOP_SCAN"
+PORT IDDQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           50                                                 [ ns] 
+
+EQNSET 15 "NO_IDDQ"
+WAVETBL "NO_IDDQ"
+PORT NO_IDDQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+}
+
+EQNSET 3 "MDIO"
+
+
+WAVETBL "MDIO"
+
+CHECK all
+
+SPECSET 1 "MDIO"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+MDIO_Per         100                                                [   ] 
+
+EQNSET 1 "OS_FUNC"
+
+
+WAVETBL "OS_FUNC"
+
+CHECK all
+
+SPECSET 1 "OS_FUNC"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per              2000                                               [   ] 
+
+EQNSET 20 "TOP_IDDQ_MEAS"
+
+
+WAVETBL "TOP_IDDQ_MEAS"
+
+CHECK all
+
+SPECSET 1 "TOP_IDDQ_MEAS"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+
+EQNSET 21 "CPU_IDDQ_MEAS"
+
+
+WAVETBL "CPU_IDDQ_MEAS"
+
+CHECK all
+
+SPECSET 1 "CPU_IDDQ_MEAS"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+
+EQNSET 22 "SWITCH_IDDQ_MEAS"
+
+
+WAVETBL "SWITCH_IDDQ_MEAS"
+
+CHECK all
+
+SPECSET 1 "SWITCH_IDDQ_MEAS"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+
+EQNSET 23 "XSDS_IDDQ_MEAS"
+
+
+WAVETBL "XSDS_IDDQ_MEAS"
+
+CHECK all
+
+SPECSET 1 "XSDS_IDDQ_MEAS"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+per_40           100                                                [ ns] 
+
+
+SPECIFICATION "C3_FUNC_FREQ"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 24 "FREQ"
+WAVETBL "FREQ_WVT"
+PORT FREQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+freq             200                                                [MHz] 
+
+EQNSET 25 "NON_FREQ"
+WAVETBL "FREQ_WVT"
+PORT NO_FREQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+MDIO_Per         100                                                [   ] 
+}
+
+
+SPECIFICATION "C4_FUNC_FREQ"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 24 "FREQ"
+WAVETBL "FREQ_WVT"
+PORT FREQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+freq             100                                                [MHz] 
+
+EQNSET 25 "NON_FREQ"
+WAVETBL "FREQ_WVT"
+PORT NO_FREQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+MDIO_Per         100                                                [   ] 
+}
+
+
+SPECIFICATION "C5_FUNC_FREQ"
+{
+
+CHECK all
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+
+EQNSET 24 "FREQ"
+WAVETBL "FREQ_WVT"
+PORT FREQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+freq             40                                                 [MHz] 
+
+EQNSET 25 "NON_FREQ"
+WAVETBL "FREQ_WVT"
+PORT NO_FREQ
+SYNC
+{
+}
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+MDIO_Per         100                                                [   ] 
+}
+@
+NOOP "7.4.5",,,

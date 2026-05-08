@@ -1,0 +1,2555 @@
+hp93000,level,0.1
+PSLV 1,0,0.2,HIZ_R,0,(V33,VDDIO)
+PSLV 1,0,0.6,HIZ_R,0,(DVDD09)
+PSLV 1,0,0.2,HIZ_R,0,(AVDD33,AVDD09,AVDD09_CMU,DVDD33,VCC_FLASH,VDD_REF,VDD33_G1,D0V9_G1,VDD33_G2,D0V9_G2)
+PSLR 1,7,1,ON,NORM,(V33,VDDIO)
+PSLR 1,7,3,ON,NORM,(DVDD09)
+PSLR 1,7,1,ON,NORM,(AVDD33,AVDD09,AVDD09_CMU,DVDD33,VCC_FLASH,VDD_REF,VDD33_G1,D0V9_G1,VDD33_G2,D0V9_G2)
+PSFI 1,OFF,OFF,(V33,VDDIO,DVDD09,AVDD33,AVDD09,AVDD09_CMU,DVDD33,VCC_FLASH,VDD_REF,VDD33_G1,D0V9_G1,VDD33_G2,D0V9_G2)
+DRLV 1,2250,2500,(P5_GIGA_MDIP,P5_GIGA_MDIN,P3_MDIP,P3_MDIN,P2_MDIP,P2_MDIN,P10_REFCLK_P,P10_REFCLK_N,FE_MDIPB,FE_MDINB,P4_MDIP,P4_MDIN,FE_MDIPA,FE_MDINA,P6_GIGA_MDIP,P6_GIGA_MDIN,P1_MDIP,P1_MDIN,ATN,ATP,DISB,GPIOA_0,GPIOA_1,GPIOA_2,GPIOA_3,GPIOB_0,GPIOB_1,GPIOB_2,GPIOC_0,GPIOC_1,GPIOC_2,GPIOC_3,GPIOC_4,GPIOC_5,GPIOD_0,GPIOD_1,INH,LED0,LED1,LED2,LED3,LED4,LED5,LED_FE0,LED_FE1,PCIE_CLKREQB,PCIE_ISOLATEB,PCIE_LANWAKEB,PCIE_RESETB,RESETB,RSET,RTT_CKDIG,SPI_CSB,SPI_SCK,SPI_SIO0,SPI_SIO1,SPI_SIO2,SPI_SIO3,WAKE,XI,XMII_0_COL,XMII_0_CRS,XMII_0_RXC,XMII_0_RXD0,XMII_0_RXD1,XMII_0_RXD2,XMII_0_RXD3,XMII_0_RXDV,XMII_0_RXER,XMII_0_TXC,XMII_0_TXD0,XMII_0_TXD1,XMII_0_TXD2,XMII_0_TXD3,XMII_0_TXEN,XMII_1_COL,XMII_1_CRS,XMII_1_RXC,XMII_1_RXD0,XMII_1_RXD1,XMII_1_RXD2,XMII_1_RXD3,XMII_1_RXDV,XMII_1_RXER,XMII_1_TXC,XMII_1_TXD0,XMII_1_TXD1,XMII_1_TXD2,XMII_1_TXD3,XMII_1_TXEN,XMII_2_TXD0,XMII_2_TXD1,XMII_2_TXD2,XMII_2_TXD3,XMII_2_TXEN,XO,LX_OUT_G1,WAKE_G1,INH_G1,MDIO_G1,MDC_G1,PHYRSTB_G1,LX_OUT_G2,WAKE_G2,INH_G2,MDIO_G2,MDC_G2,PHYRSTB_G2,CDCE_GPIO4,CDCE_SCL,CDCE_SDA,CDCE_GPIO1,CDCE_PDN,SCL_TEMP1,SDA_TEMP1,SDA_TEMP2,SCL_TEMP2)
+RCLV 1,2250,2500,(P5_GIGA_MDIP,P5_GIGA_MDIN,P3_MDIP,P3_MDIN,P2_MDIP,P2_MDIN,P10_REFCLK_P,P10_REFCLK_N,FE_MDIPB,FE_MDINB,P4_MDIP,P4_MDIN,FE_MDIPA,FE_MDINA,P6_GIGA_MDIP,P6_GIGA_MDIN,P1_MDIP,P1_MDIN,ATN,ATP,DISB,GPIOA_0,GPIOA_1,GPIOA_2,GPIOA_3,GPIOB_0,GPIOB_1,GPIOB_2,GPIOC_0,GPIOC_1,GPIOC_2,GPIOC_3,GPIOC_4,GPIOC_5,GPIOD_0,GPIOD_1,INH,LED0,LED1,LED2,LED3,LED4,LED5,LED_FE0,LED_FE1,PCIE_CLKREQB,PCIE_ISOLATEB,PCIE_LANWAKEB,PCIE_RESETB,RESETB,RSET,RTT_CKDIG,SPI_CSB,SPI_SCK,SPI_SIO0,SPI_SIO1,SPI_SIO2,SPI_SIO3,WAKE,XI,XMII_0_COL,XMII_0_CRS,XMII_0_RXC,XMII_0_RXD0,XMII_0_RXD1,XMII_0_RXD2,XMII_0_RXD3,XMII_0_RXDV,XMII_0_RXER,XMII_0_TXC,XMII_0_TXD0,XMII_0_TXD1,XMII_0_TXD2,XMII_0_TXD3,XMII_0_TXEN,XMII_1_COL,XMII_1_CRS,XMII_1_RXC,XMII_1_RXD0,XMII_1_RXD1,XMII_1_RXD2,XMII_1_RXD3,XMII_1_RXDV,XMII_1_RXER,XMII_1_TXC,XMII_1_TXD0,XMII_1_TXD1,XMII_1_TXD2,XMII_1_TXD3,XMII_1_TXEN,XMII_2_TXD0,XMII_2_TXD1,XMII_2_TXD2,XMII_2_TXD3,XMII_2_TXEN,XO,LX_OUT_G1,WAKE_G1,INH_G1,MDIO_G1,MDC_G1,PHYRSTB_G1,LX_OUT_G2,WAKE_G2,INH_G2,MDIO_G2,MDC_G2,PHYRSTB_G2,CDCE_GPIO4,CDCE_SCL,CDCE_SDA,CDCE_GPIO1,CDCE_PDN,SCL_TEMP1,SDA_TEMP1,SDA_TEMP2,SCL_TEMP2)
+TERM 1,OFF,,,,,,(P5_GIGA_MDIP,P5_GIGA_MDIN,P3_MDIP,P3_MDIN,P2_MDIP,P2_MDIN,P10_REFCLK_P,P10_REFCLK_N,FE_MDIPB,FE_MDINB,P4_MDIP,P4_MDIN,FE_MDIPA,FE_MDINA,P6_GIGA_MDIP,P6_GIGA_MDIN,P1_MDIP,P1_MDIN,ATN,ATP,DISB,GPIOA_0,GPIOA_1,GPIOA_2,GPIOA_3,GPIOB_0,GPIOB_1,GPIOB_2,GPIOC_0,GPIOC_1,GPIOC_2,GPIOC_3,GPIOC_4,GPIOC_5,GPIOD_0,GPIOD_1,INH,LED0,LED1,LED2,LED3,LED4,LED5,LED_FE0,LED_FE1,PCIE_CLKREQB,PCIE_ISOLATEB,PCIE_LANWAKEB,PCIE_RESETB,RESETB,RSET,RTT_CKDIG,SPI_CSB,SPI_SCK,SPI_SIO0,SPI_SIO1,SPI_SIO2,SPI_SIO3,WAKE,XI,XMII_0_COL,XMII_0_CRS,XMII_0_RXC,XMII_0_RXD0,XMII_0_RXD1,XMII_0_RXD2,XMII_0_RXD3,XMII_0_RXDV,XMII_0_RXER,XMII_0_TXC,XMII_0_TXD0,XMII_0_TXD1,XMII_0_TXD2,XMII_0_TXD3,XMII_0_TXEN,XMII_1_COL,XMII_1_CRS,XMII_1_RXC,XMII_1_RXD0,XMII_1_RXD1,XMII_1_RXD2,XMII_1_RXD3,XMII_1_RXDV,XMII_1_RXER,XMII_1_TXC,XMII_1_TXD0,XMII_1_TXD1,XMII_1_TXD2,XMII_1_TXD3,XMII_1_TXEN,XMII_2_TXD0,XMII_2_TXD1,XMII_2_TXD2,XMII_2_TXD3,XMII_2_TXEN,XO,LX_OUT_G1,WAKE_G1,INH_G1,MDIO_G1,MDC_G1,PHYRSTB_G1,LX_OUT_G2,WAKE_G2,INH_G2,MDIO_G2,MDC_G2,PHYRSTB_G2,CDCE_GPIO4,CDCE_SCL,CDCE_SDA,CDCE_GPIO1,CDCE_PDN,SCL_TEMP1,SDA_TEMP1,SDA_TEMP2,SCL_TEMP2)
+CLMP 1,OFF,-2000,7000,(P5_GIGA_MDIP,P5_GIGA_MDIN,P3_MDIP,P3_MDIN,P2_MDIP,P2_MDIN,P10_REFCLK_P,P10_REFCLK_N,FE_MDIPB,FE_MDINB,P4_MDIP,P4_MDIN,FE_MDIPA,FE_MDINA,P6_GIGA_MDIP,P6_GIGA_MDIN,P1_MDIP,P1_MDIN,ATN,ATP,DISB,GPIOA_0,GPIOA_1,GPIOA_2,GPIOA_3,GPIOB_0,GPIOB_1,GPIOB_2,GPIOC_0,GPIOC_1,GPIOC_2,GPIOC_3,GPIOC_4,GPIOC_5,GPIOD_0,GPIOD_1,INH,LED0,LED1,LED2,LED3,LED4,LED5,LED_FE0,LED_FE1,PCIE_CLKREQB,PCIE_ISOLATEB,PCIE_LANWAKEB,PCIE_RESETB,RESETB,RSET,RTT_CKDIG,SPI_CSB,SPI_SCK,SPI_SIO0,SPI_SIO1,SPI_SIO2,SPI_SIO3,WAKE,XI,XMII_0_COL,XMII_0_CRS,XMII_0_RXC,XMII_0_RXD0,XMII_0_RXD1,XMII_0_RXD2,XMII_0_RXD3,XMII_0_RXDV,XMII_0_RXER,XMII_0_TXC,XMII_0_TXD0,XMII_0_TXD1,XMII_0_TXD2,XMII_0_TXD3,XMII_0_TXEN,XMII_1_COL,XMII_1_CRS,XMII_1_RXC,XMII_1_RXD0,XMII_1_RXD1,XMII_1_RXD2,XMII_1_RXD3,XMII_1_RXDV,XMII_1_RXER,XMII_1_TXC,XMII_1_TXD0,XMII_1_TXD1,XMII_1_TXD2,XMII_1_TXD3,XMII_1_TXEN,XMII_2_TXD0,XMII_2_TXD1,XMII_2_TXD2,XMII_2_TXD3,XMII_2_TXEN,XO,LX_OUT_G1,WAKE_G1,INH_G1,MDIO_G1,MDC_G1,PHYRSTB_G1,LX_OUT_G2,WAKE_G2,INH_G2,MDIO_G2,MDC_G2,PHYRSTB_G2,CDCE_GPIO4,CDCE_SCL,CDCE_SDA,CDCE_GPIO1,CDCE_PDN,SCL_TEMP1,SDA_TEMP1,SDA_TEMP2,SCL_TEMP2)
+LSUX 1
+EQSP LEV,EQN,#9000016823EQNSET 1 "OS_FUNC"
+
+SPECS 
+V33		[V]
+DVDD09		[V]
+DVDD33      	[V]
+VDDIO		[V]
+AVDD33	 	[V]
+AVDD09		[V]
+AVDD09_CMU	[V]
+VDD_REF		[V]
+VCC_FLASH	[V]
+VDD33_G1    	[V]
+D0V9_G1		[V]
+VDD33_G2    	[V]
+D0V9_G2		[V]
+VIH 		[V]
+VIL 		[V]
+VOH 		[V]
+VOL 		[V]
+VT		[V]
+IOH 		[mA]
+IOL 		[mA]
+
+
+DPSPINS V33
+vout = V33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS DVDD09
+vout = DVDD09		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS DVDD33
+vout = DVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDDIO
+vout = VDDIO
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD33
+vout = AVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD09  
+vout = AVDD09
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS AVDD09_CMU  
+vout = AVDD09_CMU
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS VDD_REF  
+vout = VDD_REF
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VCC_FLASH  
+vout = VCC_FLASH
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDD33_G1
+vout = VDD33_G1
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G1
+vout = D0V9_G1		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS VDD33_G2
+vout = VDD33_G2
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G2
+vout = D0V9_G2		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+LEVELSET 1 "OS"
+PINS ALL_IO
+vih = VIH
+vil = VIL
+voh = VOH
+vol = VOL
+vt = VT
+ioh = IOH
+iol = IOL
+
+EQNSET 2 "Temp_Sensor"
+
+SPECS 
+V33		[V]
+DVDD09		[V]
+DVDD33      	[V]
+VDDIO		[V]
+AVDD33	 	[V]
+AVDD09		[V]
+AVDD09_CMU	[V]
+VDD_REF		[V]
+VCC_FLASH	[V]
+VDD33_G1    	[V]
+D0V9_G1		[V]
+VDD33_G2    	[V]
+D0V9_G2		[V]
+VIH 		[V]
+VIL 		[V]
+VOH 		[V]
+VOL 		[V]
+VT		[V]
+IOH 		[mA]
+IOL 		[mA]
+
+
+DPSPINS V33
+vout = V33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS DVDD09
+vout = DVDD09		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS DVDD33
+vout = DVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDDIO
+vout = VDDIO
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD33
+vout = AVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD09  
+vout = AVDD09
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS AVDD09_CMU  
+vout = AVDD09_CMU
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS VDD_REF  
+vout = VDD_REF
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VCC_FLASH  
+vout = VCC_FLASH
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDD33_G1
+vout = VDD33_G1
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G1
+vout = D0V9_G1		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS VDD33_G2
+vout = VDD33_G2
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G2
+vout = D0V9_G2		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+
+LEVELSET 1 "Temp_Sensor"
+
+PINS NO_Temp_Sensor
+vih = VIH
+vil = VIL
+voh = VOH
+vol = VOL
+vt  = VT
+ioh = IOH
+iol = IOL
+
+PINS Temp_Sensor
+vih = VIH
+vil = VIL
+voh = VOH
+vol = VOL
+vt  = VT
+ioh = IOH
+iol = IOL
+
+
+EQNSET 3 "OS_PPMU"
+
+SPECS 
+V33		[V]
+DVDD09		[V]
+DVDD33      	[V]
+VDDIO		[V]
+AVDD33	 	[V]
+AVDD09		[V]
+AVDD09_CMU	[V]
+VDD_REF		[V]
+VCC_FLASH	[V]
+VDD33_G1    	[V]
+D0V9_G1		[V]
+VDD33_G2    	[V]
+D0V9_G2		[V]
+VIH 		[V]
+VIL 		[V]
+VOH 		[V]
+VOL 		[V]
+VT		[V]
+IOH 		[mA]
+IOL 		[mA]
+
+
+DPSPINS V33
+vout = V33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS DVDD09
+vout = DVDD09		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5		 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS DVDD33
+vout = DVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDDIO
+vout = VDDIO
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD33
+vout = AVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD09  
+vout = AVDD09
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS AVDD09_CMU  
+vout = AVDD09_CMU
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS VDD_REF  
+vout = VDD_REF
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VCC_FLASH  
+vout = VCC_FLASH
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDD33_G1
+vout = VDD33_G1
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G1
+vout = D0V9_G1		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS VDD33_G2
+vout = VDD33_G2
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G2
+vout = D0V9_G2		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+
+LEVELSET 1 "OS"
+PINS ALL_IO
+vih = VIH
+vil = VIL
+voh = VOH
+vol = VOL
+vt  = VT
+ioh = IOH
+iol = IOL
+
+
+EQNSET 4 "Leakage"
+
+SPECS 
+V33			[V]
+DVDD09		[V]
+DVDD33      [V]
+VDDIO		[V]
+AVDD33	 	[V]
+AVDD09		[V]
+AVDD09_CMU	[V]
+VDD_REF		[V]
+VCC_FLASH	[V]
+VDD33_G1    [V]
+D0V9_G1		[V]
+VDD33_G2    [V]
+D0V9_G2		[V]
+VIH 		[V]
+VIL 		[V]
+VOH 		[V]
+VOL 		[V]
+VT			[V]
+IOH 		[mA]
+IOL 		[mA]
+
+
+DPSPINS V33
+vout = V33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS DVDD09
+vout = DVDD09		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5		 	 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS DVDD33
+vout = DVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDDIO
+vout = VDDIO
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD33
+vout = AVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD09  
+vout = AVDD09
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS AVDD09_CMU  
+vout = AVDD09_CMU
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS VDD_REF  
+vout = VDD_REF
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VCC_FLASH  
+vout = VCC_FLASH
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDD33_G1
+vout = VDD33_G1
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G1
+vout = D0V9_G1		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS VDD33_G2
+vout = VDD33_G2
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G2
+vout = D0V9_G2		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+
+
+
+LEVELSET 1 "Leak"
+PINS ALL_IO
+vih = VIH
+vil = VIL
+
+EQNSET 5 "Power_Short"
+
+SPECS 
+V33		[V]
+DVDD09		[V]
+DVDD33      	[V]
+VDDIO		[V]
+AVDD33	 	[V]
+AVDD09		[V]
+AVDD09_CMU	[V]
+VDD_REF		[V]
+VCC_FLASH	[V]
+VDD33_G1    	[V]
+D0V9_G1		[V]
+VDD33_G2    	[V]
+D0V9_G2		[V]
+VIH 		[V]
+VIL 		[V]
+VOH 		[V]
+VOL 		[V]
+VT		[V]
+IOH 		[mA]
+IOL 		[mA]
+
+
+DPSPINS V33
+vout = V33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS DVDD09
+vout = DVDD09		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+connect_state = UNGANG
+offcurr = act
+
+DPSPINS DVDD33
+vout = DVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDDIO
+vout = VDDIO
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD33
+vout = AVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD09  
+vout = AVDD09
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS AVDD09_CMU  
+vout = AVDD09_CMU
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS VDD_REF  
+vout = VDD_REF
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VCC_FLASH  
+vout = VCC_FLASH
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDD33_G1
+vout = VDD33_G1
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G1
+vout = D0V9_G1		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS VDD33_G2
+vout = VDD33_G2
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G2
+vout = D0V9_G2		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+
+
+LEVELSET 1 "PS"
+PINS ALL_IO
+vih = VIH
+vil = VIL
+
+EQNSET 6 "RBIAS"
+
+SPECS 
+V33		[V]
+DVDD09		[V]
+DVDD33      	[V]
+VDDIO		[V]
+AVDD33	 	[V]
+AVDD09		[V]
+AVDD09_CMU	[V]
+VDD_REF		[V]
+VCC_FLASH	[V]
+VDD33_G1    	[V]
+D0V9_G1		[V]
+VDD33_G2    	[V]
+D0V9_G2		[V]
+VIH 		[V]
+VIL 		[V]
+
+
+
+DPSPINS V33
+vout = V33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS DVDD09
+vout = DVDD09		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS DVDD33
+vout = DVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDDIO
+vout = VDDIO
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD33
+vout = AVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD09  
+vout = AVDD09
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS AVDD09_CMU  
+vout = AVDD09_CMU
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS VDD_REF  
+vout = VDD_REF
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VCC_FLASH  
+vout = VCC_FLASH
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDD33_G1
+vout = VDD33_G1
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G1
+vout = D0V9_G1		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS VDD33_G2
+vout = VDD33_G2
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G2
+vout = D0V9_G2		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+
+
+
+LEVELSET 1 "RBIAS"
+PINS ALL_IO
+vih = VIH
+vil = VIL
+
+EQNSET 7 "MDIO"
+
+SPECS 
+V33		[V]
+DVDD09		[V]
+DVDD33      	[V]
+VDDIO		[V]
+AVDD33	 	[V]
+AVDD09		[V]
+AVDD09_CMU	[V]
+VDD_REF		[V]
+VCC_FLASH	[V]
+VDD33_G1   	[V]
+D0V9_G1		[V]
+VDD33_G2   	[V]
+D0V9_G2		[V]
+VIH 		[V]
+VIL 		[V]
+VOH 		[V]
+VOL 		[V]
+
+
+
+DPSPINS V33
+vout = V33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS DVDD09
+vout = DVDD09		 # [V]
+ilimit = 2000		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 2000 # [mA]
+offcurr = act
+
+DPSPINS DVDD33
+vout = DVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDDIO
+vout = VDDIO
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD33
+vout = AVDD33
+ilimit = 600
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 600
+offcurr = act
+
+DPSPINS AVDD09  
+vout = AVDD09
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS AVDD09_CMU  
+vout = AVDD09_CMU
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS VDD_REF  
+vout = VDD_REF
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VCC_FLASH  
+vout = VCC_FLASH
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+
+DPSPINS VDD33_G1
+vout = VDD33_G1
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G1
+vout = D0V9_G1		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS VDD33_G2
+vout = VDD33_G2
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G2
+vout = D0V9_G2		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+
+LEVELSET 1 "MDIO"
+PINS NO_MDIO
+vih = VIH
+vil = VIL
+voh = VOH
+vol = VOL
+
+PINS GPIOA_1 GPIOA_2 # MDC MDIO
+vih = VIH
+vil = VIL
+voh = VOH
+vol = VOL
+
+EQNSET 8 "SCAN_FUNC"
+
+SPECS 
+V33		[V]
+DVDD09		[V]
+DVDD33      	[V]
+VDDIO		[V]
+AVDD33	 	[V]
+AVDD09		[V]
+AVDD09_CMU	[V]
+VDD_REF		[V]
+VCC_FLASH	[V]
+VDD33_G1    	[V]
+D0V9_G1		[V]
+VDD33_G2    	[V]
+D0V9_G2		[V]
+VIH 		[V]
+VIL 		[V]
+VOH 		[V]
+VOL 		[V]
+VT		[V]
+IOH 		[mA]
+IOL 		[mA]
+
+
+DPSPINS V33
+vout = V33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS DVDD09
+vout = DVDD09		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS DVDD33
+vout = DVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDDIO
+vout = VDDIO
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD33
+vout = AVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD09  
+vout = AVDD09
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS AVDD09_CMU  
+vout = AVDD09_CMU
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS VDD_REF  
+vout = VDD_REF
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VCC_FLASH  
+vout = VCC_FLASH
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDD33_G1
+vout = VDD33_G1
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G1
+vout = D0V9_G1		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS VDD33_G2
+vout = VDD33_G2
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G2
+vout = D0V9_G2		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+
+LEVELSET 1 "SCAN"
+PINS ALL_IO
+vih = VIH
+vil = VIL
+voh = VOH
+vol = VOL
+#vt  = VT
+
+EQNSET 9 "MBIST"
+
+SPECS 
+V33		[V]
+DVDD09		[V]
+DVDD33      	[V]
+VDDIO		[V]
+AVDD33	 	[V]
+AVDD09		[V]
+AVDD09_CMU	[V]
+VDD_REF		[V]
+VCC_FLASH	[V]
+VDD33_G1    	[V]
+D0V9_G1		[V]
+VDD33_G2    	[V]
+D0V9_G2		[V]
+VIH 		[V]
+VIL 		[V]
+VOH 		[V]
+VOL 		[V]
+VT		[V]
+IOH 		[mA]
+IOL 		[mA]
+
+
+DPSPINS V33
+vout = V33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS DVDD09
+vout = DVDD09		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS DVDD33
+vout = DVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VDDIO
+vout = VDDIO
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD33
+vout = AVDD33
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS AVDD09  
+vout = AVDD09
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS AVDD09_CMU  
+vout = AVDD09_CMU
+ilimit = 800
+t_ms = 5
+vout_frc_rng = 2
+iout_clamp_rng = 800
+offcurr = act
+
+DPSPINS VDD_REF  
+vout = VDD_REF
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS VCC_FLASH  
+vout = VCC_FLASH
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+
+DPSPINS VDD33_G1
+vout = VDD33_G1
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G1
+vout = D0V9_G1		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+DPSPINS VDD33_G2
+vout = VDD33_G2
+ilimit = 500
+t_ms = 5
+vout_frc_rng = 5
+iout_clamp_rng = 500
+offcurr = act
+
+DPSPINS D0V9_G2
+vout = D0V9_G2		 # [V]
+ilimit = 800		 # [mA]
+t_ms = 5			 # [ms]
+vout_frc_rng = 2	 # [v]
+iout_clamp_rng = 800 # [mA]
+offcurr = act
+
+
+
+
+
+LEVELSET 1 "mbist"
+PINS ALL_IO
+vih = VIH
+vil = VIL
+voh = VOH
+vol = VOL
+
+
+
+
+
+
+@
+EQSP LEV,SPS,#9000047697
+
+
+EQNSET 1 "OS_FUNC"
+
+
+
+SPECSET 1 "OS_FUNC_N"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              0                                                  [  V] 
+DVDD09           0                                                  [  V] 
+DVDD33           0                                                  [  V] 
+VDDIO            0                                                  [  V] 
+AVDD33           0                                                  [  V] 
+AVDD09           0                                                  [  V] 
+AVDD09_CMU       0                                                  [  V] 
+VDD_REF          0                                                  [  V] 
+VCC_FLASH        0                                                  [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              0                                                  [  V] 
+VIL              0                                                  [  V] 
+VOH              -0.2                                               [  V] 
+VOL              -0.9                                               [  V] 
+VT               -1.5             0                0                [  V] 
+IOH              0.2                                                [ mA] 
+IOL              0.2                                                [ mA] 
+
+
+
+SPECSET 2 "OS_FUNC_P"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              0                                                  [  V] 
+DVDD09           0                                                  [  V] 
+DVDD33           0                                                  [  V] 
+VDDIO            0                                                  [  V] 
+AVDD33           0                                                  [  V] 
+AVDD09           0                                                  [  V] 
+AVDD09_CMU       0                                                  [  V] 
+VDD_REF          0                                                  [  V] 
+VCC_FLASH        0                                                  [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              0                                                  [  V] 
+VIL              0                                                  [  V] 
+VOH              0.9                                                [  V] 
+VOL              0.2                                                [  V] 
+VT               1.5                                                [  V] 
+IOH              0.2                                                [ mA] 
+IOL              0.2                                                [ mA] 
+
+EQNSET 2 "Temp_Sensor"
+
+
+
+SPECSET 1 "Temp_Sensor"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9              0                0                [  V] 
+DVDD33           3.3              0                0                [  V] 
+VDDIO            3.3              0                0                [  V] 
+AVDD33           3.3              0                0                [  V] 
+AVDD09           0.9              0                0                [  V] 
+AVDD09_CMU       0.9              0                0                [  V] 
+VDD_REF          3.3              0                0                [  V] 
+VCC_FLASH        0.9              0                0                [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              3.3              0                0                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                0                0                [  V] 
+VOL              1                0                0                [  V] 
+VT               0                                                  [  V] 
+IOH              0                                                  [ mA] 
+IOL              0                                                  [ mA] 
+
+EQNSET 3 "OS_PPMU"
+
+
+
+SPECSET 1 "OS_PPMU"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              0                                                  [  V] 
+DVDD09           0                                                  [  V] 
+DVDD33           0                                                  [  V] 
+VDDIO            0                                                  [  V] 
+AVDD33           0                                                  [  V] 
+AVDD09           0                                                  [  V] 
+AVDD09_CMU       0                                                  [  V] 
+VDD_REF          0                                                  [  V] 
+VCC_FLASH        0                                                  [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              0                                                  [  V] 
+VIL              0                                                  [  V] 
+VOH              0                                                  [  V] 
+VOL              0                                                  [  V] 
+VT               0                                                  [  V] 
+IOH              0                                                  [ mA] 
+IOL              0                                                  [ mA] 
+
+EQNSET 4 "Leakage"
+
+
+
+SPECSET 1 "Leak"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            3.3                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              3.3                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              0                                                  [  V] 
+VOL              0                                                  [  V] 
+VT               0                                                  [  V] 
+IOH              0                                                  [ mA] 
+IOL              0                                                  [ mA] 
+
+
+
+SPECSET 2 "Leak_IO3V63"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              0                                                  [  V] 
+DVDD09           0                                                  [  V] 
+DVDD33           0                                                  [  V] 
+VDDIO            0                                                  [  V] 
+AVDD33           0                                                  [  V] 
+AVDD09           0                                                  [  V] 
+AVDD09_CMU       0                                                  [  V] 
+VDD_REF          0                                                  [  V] 
+VCC_FLASH        0                                                  [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              0                                                  [  V] 
+VIL              0                                                  [  V] 
+VOH              0                                                  [  V] 
+VOL              0                                                  [  V] 
+VT               0                                                  [  V] 
+IOH              0                                                  [ mA] 
+IOL              0                                                  [ mA] 
+
+EQNSET 5 "Power_Short"
+
+
+
+SPECSET 1 "Power_Short"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              0.1                                                [  V] 
+DVDD09           0.1                                                [  V] 
+DVDD33           0.1                                                [  V] 
+VDDIO            0.1                                                [  V] 
+AVDD33           0.1                                                [  V] 
+AVDD09           0.1                                                [  V] 
+AVDD09_CMU       0.1                                                [  V] 
+VDD_REF          0                                                  [  V] 
+VCC_FLASH        0                                                  [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              0                                                  [  V] 
+VIL              0                                                  [  V] 
+VOH              0                                                  [  V] 
+VOL              0                                                  [  V] 
+VT               0                                                  [  V] 
+IOH              0                                                  [ mA] 
+IOL              0                                                  [ mA] 
+
+
+
+SPECSET 2 "Power_Short_Other"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              0                                                  [  V] 
+DVDD09           0                                                  [  V] 
+DVDD33           0                                                  [  V] 
+VDDIO            0                                                  [  V] 
+AVDD33           0                                                  [  V] 
+AVDD09           0                                                  [  V] 
+AVDD09_CMU       0                                                  [  V] 
+VDD_REF          0                                                  [  V] 
+VCC_FLASH        0                                                  [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              0                                                  [  V] 
+VIL              0                                                  [  V] 
+VOH              0                                                  [  V] 
+VOL              0                                                  [  V] 
+VT               0                                                  [  V] 
+IOH              0                                                  [ mA] 
+IOL              0                                                  [ mA] 
+
+EQNSET 6 "RBIAS"
+
+
+
+SPECSET 1 "RBIAS"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            3.3                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          0                                                  [  V] 
+VCC_FLASH        0                                                  [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              3.3                                                [  V] 
+VIL              0                                                  [  V] 
+
+EQNSET 7 "MDIO"
+
+
+
+SPECSET 1 "MDIO"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            3.3                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              3.3                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 2 "IO_3V3"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            3.3                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              3.3                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 3 "IO_2V5"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            2.5                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              2.5                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 4 "IO_1V8"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            1.8                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              3.3                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 5 "EFUSE"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            1.8                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              1.8                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 6 "RGMII_2V5_HV"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.99                                               [  V] 
+DVDD33           3.63                                               [  V] 
+VDDIO            2.75                                               [  V] 
+AVDD33           3.63                                               [  V] 
+AVDD09           0.99                                               [  V] 
+AVDD09_CMU       0.99                                               [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              2.75                                               [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 7 "RGMII_2V5_LV"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.81                                               [  V] 
+DVDD33           2.97                                               [  V] 
+VDDIO            2.25                                               [  V] 
+AVDD33           2.97                                               [  V] 
+AVDD09           0.81                                               [  V] 
+AVDD09_CMU       0.81                                               [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              2.25                                               [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 8 "RGMII_1V8_HV"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.99                                               [  V] 
+DVDD33           3.63                                               [  V] 
+VDDIO            1.98                                               [  V] 
+AVDD33           3.63                                               [  V] 
+AVDD09           0.99                                               [  V] 
+AVDD09_CMU       0.99                                               [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              1.98                                               [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 9 "RGMII_1V8_LV"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.81                                               [  V] 
+DVDD33           2.97                                               [  V] 
+VDDIO            1.62                                               [  V] 
+AVDD33           2.97                                               [  V] 
+AVDD09           0.81                                               [  V] 
+AVDD09_CMU       0.81                                               [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              1.62                                               [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 10 "MDIO_HV"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.99                                               [  V] 
+DVDD33           3.63                                               [  V] 
+VDDIO            3.63                                               [  V] 
+AVDD33           3.63                                               [  V] 
+AVDD09           0.99                                               [  V] 
+AVDD09_CMU       0.99                                               [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              3.63                                               [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 11 "MDIO_LV"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.81                                               [  V] 
+DVDD33           2.97                                               [  V] 
+VDDIO            2.97                                               [  V] 
+AVDD33           2.97                                               [  V] 
+AVDD09           0.83                                               [  V] 
+AVDD09_CMU       0.83                                               [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              2.97                                               [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 12 "UV_VDDIO_3V3"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            3.3                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              3.3                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 13 "UV_VDDIO_2V5"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            2.5                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              2.5                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 14 "UV_VDDIO_1V8"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            1.8                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              1.8                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 15 "POR_LEV"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            3.3                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              3.3                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+
+
+SPECSET 16 "MDIO_LV_0P85"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.85                                               [  V] 
+DVDD33           3.13                                               [  V] 
+VDDIO            3.13                                               [  V] 
+AVDD33           3.13                                               [  V] 
+AVDD09           0.85                                               [  V] 
+AVDD09_CMU       0.85                                               [  V] 
+VDD_REF          0                                                  [  V] 
+VCC_FLASH        0                                                  [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              3.13                                               [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+
+EQNSET 8 "SCAN_FUNC"
+
+
+
+SPECSET 1 "SCAN"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            3.3                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          0                                                  [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              3.3                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+VT               1                                                  [  V] 
+IOH              0                                                  [ mA] 
+IOL              0                                                  [ mA] 
+
+
+
+SPECSET 2 "SCAN_3V3"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            3.3                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         3.3                                                [  V] 
+D0V9_G1          0.9                                                [  V] 
+VDD33_G2         3.3                                                [  V] 
+D0V9_G2          0.9                                                [  V] 
+VIH              3.3                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+VT               0                                                  [  V] 
+IOH              0                                                  [ mA] 
+IOL              0                                                  [ mA] 
+
+
+
+SPECSET 3 "SCAN_3V63"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.63                                               [  V] 
+DVDD09           0.99                                               [  V] 
+DVDD33           3.63                                               [  V] 
+VDDIO            3.63                                               [  V] 
+AVDD33           3.63                                               [  V] 
+AVDD09           0.99                                               [  V] 
+AVDD09_CMU       0.99                                               [  V] 
+VDD_REF          3.63                                               [  V] 
+VCC_FLASH        3.63                                               [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              3.63                                               [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+VT               0                                                  [  V] 
+IOH              0                                                  [ mA] 
+IOL              0                                                  [ mA] 
+
+
+
+SPECSET 4 "SCAN_2V97"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              2.97                                               [  V] 
+DVDD09           0.81                                               [  V] 
+DVDD33           2.97                                               [  V] 
+VDDIO            2.97                                               [  V] 
+AVDD33           2.97                                               [  V] 
+AVDD09           0.81                                               [  V] 
+AVDD09_CMU       0.81                                               [  V] 
+VDD_REF          2.97                                               [  V] 
+VCC_FLASH        2.97                                               [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              2.97                                               [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+VT               0                                                  [  V] 
+IOH              0                                                  [ mA] 
+IOL              0                                                  [ mA] 
+
+
+
+SPECSET 5 "BSCAN_HV"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.99                                               [  V] 
+DVDD33           3.63                                               [  V] 
+VDDIO            3.63                                               [  V] 
+AVDD33           3.63                                               [  V] 
+AVDD09           0.99                                               [  V] 
+AVDD09_CMU       0.99                                               [  V] 
+VDD_REF          0                                                  [  V] 
+VCC_FLASH        0                                                  [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              3.63                                               [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+VT               1                                                  [  V] 
+IOH              20                                                 [ mA] 
+IOL              20                                                 [ mA] 
+
+
+
+SPECSET 6 "BSCAN_LV"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.81                                               [  V] 
+DVDD33           2.97                                               [  V] 
+VDDIO            2.97                                               [  V] 
+AVDD33           2.97                                               [  V] 
+AVDD09           0.81                                               [  V] 
+AVDD09_CMU       0.81                                               [  V] 
+VDD_REF          0                                                  [  V] 
+VCC_FLASH        0                                                  [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              2.97                                               [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+VT               1                                                  [  V] 
+IOH              20                                                 [ mA] 
+IOL              20                                                 [ mA] 
+
+EQNSET 9 "MBIST"
+
+
+
+SPECSET 1 "MBIST"
+
+
+# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
+V33              3.3                                                [  V] 
+DVDD09           0.9                                                [  V] 
+DVDD33           3.3                                                [  V] 
+VDDIO            1.8                                                [  V] 
+AVDD33           3.3                                                [  V] 
+AVDD09           0.9                                                [  V] 
+AVDD09_CMU       0.9                                                [  V] 
+VDD_REF          3.3                                                [  V] 
+VCC_FLASH        3.3                                                [  V] 
+VDD33_G1         0                                                  [  V] 
+D0V9_G1          0                                                  [  V] 
+VDD33_G2         0                                                  [  V] 
+D0V9_G2          0                                                  [  V] 
+VIH              3.3                                                [  V] 
+VIL              0                                                  [  V] 
+VOH              1                                                  [  V] 
+VOL              1                                                  [  V] 
+VT               0                                                  [  V] 
+IOH              0                                                  [ mA] 
+IOL              0                                                  [ mA] 
+@
+DFTD "_sub__dcs_m_AVDD09_im_avg8_AVDD09_CMU_im_avg8_AVDD33_im_avg8_DVDD09_im_avg_md5_767e34df73a47769dedcbc4cd8d49b24",REPLACE,(V33),#9000000132<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IM_V33_" type="dcset">
+    <measure type="current" samples="8"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_m_AVDD09_im_avg8_AVDD09_CMU_im_avg8_AVDD33_im_avg8_DVDD09_im_avg_md5_767e34df73a47769dedcbc4cd8d49b24",REPLACE,(VDDIO),#9000000134<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IM_VDDIO_" type="dcset">
+    <measure type="current" samples="8"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_m_AVDD09_im_avg8_AVDD09_CMU_im_avg8_AVDD33_im_avg8_DVDD09_im_avg_md5_767e34df73a47769dedcbc4cd8d49b24",REPLACE,(DVDD09),#9000000135<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IM_DVDD09_" type="dcset">
+    <measure type="current" samples="8"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_m_AVDD09_im_avg8_AVDD09_CMU_im_avg8_AVDD33_im_avg8_DVDD09_im_avg_md5_767e34df73a47769dedcbc4cd8d49b24",REPLACE,(AVDD33),#9000000135<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IM_AVDD33_" type="dcset">
+    <measure type="current" samples="8"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_m_AVDD09_im_avg8_AVDD09_CMU_im_avg8_AVDD33_im_avg8_DVDD09_im_avg_md5_767e34df73a47769dedcbc4cd8d49b24",REPLACE,(AVDD09),#9000000135<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IM_AVDD09_" type="dcset">
+    <measure type="current" samples="8"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_m_AVDD09_im_avg8_AVDD09_CMU_im_avg8_AVDD33_im_avg8_DVDD09_im_avg_md5_767e34df73a47769dedcbc4cd8d49b24",REPLACE,(AVDD09_CMU),#9000000139<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IM_AVDD09_CMU_" type="dcset">
+    <measure type="current" samples="8"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_m_AVDD09_im_avg8_AVDD09_CMU_im_avg8_AVDD33_im_avg8_DVDD09_im_avg_md5_767e34df73a47769dedcbc4cd8d49b24",REPLACE,(DVDD33),#9000000135<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IM_DVDD33_" type="dcset">
+    <measure type="current" samples="8"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_m_DVDD09_im_avg8_DVDD33_im_avg8_VDDIO_im_avg8_",REPLACE,(VDDIO),#9000000134<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IM_VDDIO_" type="dcset">
+    <measure type="current" samples="8"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_m_DVDD09_im_avg8_DVDD33_im_avg8_VDDIO_im_avg8_",REPLACE,(DVDD09),#9000000135<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IM_DVDD09_" type="dcset">
+    <measure type="current" samples="8"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_m_DVDD09_im_avg8_DVDD33_im_avg8_VDDIO_im_avg8_",REPLACE,(DVDD33),#9000000135<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IM_DVDD33_" type="dcset">
+    <measure type="current" samples="8"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.08_AVDD33_imr_0.08_DVDD09_im_md5_eb2963c78dc3a4971d0aaedd11e98ddb",REPLACE,(V33),#9000000165<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_V33_100u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0001"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.08_AVDD33_imr_0.08_DVDD09_im_md5_eb2963c78dc3a4971d0aaedd11e98ddb",REPLACE,(VDDIO),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.08_AVDD33_imr_0.08_DVDD09_im_md5_eb2963c78dc3a4971d0aaedd11e98ddb",REPLACE,(DVDD09),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_0.035_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.035"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.08_AVDD33_imr_0.08_DVDD09_im_md5_eb2963c78dc3a4971d0aaedd11e98ddb",REPLACE,(AVDD33),#9000000166<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD33_0.08_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.08"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.08_AVDD33_imr_0.08_DVDD09_im_md5_eb2963c78dc3a4971d0aaedd11e98ddb",REPLACE,(AVDD09),#9000000166<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_0.06_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.06"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.08_AVDD33_imr_0.08_DVDD09_im_md5_eb2963c78dc3a4971d0aaedd11e98ddb",REPLACE,(AVDD09_CMU),#9000000170<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_CMU_0.08_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.08"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.08_AVDD33_imr_0.08_DVDD09_im_md5_eb2963c78dc3a4971d0aaedd11e98ddb",REPLACE,(DVDD33),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_100u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0001"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_192d3ed85601d30d306e684f4b308f76",REPLACE,(V33),#9000000165<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_V33_100u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0001"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_192d3ed85601d30d306e684f4b308f76",REPLACE,(VDDIO),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_192d3ed85601d30d306e684f4b308f76",REPLACE,(DVDD09),#9000000166<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_0.05_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.05"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_192d3ed85601d30d306e684f4b308f76",REPLACE,(AVDD33),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD33_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_192d3ed85601d30d306e684f4b308f76",REPLACE,(AVDD09),#9000000166<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_0.06_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.06"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_192d3ed85601d30d306e684f4b308f76",REPLACE,(AVDD09_CMU),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_CMU_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_192d3ed85601d30d306e684f4b308f76",REPLACE,(DVDD33),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_500u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_2e9c773e688b1fca54800d11e5ddf2e9",REPLACE,(V33),#9000000165<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_V33_100u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0001"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_2e9c773e688b1fca54800d11e5ddf2e9",REPLACE,(VDDIO),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_2e9c773e688b1fca54800d11e5ddf2e9",REPLACE,(DVDD09),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_2e9c773e688b1fca54800d11e5ddf2e9",REPLACE,(AVDD33),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD33_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_2e9c773e688b1fca54800d11e5ddf2e9",REPLACE,(AVDD09),#9000000166<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_0.06_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.06"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_2e9c773e688b1fca54800d11e5ddf2e9",REPLACE,(AVDD09_CMU),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_CMU_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_2e9c773e688b1fca54800d11e5ddf2e9",REPLACE,(DVDD33),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_500u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_48dc5dd36050cdc47640f26bb0745a23",REPLACE,(V33),#9000000165<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_V33_100u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0001"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_48dc5dd36050cdc47640f26bb0745a23",REPLACE,(VDDIO),#9000000163<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_48dc5dd36050cdc47640f26bb0745a23",REPLACE,(DVDD09),#9000000165<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_1m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.001"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_48dc5dd36050cdc47640f26bb0745a23",REPLACE,(AVDD33),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD33_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_48dc5dd36050cdc47640f26bb0745a23",REPLACE,(AVDD09),#9000000166<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_0.06_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.06"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_48dc5dd36050cdc47640f26bb0745a23",REPLACE,(AVDD09_CMU),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_CMU_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.06_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr__md5_48dc5dd36050cdc47640f26bb0745a23",REPLACE,(DVDD33),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_500u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr_0_md5_fdbdf16a4fa9bd3b44db6be8e5772039",REPLACE,(V33),#9000000162<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_V33_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr_0_md5_fdbdf16a4fa9bd3b44db6be8e5772039",REPLACE,(VDDIO),#9000000163<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr_0_md5_fdbdf16a4fa9bd3b44db6be8e5772039",REPLACE,(DVDD09),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr_0_md5_fdbdf16a4fa9bd3b44db6be8e5772039",REPLACE,(AVDD33),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD33_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr_0_md5_fdbdf16a4fa9bd3b44db6be8e5772039",REPLACE,(AVDD09),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr_0_md5_fdbdf16a4fa9bd3b44db6be8e5772039",REPLACE,(AVDD09_CMU),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_CMU_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_0.1_AVDD33_imr_0.1_DVDD09_imr_0_md5_fdbdf16a4fa9bd3b44db6be8e5772039",REPLACE,(DVDD33),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_5m_AVDD33_imr_0.1_DVDD09_imr_0._md5_c511ba27f5aa0f23d4d4669162b37ea2",REPLACE,(V33),#9000000165<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_V33_100u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0001"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_5m_AVDD33_imr_0.1_DVDD09_imr_0._md5_c511ba27f5aa0f23d4d4669162b37ea2",REPLACE,(VDDIO),#9000000163<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_5m_AVDD33_imr_0.1_DVDD09_imr_0._md5_c511ba27f5aa0f23d4d4669162b37ea2",REPLACE,(DVDD09),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_5m_AVDD33_imr_0.1_DVDD09_imr_0._md5_c511ba27f5aa0f23d4d4669162b37ea2",REPLACE,(AVDD33),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD33_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_5m_AVDD33_imr_0.1_DVDD09_imr_0._md5_c511ba27f5aa0f23d4d4669162b37ea2",REPLACE,(AVDD09),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_5m_AVDD33_imr_0.1_DVDD09_imr_0._md5_c511ba27f5aa0f23d4d4669162b37ea2",REPLACE,(AVDD09_CMU),#9000000169<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_CMU_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_0.1_AVDD09_CMU_imr_5m_AVDD33_imr_0.1_DVDD09_imr_0._md5_c511ba27f5aa0f23d4d4669162b37ea2",REPLACE,(DVDD33),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_5m_AVDD09_CMU_imr_5m_AVDD33_imr_5m_DVDD09_imr_5m_DVDD33_imr_5m_V33_imr_5m_VDDIO_imr_5m_",REPLACE,(V33),#9000000162<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_V33_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_5m_AVDD09_CMU_imr_5m_AVDD33_imr_5m_DVDD09_imr_5m_DVDD33_imr_5m_V33_imr_5m_VDDIO_imr_5m_",REPLACE,(VDDIO),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_5m_AVDD09_CMU_imr_5m_AVDD33_imr_5m_DVDD09_imr_5m_DVDD33_imr_5m_V33_imr_5m_VDDIO_imr_5m_",REPLACE,(DVDD09),#9000000165<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_5m_AVDD09_CMU_imr_5m_AVDD33_imr_5m_DVDD09_imr_5m_DVDD33_imr_5m_V33_imr_5m_VDDIO_imr_5m_",REPLACE,(AVDD33),#9000000165<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD33_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_5m_AVDD09_CMU_imr_5m_AVDD33_imr_5m_DVDD09_imr_5m_DVDD33_imr_5m_V33_imr_5m_VDDIO_imr_5m_",REPLACE,(AVDD09),#9000000165<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_5m_AVDD09_CMU_imr_5m_AVDD33_imr_5m_DVDD09_imr_5m_DVDD33_imr_5m_V33_imr_5m_VDDIO_imr_5m_",REPLACE,(AVDD09_CMU),#9000000169<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_AVDD09_CMU_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_AVDD09_imr_5m_AVDD09_CMU_imr_5m_AVDD33_imr_5m_DVDD09_imr_5m_DVDD33_imr_5m_V33_imr_5m_VDDIO_imr_5m_",REPLACE,(DVDD33),#9000000165<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.035_DVDD33_imr_100u_VDDIO_imr_5m_",REPLACE,(VDDIO),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.035_DVDD33_imr_100u_VDDIO_imr_5m_",REPLACE,(DVDD09),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_0.035_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.035"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.035_DVDD33_imr_100u_VDDIO_imr_5m_",REPLACE,(DVDD33),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_100u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0001"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.05_DVDD33_imr_500u_VDDIO_imr_5m_",REPLACE,(VDDIO),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.05_DVDD33_imr_500u_VDDIO_imr_5m_",REPLACE,(DVDD09),#9000000166<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_0.05_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.05"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.05_DVDD33_imr_500u_VDDIO_imr_5m_",REPLACE,(DVDD33),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_500u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.1_DVDD33_imr_100u_VDDIO_imr_5m_",REPLACE,(VDDIO),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.1_DVDD33_imr_100u_VDDIO_imr_5m_",REPLACE,(DVDD09),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.1_DVDD33_imr_100u_VDDIO_imr_5m_",REPLACE,(DVDD33),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_100u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0001"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.1_DVDD33_imr_500u_VDDIO_imr_5m_",REPLACE,(VDDIO),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_5m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.1_DVDD33_imr_500u_VDDIO_imr_5m_",REPLACE,(DVDD09),#9000000164<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_0.1_DVDD33_imr_500u_VDDIO_imr_5m_",REPLACE,(DVDD33),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_500u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0005"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_1m_DVDD33_imr_500u_VDDIO_imr_0.1_",REPLACE,(VDDIO),#9000000163<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_VDDIO_0.1_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.1"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_1m_DVDD33_imr_500u_VDDIO_imr_0.1_",REPLACE,(DVDD09),#9000000165<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD09_1m_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.001"/>
+  </td>
+</testdata>
+DFTD "_sub__dcs_mr_DVDD09_imr_1m_DVDD33_imr_500u_VDDIO_imr_0.1_",REPLACE,(DVDD33),#9000000168<?xml version="1.0"?>
+<testdata>
+  <td id="__EV_IMR_DVDD33_500u_" type="dcset">
+    <setMeasureRange type="current" minValue="0" maxValue="0.0005"/>
+  </td>
+</testdata>
+NOOP "7.4.5",,,
