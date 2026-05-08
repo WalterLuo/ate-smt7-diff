@@ -16,8 +16,10 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
 from program_loader import (
+    LevelSpecDiff,
     SuiteConfigView,
     build_suite_views,
+    diff_level_specs,
 )
 from suite_config import (
     SuiteConfigReport,
@@ -66,6 +68,7 @@ class DiffReport:
     suite_config_report: Optional[SuiteConfigReport] = None
     old_suite_views: Optional[Dict[str, SuiteConfigView]] = None
     new_suite_views: Optional[Dict[str, SuiteConfigView]] = None
+    level_spec_diffs: Optional[List[LevelSpecDiff]] = None
 
     @cached_property
     def added(self) -> List[str]:
@@ -449,12 +452,24 @@ def diff_flow_files(
 
     old_views: Optional[Dict[str, SuiteConfigView]] = None
     new_views: Optional[Dict[str, SuiteConfigView]] = None
+    level_spec_diffs: Optional[List[LevelSpecDiff]] = None
     if include_config_views:
         old_names = {t.suite_name for t in old_tests}
         new_names = {t.suite_name for t in new_tests}
         common_suites = old_names & new_names
         old_views = build_suite_views(old_path, common_suites)
         new_views = build_suite_views(new_path, common_suites)
+
+        level_spec_diffs = []
+        for suite_name in sorted(common_suites):
+            old_v = old_views.get(suite_name)
+            new_v = new_views.get(suite_name)
+            if old_v and new_v:
+                diff = diff_level_specs(suite_name, old_v.level_specs, new_v.level_specs)
+                if diff and diff.has_changes:
+                    level_spec_diffs.append(diff)
+        if not level_spec_diffs:
+            level_spec_diffs = None
 
     return DiffReport(
         old_file=old_path,
@@ -465,6 +480,7 @@ def diff_flow_files(
         suite_config_report=suite_report,
         old_suite_views=old_views,
         new_suite_views=new_views,
+        level_spec_diffs=level_spec_diffs,
     )
 
 
@@ -547,6 +563,11 @@ def format_console(report: DiffReport) -> str:
         common = sorted(
             set(report.old_suite_views.keys()) & set(report.new_suite_views.keys())
         )
+        # Build lookup for level spec diffs
+        spec_diff_by_suite: Dict[str, LevelSpecDiff] = {}
+        if report.level_spec_diffs:
+            for diff in report.level_spec_diffs:
+                spec_diff_by_suite[diff.suite_name] = diff
         for suite_name in common:
             old_v = report.old_suite_views[suite_name]
             new_v = report.new_suite_views[suite_name]
@@ -566,6 +587,26 @@ def format_console(report: DiffReport) -> str:
                 new_s = new_v.level_spec_set if new_v.level_spec_set is not None else "-"
                 marker = "  " if old_s == new_s else "* "
                 lines.append(f"  {marker}level SPECSET: {old_s} -> {new_s}")
+            if suite_name in spec_diff_by_suite:
+                diff = spec_diff_by_suite[suite_name]
+                lines.append("  * level spec changes:")
+                for name, spec in diff.added.items():
+                    lines.append(f"    + {name}: actual={spec.actual}, units={spec.units}")
+                for name, spec in diff.removed.items():
+                    lines.append(f"    - {name}: actual={spec.actual}, units={spec.units}")
+                for name, (old_s, new_s) in diff.changed.items():
+                    changes = []
+                    if old_s.actual != new_s.actual:
+                        changes.append(f"actual {old_s.actual} -> {new_s.actual}")
+                    if old_s.min != new_s.min:
+                        changes.append(f"min {old_s.min} -> {new_s.min}")
+                    if old_s.max != new_s.max:
+                        changes.append(f"max {old_s.max} -> {new_s.max}")
+                    if old_s.units != new_s.units:
+                        changes.append(f"units {old_s.units} -> {new_s.units}")
+                    if old_s.comment != new_s.comment:
+                        changes.append(f"comment {old_s.comment} -> {new_s.comment}")
+                    lines.append(f"    ~ {name}: {', '.join(changes)}")
 
     return "\n".join(lines)
 
@@ -627,6 +668,39 @@ def format_markdown(report: DiffReport) -> str:
         lines.append("")
         lines.append(format_suite_markdown(report.suite_config_report))
 
+    if report.level_spec_diffs:
+        lines.append("")
+        lines.append("## Level Spec Diff")
+        lines.append("")
+        for diff in report.level_spec_diffs:
+            lines.append(f"### {diff.suite_name}")
+            if diff.added:
+                lines.append("")
+                lines.append("**Added:**")
+                for name, spec in diff.added.items():
+                    lines.append(f"- `{name}`: actual={spec.actual}, units={spec.units}")
+            if diff.removed:
+                lines.append("")
+                lines.append("**Removed:**")
+                for name, spec in diff.removed.items():
+                    lines.append(f"- ~~`{name}`: actual={spec.actual}, units={spec.units}~~")
+            if diff.changed:
+                lines.append("")
+                lines.append("**Changed:**")
+                lines.append("| Spec | Field | Old | New |")
+                lines.append("|------|-------|-----|-----|")
+                for name, (old_s, new_s) in diff.changed.items():
+                    if old_s.actual != new_s.actual:
+                        lines.append(f"| `{name}` | actual | `{old_s.actual}` | `{new_s.actual}` |")
+                    if old_s.min != new_s.min:
+                        lines.append(f"| `{name}` | min | `{old_s.min}` | `{new_s.min}` |")
+                    if old_s.max != new_s.max:
+                        lines.append(f"| `{name}` | max | `{old_s.max}` | `{new_s.max}` |")
+                    if old_s.units != new_s.units:
+                        lines.append(f"| `{name}` | units | `{old_s.units}` | `{new_s.units}` |")
+                    if old_s.comment != new_s.comment:
+                        lines.append(f"| `{name}` | comment | `{old_s.comment}` | `{new_s.comment}` |")
+
     return "\n".join(lines)
 
 
@@ -666,6 +740,53 @@ def format_json(report: DiffReport) -> str:
     if report.suite_config_report is not None:
         suite_json = format_suite_json(report.suite_config_report)
         result["suite_config_diff"] = suite_json["suite_config_diff"]
+
+    if report.level_spec_diffs:
+        result["level_spec_diff"] = [
+            {
+                "suite_name": diff.suite_name,
+                "added": {
+                    name: {
+                        "actual": spec.actual,
+                        "min": spec.min,
+                        "max": spec.max,
+                        "units": spec.units,
+                        "comment": spec.comment,
+                    }
+                    for name, spec in diff.added.items()
+                },
+                "removed": {
+                    name: {
+                        "actual": spec.actual,
+                        "min": spec.min,
+                        "max": spec.max,
+                        "units": spec.units,
+                        "comment": spec.comment,
+                    }
+                    for name, spec in diff.removed.items()
+                },
+                "changed": {
+                    name: {
+                        "old": {
+                            "actual": old_s.actual,
+                            "min": old_s.min,
+                            "max": old_s.max,
+                            "units": old_s.units,
+                            "comment": old_s.comment,
+                        },
+                        "new": {
+                            "actual": new_s.actual,
+                            "min": new_s.min,
+                            "max": new_s.max,
+                            "units": new_s.units,
+                            "comment": new_s.comment,
+                        },
+                    }
+                    for name, (old_s, new_s) in diff.changed.items()
+                },
+            }
+            for diff in report.level_spec_diffs
+        ]
 
     return json.dumps(result, indent=2, ensure_ascii=False)
 
