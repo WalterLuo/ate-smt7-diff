@@ -29,7 +29,58 @@ class LevelSpec:
     comment: str = ""
 
 
-@dataclass
+@dataclass(frozen=True)
+class DpsPinConfig:
+    """Parsed DPSPINS entry from an EQNSET block."""
+    vout: str = ""
+    ilimit: str = ""
+    t_ms: str = ""
+    vout_frc_rng: str = ""
+    iout_clamp_rng: str = ""
+    offcurr: str = ""
+
+
+@dataclass(frozen=True)
+class LevelSetPinConfig:
+    """Parsed PINS entry within a LEVELSET block."""
+    vih: str = ""
+    vil: str = ""
+    voh: str = ""
+    vol: str = ""
+
+
+@dataclass(frozen=True)
+class EqnSetBlock:
+    """Parsed EQNSET block from the EQSP LEV,EQN region."""
+    eqnset_index: int
+    eqnset_name: str
+    specs: Dict[str, LevelSpec] = field(default_factory=dict)
+    dpspins: Dict[str, DpsPinConfig] = field(default_factory=dict)
+    levelsets: Dict[int, Dict[str, LevelSetPinConfig]] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class EqnSetDiff:
+    """Diff result for an EQNSET block comparison."""
+    suite_name: str
+    eqnset_index: int
+    eqnset_name: str
+    dpspins_added: Dict[str, DpsPinConfig] = field(default_factory=dict)
+    dpspins_removed: Dict[str, DpsPinConfig] = field(default_factory=dict)
+    dpspins_changed: Dict[str, Tuple[DpsPinConfig, DpsPinConfig]] = field(default_factory=dict)
+    levelsets_added: Dict[int, Dict[str, LevelSetPinConfig]] = field(default_factory=dict)
+    levelsets_removed: Dict[int, Dict[str, LevelSetPinConfig]] = field(default_factory=dict)
+    levelsets_changed: Dict[int, Dict[str, Tuple[LevelSetPinConfig, LevelSetPinConfig]]] = field(default_factory=dict)
+
+    @property
+    def has_changes(self) -> bool:
+        return bool(
+            self.dpspins_added or self.dpspins_removed or self.dpspins_changed
+            or self.levelsets_added or self.levelsets_removed or self.levelsets_changed
+        )
+
+
+@dataclass(frozen=True)
 class LevelSpecDiff:
     """Level spec differences for a single test suite."""
     suite_name: str
@@ -286,6 +337,200 @@ class LevelLoader:
 
         return result
 
+    def parse_dpspins(self, dpspins_idx: int) -> DpsPinConfig:
+        """Parse a DPSPINS block into DpsPinConfig.
+
+        Reads lines from dpspins_idx + 1 until the next DPSPINS,
+        LEVELSET, EQNSET, '@', or blank line.
+        """
+        if dpspins_idx >= len(self.lines):
+            return DpsPinConfig()
+
+        fields: Dict[str, str] = {}
+        for line in self.lines[dpspins_idx + 1:]:
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if (
+                stripped.startswith("DPSPINS ")
+                or stripped.startswith("LEVELSET ")
+                or stripped.startswith("EQNSET ")
+                or stripped.startswith("SPECSET ")
+                or stripped == "@"
+            ):
+                break
+            if "=" not in stripped:
+                continue
+            key, val = stripped.split("=", 1)
+            key = key.strip()
+            val = val.strip()
+            # Strip inline comments
+            if "#" in val:
+                val = val.split("#", 1)[0].strip()
+            fields[key] = val
+
+        return DpsPinConfig(
+            vout=fields.get("vout", ""),
+            ilimit=fields.get("ilimit", ""),
+            t_ms=fields.get("t_ms", ""),
+            vout_frc_rng=fields.get("vout_frc_rng", ""),
+            iout_clamp_rng=fields.get("iout_clamp_rng", ""),
+            offcurr=fields.get("offcurr", ""),
+        )
+
+    def parse_levelset(self, levelset_idx: int) -> Dict[str, LevelSetPinConfig]:
+        """Parse a LEVELSET block into dict of PINS group -> LevelSetPinConfig.
+
+        Reads lines from levelset_idx + 1 until the next LEVELSET,
+        EQNSET, '@', or end.
+        """
+        if levelset_idx >= len(self.lines):
+            return {}
+
+        result: Dict[str, LevelSetPinConfig] = {}
+        current_pins: Optional[str] = None
+        current_fields: Dict[str, str] = {}
+
+        def flush_pins() -> None:
+            nonlocal current_pins, current_fields
+            if current_pins is not None:
+                result[current_pins] = LevelSetPinConfig(
+                    vih=current_fields.get("vih", ""),
+                    vil=current_fields.get("vil", ""),
+                    voh=current_fields.get("voh", ""),
+                    vol=current_fields.get("vol", ""),
+                )
+            current_pins = None
+            current_fields = {}
+
+        for line in self.lines[levelset_idx + 1:]:
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if (
+                stripped.startswith("LEVELSET ")
+                or stripped.startswith("EQNSET ")
+                or stripped.startswith("SPECSET ")
+                or stripped == "@"
+            ):
+                break
+            if stripped.startswith("PINS "):
+                flush_pins()
+                # Extract pin names after "PINS "
+                pins_part = stripped[5:]
+                # Strip inline comments
+                if "#" in pins_part:
+                    pins_part = pins_part.split("#", 1)[0]
+                current_pins = pins_part.strip()
+                continue
+            if current_pins is None:
+                continue
+            if "=" not in stripped:
+                continue
+            key, val = stripped.split("=", 1)
+            key = key.strip()
+            val = val.strip()
+            if "#" in val:
+                val = val.split("#", 1)[0].strip()
+            current_fields[key] = val
+
+        flush_pins()
+        return result
+
+    def parse_eqnset_block(self, eqnset_idx: int) -> Optional[EqnSetBlock]:
+        """Parse an EQNSET block from the EQSP LEV,EQN region.
+
+        Parses SPECS, DPSPINS, and LEVELSET sub-blocks.
+        Returns None if eqnset_idx is out of range or header is malformed.
+        """
+        if eqnset_idx >= len(self.lines):
+            return None
+
+        header = self.lines[eqnset_idx].strip()
+        if not header.startswith("EQNSET "):
+            return None
+
+        parts = header.split(None, 2)
+        if len(parts) < 2:
+            return None
+        try:
+            eqnset_index = int(parts[1])
+        except ValueError:
+            return None
+
+        eqnset_name = ""
+        if len(parts) >= 3:
+            eqnset_name = parts[2].strip().strip('"')
+
+        specs: Dict[str, LevelSpec] = {}
+        dpspins: Dict[str, DpsPinConfig] = {}
+        levelsets: Dict[int, Dict[str, LevelSetPinConfig]] = {}
+
+        i = eqnset_idx + 1
+        while i < len(self.lines):
+            line = self.lines[i]
+            stripped = line.strip()
+            if not stripped:
+                i += 1
+                continue
+            if stripped.startswith("EQNSET ") or stripped == "@":
+                break
+            if stripped.startswith("SPECS"):
+                # Parse specs list: Name  [UNIT]
+                i += 1
+                while i < len(self.lines):
+                    spec_line = self.lines[i].strip()
+                    if not spec_line:
+                        i += 1
+                        continue
+                    if (
+                        spec_line.startswith("EQNSET ")
+                        or spec_line.startswith("DPSPINS ")
+                        or spec_line.startswith("LEVELSET ")
+                        or spec_line.startswith("SPECSET ")
+                        or spec_line == "@"
+                    ):
+                        break
+                    # Parse spec entry
+                    units_match = re.search(r'\[([^]]*)\]', spec_line)
+                    units = units_match.group(1).strip() if units_match else ""
+                    if units_match:
+                        line_without_units = spec_line[:units_match.start()]
+                    else:
+                        line_without_units = spec_line
+                    spec_parts = line_without_units.split()
+                    if len(spec_parts) >= 1:
+                        spec_name = spec_parts[0]
+                        specs[spec_name] = LevelSpec(units=units)
+                    i += 1
+                continue
+            if stripped.startswith("DPSPINS "):
+                pin_name = stripped.split(None, 1)[1].strip()
+                dpspins[pin_name] = self.parse_dpspins(i)
+                i += 1
+                continue
+            if stripped.startswith("LEVELSET "):
+                levelset_parts = stripped.split(None, 2)
+                if len(levelset_parts) >= 2:
+                    try:
+                        levelset_index = int(levelset_parts[1])
+                    except ValueError:
+                        levelset_index = 0
+                else:
+                    levelset_index = 0
+                levelsets[levelset_index] = self.parse_levelset(i)
+                i += 1
+                continue
+            i += 1
+
+        return EqnSetBlock(
+            eqnset_index=eqnset_index,
+            eqnset_name=eqnset_name,
+            specs=specs,
+            dpspins=dpspins,
+            levelsets=levelsets,
+        )
+
 
 @dataclass
 class SuiteConfigView:
@@ -299,6 +544,7 @@ class SuiteConfigView:
     timing_snippet: Optional[str]
     level_snippet: Optional[str]
     level_specs: Optional[Dict[str, LevelSpec]]
+    eqnset_block: Optional[EqnSetBlock] = None
 
 
 def build_suite_views(
@@ -400,6 +646,13 @@ def build_suite_views(
             if spec_idx is not None:
                 level_specs = level_loader.parse_specs(spec_idx)
 
+        # Parse EQNSET block (DPSPINS + LEVELSET from EQSP LEV,EQN region)
+        eqnset_block: Optional[EqnSetBlock] = None
+        if level_loader and level_eqn is not None:
+            eqn_idx = level_loader.lookup_eqnset(level_eqn)
+            if eqn_idx is not None:
+                eqnset_block = level_loader.parse_eqnset_block(eqn_idx)
+
         views[suite_name] = SuiteConfigView(
             suite_name=suite_name,
             flow_config=cfg,
@@ -410,6 +663,7 @@ def build_suite_views(
             timing_snippet=timing_snippet,
             level_snippet=level_snippet,
             level_specs=level_specs,
+            eqnset_block=eqnset_block,
         )
 
     return views
@@ -453,4 +707,87 @@ def diff_level_specs(
         added=added,
         removed=removed,
         changed=changed,
+    )
+
+
+def _diff_levelset_pins(
+    old_pins: Dict[str, LevelSetPinConfig],
+    new_pins: Dict[str, LevelSetPinConfig],
+) -> Dict[str, Tuple[LevelSetPinConfig, LevelSetPinConfig]]:
+    """Compare PINS groups within a single LEVELSET."""
+    return {
+        name: (old_pins[name], new_pins[name])
+        for name in set(old_pins.keys()) & set(new_pins.keys())
+        if old_pins[name] != new_pins[name]
+    }
+
+
+def diff_eqnset_blocks(
+    suite_name: str,
+    old_block: Optional[EqnSetBlock],
+    new_block: Optional[EqnSetBlock],
+) -> Optional[EqnSetDiff]:
+    """Compute EQNSET block differences between two program versions."""
+    if old_block is None and new_block is None:
+        return None
+
+    if old_block is None:
+        return EqnSetDiff(
+            suite_name=suite_name,
+            eqnset_index=new_block.eqnset_index if new_block else 0,
+            eqnset_name=new_block.eqnset_name if new_block else "",
+            dpspins_added=new_block.dpspins if new_block else {},
+            levelsets_added=new_block.levelsets if new_block else {},
+        )
+
+    if new_block is None:
+        return EqnSetDiff(
+            suite_name=suite_name,
+            eqnset_index=old_block.eqnset_index,
+            eqnset_name=old_block.eqnset_name,
+            dpspins_removed=old_block.dpspins,
+            levelsets_removed=old_block.levelsets,
+        )
+
+    # DPSPINS diff
+    old_dps_keys = set(old_block.dpspins.keys())
+    new_dps_keys = set(new_block.dpspins.keys())
+    dpspins_added = {k: new_block.dpspins[k] for k in new_dps_keys - old_dps_keys}
+    dpspins_removed = {k: old_block.dpspins[k] for k in old_dps_keys - new_dps_keys}
+    dpspins_changed = {
+        k: (old_block.dpspins[k], new_block.dpspins[k])
+        for k in old_dps_keys & new_dps_keys
+        if old_block.dpspins[k] != new_block.dpspins[k]
+    }
+
+    # LEVELSET diff
+    old_ls_keys = set(old_block.levelsets.keys())
+    new_ls_keys = set(new_block.levelsets.keys())
+    levelsets_added = {k: new_block.levelsets[k] for k in new_ls_keys - old_ls_keys}
+    levelsets_removed = {k: old_block.levelsets[k] for k in old_ls_keys - new_ls_keys}
+    levelsets_changed: Dict[int, Dict[str, Tuple[LevelSetPinConfig, LevelSetPinConfig]]] = {}
+    for k in old_ls_keys & new_ls_keys:
+        old_pins = old_block.levelsets[k]
+        new_pins = new_block.levelsets[k]
+        pin_diff = _diff_levelset_pins(old_pins, new_pins)
+        # Also include added/removed pins within the same levelset as changed
+        old_pin_keys = set(old_pins.keys())
+        new_pin_keys = set(new_pins.keys())
+        for pk in new_pin_keys - old_pin_keys:
+            pin_diff[pk] = (LevelSetPinConfig(), new_pins[pk])
+        for pk in old_pin_keys - new_pin_keys:
+            pin_diff[pk] = (old_pins[pk], LevelSetPinConfig())
+        if pin_diff:
+            levelsets_changed[k] = pin_diff
+
+    return EqnSetDiff(
+        suite_name=suite_name,
+        eqnset_index=old_block.eqnset_index,
+        eqnset_name=old_block.eqnset_name,
+        dpspins_added=dpspins_added,
+        dpspins_removed=dpspins_removed,
+        dpspins_changed=dpspins_changed,
+        levelsets_added=levelsets_added,
+        levelsets_removed=levelsets_removed,
+        levelsets_changed=levelsets_changed,
     )

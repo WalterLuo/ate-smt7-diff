@@ -16,9 +16,11 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
 from program_loader import (
+    EqnSetDiff,
     LevelSpecDiff,
     SuiteConfigView,
     build_suite_views,
+    diff_eqnset_blocks,
     diff_level_specs,
 )
 from suite_config import (
@@ -69,6 +71,7 @@ class DiffReport:
     old_suite_views: Optional[Dict[str, SuiteConfigView]] = None
     new_suite_views: Optional[Dict[str, SuiteConfigView]] = None
     level_spec_diffs: Optional[List[LevelSpecDiff]] = None
+    eqnset_diffs: Optional[List[EqnSetDiff]] = None
 
     @cached_property
     def added(self) -> List[str]:
@@ -461,6 +464,7 @@ def diff_flow_files(
         new_views = build_suite_views(new_path, common_suites)
 
         level_spec_diffs = []
+        eqnset_diffs: List[EqnSetDiff] = []
         for suite_name in sorted(common_suites):
             old_v = old_views.get(suite_name)
             new_v = new_views.get(suite_name)
@@ -468,8 +472,13 @@ def diff_flow_files(
                 diff = diff_level_specs(suite_name, old_v.level_specs, new_v.level_specs)
                 if diff and diff.has_changes:
                     level_spec_diffs.append(diff)
+                eq_diff = diff_eqnset_blocks(suite_name, old_v.eqnset_block, new_v.eqnset_block)
+                if eq_diff and eq_diff.has_changes:
+                    eqnset_diffs.append(eq_diff)
         if not level_spec_diffs:
             level_spec_diffs = None
+        if not eqnset_diffs:
+            eqnset_diffs = None
 
     return DiffReport(
         old_file=old_path,
@@ -481,7 +490,53 @@ def diff_flow_files(
         old_suite_views=old_views,
         new_suite_views=new_views,
         level_spec_diffs=level_spec_diffs,
+        eqnset_diffs=eqnset_diffs,
     )
+
+
+def _dpspin_fields_str(cfg: "DpsPinConfig") -> str:
+    """Format DpsPinConfig fields as a compact string."""
+    parts = [
+        f"vout={cfg.vout}",
+        f"ilimit={cfg.ilimit}",
+        f"t_ms={cfg.t_ms}",
+        f"vout_frc_rng={cfg.vout_frc_rng}",
+        f"iout_clamp_rng={cfg.iout_clamp_rng}",
+        f"offcurr={cfg.offcurr}",
+    ]
+    return ", ".join(parts)
+
+
+def _collect_dpspin_changes(old_c: "DpsPinConfig", new_c: "DpsPinConfig") -> List[str]:
+    """Collect changed fields between two DpsPinConfig objects."""
+    changes = []
+    if old_c.vout != new_c.vout:
+        changes.append(f"vout {old_c.vout} -> {new_c.vout}")
+    if old_c.ilimit != new_c.ilimit:
+        changes.append(f"ilimit {old_c.ilimit} -> {new_c.ilimit}")
+    if old_c.t_ms != new_c.t_ms:
+        changes.append(f"t_ms {old_c.t_ms} -> {new_c.t_ms}")
+    if old_c.vout_frc_rng != new_c.vout_frc_rng:
+        changes.append(f"vout_frc_rng {old_c.vout_frc_rng} -> {new_c.vout_frc_rng}")
+    if old_c.iout_clamp_rng != new_c.iout_clamp_rng:
+        changes.append(f"iout_clamp_rng {old_c.iout_clamp_rng} -> {new_c.iout_clamp_rng}")
+    if old_c.offcurr != new_c.offcurr:
+        changes.append(f"offcurr {old_c.offcurr} -> {new_c.offcurr}")
+    return changes
+
+
+def _collect_levelset_changes(old_c: "LevelSetPinConfig", new_c: "LevelSetPinConfig") -> List[str]:
+    """Collect changed fields between two LevelSetPinConfig objects."""
+    changes = []
+    if old_c.vih != new_c.vih:
+        changes.append(f"vih {old_c.vih} -> {new_c.vih}")
+    if old_c.vil != new_c.vil:
+        changes.append(f"vil {old_c.vil} -> {new_c.vil}")
+    if old_c.voh != new_c.voh:
+        changes.append(f"voh {old_c.voh} -> {new_c.voh}")
+    if old_c.vol != new_c.vol:
+        changes.append(f"vol {old_c.vol} -> {new_c.vol}")
+    return changes
 
 
 def format_console(report: DiffReport) -> str:
@@ -608,6 +663,60 @@ def format_console(report: DiffReport) -> str:
                         changes.append(f"comment {old_s.comment} -> {new_s.comment}")
                     lines.append(f"    ~ {name}: {', '.join(changes)}")
 
+    if report.eqnset_diffs:
+        lines.append("")
+        lines.append("=" * 60)
+        lines.append("EQNSET Diff")
+        lines.append("=" * 60)
+        for diff in report.eqnset_diffs:
+            lines.append(f"{diff.suite_name} (EQNSET {diff.eqnset_index} \"{diff.eqnset_name}\"):")
+            if diff.dpspins_added:
+                lines.append("  DPSPINS Added:")
+                for name, cfg in diff.dpspins_added.items():
+                    lines.append(f"    + {name}: {_dpspin_fields_str(cfg)}")
+            if diff.dpspins_removed:
+                lines.append("  DPSPINS Removed:")
+                for name, cfg in diff.dpspins_removed.items():
+                    lines.append(f"    - {name}: {_dpspin_fields_str(cfg)}")
+            if diff.dpspins_changed:
+                lines.append("  DPSPINS Changed:")
+                for name, (old_c, new_c) in diff.dpspins_changed.items():
+                    changes = _collect_dpspin_changes(old_c, new_c)
+                    lines.append(f"    ~ {name}: {', '.join(changes)}")
+            if diff.levelsets_added:
+                lines.append("  LEVELSET Added:")
+                for idx, pins in diff.levelsets_added.items():
+                    lines.append(f"    + LEVELSET {idx}:")
+                    for name, cfg in pins.items():
+                        lines.append(f"      + {name}: vih={cfg.vih}, vil={cfg.vil}, voh={cfg.voh}, vol={cfg.vol}")
+            if diff.levelsets_removed:
+                lines.append("  LEVELSET Removed:")
+                for idx, pins in diff.levelsets_removed.items():
+                    lines.append(f"    - LEVELSET {idx}:")
+                    for name, cfg in pins.items():
+                        lines.append(f"      - {name}: vih={cfg.vih}, vil={cfg.vil}, voh={cfg.voh}, vol={cfg.vol}")
+            if diff.levelsets_changed:
+                lines.append("  LEVELSET Changed:")
+                for idx, pins in diff.levelsets_changed.items():
+                    lines.append(f"    ~ LEVELSET {idx}:")
+                    for name, (old_c, new_c) in pins.items():
+                        changes = _collect_levelset_changes(old_c, new_c)
+                        is_new = not old_c.vih and not old_c.vil and not old_c.voh and not old_c.vol
+                        is_removed = not new_c.vih and not new_c.vil and not new_c.voh and not new_c.vol
+                        if changes:
+                            marker = "~"
+                        elif is_new:
+                            marker = "+"
+                        elif is_removed:
+                            marker = "-"
+                        else:
+                            marker = "~"
+                        if changes:
+                            detail = ", ".join(changes)
+                        else:
+                            detail = f"vih={new_c.vih}, vil={new_c.vil}, voh={new_c.voh}, vol={new_c.vol}"
+                        lines.append(f"      {marker} {name}: {detail}")
+
     return "\n".join(lines)
 
 
@@ -701,6 +810,76 @@ def format_markdown(report: DiffReport) -> str:
                     if old_s.comment != new_s.comment:
                         lines.append(f"| `{name}` | comment | `{old_s.comment}` | `{new_s.comment}` |")
 
+    if report.eqnset_diffs:
+        lines.append("")
+        lines.append("## EQNSET Diff")
+        lines.append("")
+        for diff in report.eqnset_diffs:
+            lines.append(f"### {diff.suite_name} (EQNSET {diff.eqnset_index} \"{diff.eqnset_name}\")")
+            if diff.dpspins_added or diff.dpspins_removed or diff.dpspins_changed:
+                lines.append("")
+                lines.append("#### DPSPINS")
+                lines.append("")
+                if diff.dpspins_added:
+                    lines.append("**Added:**")
+                    for name, cfg in diff.dpspins_added.items():
+                        lines.append(f"- `{name}`: vout={cfg.vout}, ilimit={cfg.ilimit}, t_ms={cfg.t_ms}, vout_frc_rng={cfg.vout_frc_rng}, iout_clamp_rng={cfg.iout_clamp_rng}, offcurr={cfg.offcurr}")
+                    lines.append("")
+                if diff.dpspins_removed:
+                    lines.append("**Removed:**")
+                    for name, cfg in diff.dpspins_removed.items():
+                        lines.append(f"- ~~`{name}`: vout={cfg.vout}, ilimit={cfg.ilimit}, t_ms={cfg.t_ms}, vout_frc_rng={cfg.vout_frc_rng}, iout_clamp_rng={cfg.iout_clamp_rng}, offcurr={cfg.offcurr}~~")
+                    lines.append("")
+                if diff.dpspins_changed:
+                    lines.append("**Changed:**")
+                    lines.append("| Pin | Field | Old | New |")
+                    lines.append("|-----|-------|-----|-----|")
+                    for name, (old_c, new_c) in diff.dpspins_changed.items():
+                        if old_c.vout != new_c.vout:
+                            lines.append(f"| `{name}` | vout | `{old_c.vout}` | `{new_c.vout}` |")
+                        if old_c.ilimit != new_c.ilimit:
+                            lines.append(f"| `{name}` | ilimit | `{old_c.ilimit}` | `{new_c.ilimit}` |")
+                        if old_c.t_ms != new_c.t_ms:
+                            lines.append(f"| `{name}` | t_ms | `{old_c.t_ms}` | `{new_c.t_ms}` |")
+                        if old_c.vout_frc_rng != new_c.vout_frc_rng:
+                            lines.append(f"| `{name}` | vout_frc_rng | `{old_c.vout_frc_rng}` | `{new_c.vout_frc_rng}` |")
+                        if old_c.iout_clamp_rng != new_c.iout_clamp_rng:
+                            lines.append(f"| `{name}` | iout_clamp_rng | `{old_c.iout_clamp_rng}` | `{new_c.iout_clamp_rng}` |")
+                        if old_c.offcurr != new_c.offcurr:
+                            lines.append(f"| `{name}` | offcurr | `{old_c.offcurr}` | `{new_c.offcurr}` |")
+            if diff.levelsets_added or diff.levelsets_removed or diff.levelsets_changed:
+                lines.append("")
+                lines.append("#### LEVELSET")
+                lines.append("")
+                if diff.levelsets_added:
+                    lines.append("**Added:**")
+                    for idx, pins in diff.levelsets_added.items():
+                        lines.append(f"- LEVELSET {idx}:")
+                        for name, cfg in pins.items():
+                            lines.append(f"  - `{name}`: vih={cfg.vih}, vil={cfg.vil}, voh={cfg.voh}, vol={cfg.vol}")
+                    lines.append("")
+                if diff.levelsets_removed:
+                    lines.append("**Removed:**")
+                    for idx, pins in diff.levelsets_removed.items():
+                        lines.append(f"- LEVELSET {idx}:")
+                        for name, cfg in pins.items():
+                            lines.append(f"  - ~~`{name}`: vih={cfg.vih}, vil={cfg.vil}, voh={cfg.voh}, vol={cfg.vol}~~")
+                    lines.append("")
+                if diff.levelsets_changed:
+                    lines.append("**Changed:**")
+                    lines.append("| LEVELSET | PINS | Field | Old | New |")
+                    lines.append("|----------|------|-------|-----|-----|")
+                    for idx, pins in diff.levelsets_changed.items():
+                        for name, (old_c, new_c) in pins.items():
+                            if old_c.vih != new_c.vih:
+                                lines.append(f"| {idx} | `{name}` | vih | `{old_c.vih}` | `{new_c.vih}` |")
+                            if old_c.vil != new_c.vil:
+                                lines.append(f"| {idx} | `{name}` | vil | `{old_c.vil}` | `{new_c.vil}` |")
+                            if old_c.voh != new_c.voh:
+                                lines.append(f"| {idx} | `{name}` | voh | `{old_c.voh}` | `{new_c.voh}` |")
+                            if old_c.vol != new_c.vol:
+                                lines.append(f"| {idx} | `{name}` | vol | `{old_c.vol}` | `{new_c.vol}` |")
+
     return "\n".join(lines)
 
 
@@ -786,6 +965,107 @@ def format_json(report: DiffReport) -> str:
                 },
             }
             for diff in report.level_spec_diffs
+        ]
+
+    if report.eqnset_diffs:
+        result["eqnset_diff"] = [
+            {
+                "suite_name": diff.suite_name,
+                "eqnset_index": diff.eqnset_index,
+                "eqnset_name": diff.eqnset_name,
+                "dpspins": {
+                    "added": {
+                        name: {
+                            "vout": cfg.vout,
+                            "ilimit": cfg.ilimit,
+                            "t_ms": cfg.t_ms,
+                            "vout_frc_rng": cfg.vout_frc_rng,
+                            "iout_clamp_rng": cfg.iout_clamp_rng,
+                            "offcurr": cfg.offcurr,
+                        }
+                        for name, cfg in diff.dpspins_added.items()
+                    },
+                    "removed": {
+                        name: {
+                            "vout": cfg.vout,
+                            "ilimit": cfg.ilimit,
+                            "t_ms": cfg.t_ms,
+                            "vout_frc_rng": cfg.vout_frc_rng,
+                            "iout_clamp_rng": cfg.iout_clamp_rng,
+                            "offcurr": cfg.offcurr,
+                        }
+                        for name, cfg in diff.dpspins_removed.items()
+                    },
+                    "changed": {
+                        name: {
+                            "old": {
+                                "vout": old_c.vout,
+                                "ilimit": old_c.ilimit,
+                                "t_ms": old_c.t_ms,
+                                "vout_frc_rng": old_c.vout_frc_rng,
+                                "iout_clamp_rng": old_c.iout_clamp_rng,
+                                "offcurr": old_c.offcurr,
+                            },
+                            "new": {
+                                "vout": new_c.vout,
+                                "ilimit": new_c.ilimit,
+                                "t_ms": new_c.t_ms,
+                                "vout_frc_rng": new_c.vout_frc_rng,
+                                "iout_clamp_rng": new_c.iout_clamp_rng,
+                                "offcurr": new_c.offcurr,
+                            },
+                        }
+                        for name, (old_c, new_c) in diff.dpspins_changed.items()
+                    },
+                },
+                "levelsets": {
+                    "added": {
+                        str(idx): {
+                            name: {
+                                "vih": cfg.vih,
+                                "vil": cfg.vil,
+                                "voh": cfg.voh,
+                                "vol": cfg.vol,
+                            }
+                            for name, cfg in pins.items()
+                        }
+                        for idx, pins in diff.levelsets_added.items()
+                    },
+                    "removed": {
+                        str(idx): {
+                            name: {
+                                "vih": cfg.vih,
+                                "vil": cfg.vil,
+                                "voh": cfg.voh,
+                                "vol": cfg.vol,
+                            }
+                            for name, cfg in pins.items()
+                        }
+                        for idx, pins in diff.levelsets_removed.items()
+                    },
+                    "changed": {
+                        str(idx): {
+                            name: {
+                                "old": {
+                                    "vih": old_c.vih,
+                                    "vil": old_c.vil,
+                                    "voh": old_c.voh,
+                                    "vol": old_c.vol,
+                                },
+                                "new": {
+                                    "vih": new_c.vih,
+                                    "vil": new_c.vil,
+                                    "voh": new_c.voh,
+                                    "vol": new_c.vol,
+                                },
+                            }
+                            for name, (old_c, new_c) in pins.items()
+                        }
+                        for idx, pins in diff.levelsets_changed.items()
+                    },
+                },
+            }
+            for diff in report.eqnset_diffs
         ]
 
     return json.dumps(result, indent=2, ensure_ascii=False)
