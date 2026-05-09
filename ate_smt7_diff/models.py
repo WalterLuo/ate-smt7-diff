@@ -296,10 +296,15 @@ class TimingSpecDiff:
     added: Dict[str, TimingSpec] = field(default_factory=dict)
     removed: Dict[str, TimingSpec] = field(default_factory=dict)
     changed: Dict[str, Tuple[TimingSpec, TimingSpec]] = field(default_factory=dict)
+    eqnsets_old: Tuple[Tuple[int, str], ...] = ()
+    eqnsets_new: Tuple[Tuple[int, str], ...] = ()
 
     @property
     def has_changes(self) -> bool:
-        return bool(self.added or self.removed or self.changed)
+        return bool(
+            self.added or self.removed or self.changed
+            or self.eqnsets_old or self.eqnsets_new
+        )
 
 
 @dataclass(frozen=True)
@@ -395,3 +400,5 @@ class SuiteConfigView:
     timing_spec_index: Optional[int] = None
     timing_specs: Optional[Dict[str, TimingSpec]] = None
     timing_eqnset_block: Optional[TimingEqnSetBlock] = None
+    timing_spec_eqnsets: Optional[List[Tuple[int, str]]] = None
+    timing_eqnset_blocks: Dict[int, TimingEqnSetBlock] = field(default_factory=dict)

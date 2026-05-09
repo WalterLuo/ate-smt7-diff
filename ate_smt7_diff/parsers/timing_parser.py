@@ -64,8 +64,8 @@ class TimingLoader:
                 if name:
                     self.specifications[name] = i
 
-            # EQSP TIM,SPS region entry
-            elif stripped.startswith("EQSP TIM,SPS"):
+            # EQSP TIM,EQN / EQSP TIM,SPS region entry
+            elif stripped.startswith("EQSP TIM,EQN") or stripped.startswith("EQSP TIM,SPS"):
                 in_eqsp_tim = True
                 current_eqn = None
 
@@ -74,7 +74,7 @@ class TimingLoader:
                 in_eqsp_tim = False
                 current_eqn = None
 
-            # EQNSET within EQSP TIM,SPS
+            # EQNSET within EQSP TIM,EQN or EQSP TIM,SPS
             elif in_eqsp_tim and stripped.startswith("EQNSET "):
                 parts = stripped.split(None, 2)
                 if len(parts) >= 2:
@@ -83,7 +83,9 @@ class TimingLoader:
                     except ValueError:
                         continue
                     current_eqn = idx
-                    self.eqsp_tim_eqnsets[idx] = i
+                    # Prefer EQSP TIM,EQN over EQSP TIM,SPS (don't overwrite)
+                    if idx not in self.eqsp_tim_eqnsets:
+                        self.eqsp_tim_eqnsets[idx] = i
 
             # SPECSET within EQSP TIM,SPS
             elif in_eqsp_tim and stripped.startswith("SPECSET ") and current_eqn is not None:

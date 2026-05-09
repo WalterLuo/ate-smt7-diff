@@ -144,14 +144,22 @@ def _extract_timing_data(
     timing_spec: Optional[str],
     timing_eqn: Optional[int],
     timing_timset: Optional[str],
-) -> Tuple[Optional[str], Optional[Dict[str, TimingSpec]], Optional[TimingEqnSetBlock]]:
-    """Extract timing snippet, specs, and EQNSET block."""
+) -> Tuple[
+    Optional[str],
+    Optional[Dict[str, TimingSpec]],
+    Optional[TimingEqnSetBlock],
+    Optional[List[Tuple[int, str]]],
+    Dict[int, TimingEqnSetBlock],
+]:
+    """Extract timing snippet, specs, EQNSET block, and port-spec EQNSET refs."""
     if not timing_loader or not timing_spec:
-        return None, None, None
+        return None, None, None, None, {}
 
     timing_snippet: Optional[str] = None
     timing_specs: Optional[Dict[str, TimingSpec]] = None
     timing_eqnset_block: Optional[TimingEqnSetBlock] = None
+    timing_spec_eqnsets: Optional[List[Tuple[int, str]]] = None
+    timing_eqnset_blocks: Dict[int, TimingEqnSetBlock] = {}
 
     is_port_spec = timing_eqn is None
 
@@ -160,22 +168,15 @@ def _extract_timing_data(
         if spec_idx is not None:
             timing_snippet = timing_loader.extract_snippet(spec_idx)
             timing_specs = timing_loader.parse_specification_specs(spec_idx)
-            # Try to resolve EQNSET from SPECIFICATION block for full EQNSET diff
-            eqnset_idx = None
-            if timing_timset:
-                # override_timset like "1,1" -> first number is EQNSET index
-                try:
-                    eqnset_idx = int(timing_timset.split(",")[0])
-                except (ValueError, IndexError):
-                    pass
-            if eqnset_idx is None:
-                eqnset_idx = timing_loader.parse_specification_eqnset_index(spec_idx)
-            if eqnset_idx is not None:
-                timing_eqnset_block = timing_loader.parse_eqsp_eqnset_block(
-                    timing_loader.lookup_eqsp_eqnset(eqnset_idx) or 0
-                )
-                if timing_eqnset_block:
-                    timing_specs = timing_eqnset_block.specs
+            # Extract ALL EQNSET references from SPECIFICATION block
+            timing_spec_eqnsets = timing_loader.parse_specification_all_eqnsets(spec_idx)
+            # Load full EQNSET blocks for each referenced EQNSET
+            for eq_idx, _eq_name in timing_spec_eqnsets:
+                eqnset_line = timing_loader.lookup_eqsp_eqnset(eq_idx)
+                if eqnset_line is not None:
+                    block = timing_loader.parse_eqsp_eqnset_block(eqnset_line)
+                    if block is not None:
+                        timing_eqnset_blocks[eq_idx] = block
         else:
             spec_idx = timing_loader.lookup_spec_set(timing_spec)
             if spec_idx is not None:
@@ -188,7 +189,7 @@ def _extract_timing_data(
             if timing_eqnset_block:
                 timing_specs = timing_eqnset_block.specs
 
-    return timing_snippet, timing_specs, timing_eqnset_block
+    return timing_snippet, timing_specs, timing_eqnset_block, timing_spec_eqnsets, timing_eqnset_blocks
 
 
 def _extract_level_data(
@@ -255,9 +256,13 @@ def build_suite_views(
         timing_spec, timing_eqn, timing_spec_idx, timing_timset = _resolve_timing_config(cfg, suite_name)
         level_eqn, level_spec, level_levset = _resolve_level_config(cfg, suite_name)
 
-        timing_snippet, timing_specs, timing_eqnset_block = _extract_timing_data(
-            timing_loader, timing_spec, timing_eqn, timing_timset
-        )
+        (
+            timing_snippet,
+            timing_specs,
+            timing_eqnset_block,
+            timing_spec_eqnsets,
+            timing_eqnset_blocks,
+        ) = _extract_timing_data(timing_loader, timing_spec, timing_eqn, timing_timset)
         level_snippet, level_specs, eqnset_block = _extract_level_data(
             level_loader, level_eqn, level_spec
         )
@@ -277,6 +282,8 @@ def build_suite_views(
             eqnset_block=eqnset_block,
             timing_specs=timing_specs,
             timing_eqnset_block=timing_eqnset_block,
+            timing_spec_eqnsets=timing_spec_eqnsets,
+            timing_eqnset_blocks=timing_eqnset_blocks,
         )
 
     return views
@@ -346,15 +353,46 @@ def diff_flow_files(
 
                 if old_v.timing_eqn_set is None and new_v.timing_eqn_set is None:
                     spec_name = old_v.timing_spec_set or new_v.timing_spec_set or ""
-                    tim_diff = diff_timing_specs(
+
+                    # 1. Diff SPECIFICATION-level specs
+                    spec_diff = diff_timing_specs(
                         suite_name=suite_name,
                         spec_type="port",
                         spec_name=spec_name,
                         old_specs=old_v.timing_specs,
                         new_specs=new_v.timing_specs,
                     )
-                    if tim_diff and tim_diff.has_changes:
-                        timing_spec_diffs.append(tim_diff)
+
+                    # 2. Compare EQNSET references from SPECIFICATION block
+                    old_eqnsets = tuple(old_v.timing_spec_eqnsets or [])
+                    new_eqnsets = tuple(new_v.timing_spec_eqnsets or [])
+                    if old_eqnsets != new_eqnsets:
+                        spec_diff = TimingSpecDiff(
+                            suite_name=suite_name,
+                            spec_type="port",
+                            spec_name=spec_name,
+                            added=spec_diff.added if spec_diff else {},
+                            removed=spec_diff.removed if spec_diff else {},
+                            changed=spec_diff.changed if spec_diff else {},
+                            eqnsets_old=old_eqnsets,
+                            eqnsets_new=new_eqnsets,
+                        )
+
+                    if spec_diff and spec_diff.has_changes:
+                        timing_spec_diffs.append(spec_diff)
+
+                    # 3. If EQNSET refs match, do detailed block diff for each
+                    if old_eqnsets == new_eqnsets:
+                        for eq_idx, _eq_name in old_eqnsets:
+                            old_block = old_v.timing_eqnset_blocks.get(eq_idx)
+                            new_block = new_v.timing_eqnset_blocks.get(eq_idx)
+                            te_diff = diff_timing_eqnset_blocks_full(
+                                suite_name=suite_name,
+                                old_block=old_block,
+                                new_block=new_block,
+                            )
+                            if te_diff and te_diff.has_changes:
+                                timing_eqnset_diffs.append(te_diff)
                 else:
                     tim_diff = diff_timing_eqnset_blocks(
                         suite_name=suite_name,
@@ -364,14 +402,13 @@ def diff_flow_files(
                     if tim_diff and tim_diff.has_changes:
                         timing_spec_diffs.append(tim_diff)
 
-                # Full EQNSET block diff (new)
-                te_diff = diff_timing_eqnset_blocks_full(
-                    suite_name=suite_name,
-                    old_block=old_v.timing_eqnset_block,
-                    new_block=new_v.timing_eqnset_block,
-                )
-                if te_diff and te_diff.has_changes:
-                    timing_eqnset_diffs.append(te_diff)
+                    te_diff = diff_timing_eqnset_blocks_full(
+                        suite_name=suite_name,
+                        old_block=old_v.timing_eqnset_block,
+                        new_block=new_v.timing_eqnset_block,
+                    )
+                    if te_diff and te_diff.has_changes:
+                        timing_eqnset_diffs.append(te_diff)
         if not level_spec_diffs:
             level_spec_diffs = None
         if not eqnset_diffs:

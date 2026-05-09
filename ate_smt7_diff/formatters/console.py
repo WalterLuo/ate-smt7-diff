@@ -3,7 +3,7 @@
 Console formatter for diff reports.
 """
 
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from ate_smt7_diff.models import (
     DiffReport,
@@ -23,6 +23,15 @@ from ate_smt7_diff.models import (
 def _fmt_val(val: str) -> str:
     """Format a value, showing 'removed' when empty."""
     return val if val else "removed"
+
+
+def _truncate_name(name: str, max_len: int = 60) -> str:
+    """Truncate a long pin group name for compact display."""
+    if len(name) <= max_len:
+        return name
+    head = name[:30]
+    tail = name[-25:]
+    return f"{head}...{tail}"
 
 
 def _dpspin_fields_str(cfg: DpsPinConfig) -> str:
@@ -140,6 +149,40 @@ def _timing_pin_fields_str(cfg: TimingPinConfig) -> str:
     return ", ".join(f"{k}={v}" for k, v in fields.items())
 
 
+def _match_pin_list_changes(
+    pins_added: Dict[str, TimingPinConfig],
+    pins_removed: Dict[str, TimingPinConfig],
+) -> Tuple[List[Tuple[str, str, str]], Dict[str, TimingPinConfig], Dict[str, TimingPinConfig]]:
+    """Match added/removed PINS groups with identical edge values.
+
+    Returns (matched, remaining_added, remaining_removed) where matched
+    is a list of (old_name, new_name, delta_str).
+    """
+    matched: List[Tuple[str, str, str]] = []
+    remaining_added = dict(pins_added)
+    remaining_removed = dict(pins_removed)
+
+    for r_name, r_cfg in list(remaining_removed.items()):
+        for a_name, a_cfg in list(remaining_added.items()):
+            if r_cfg == a_cfg:
+                old_pins = set(r_name.split())
+                new_pins = set(a_name.split())
+                removed_pins = sorted(old_pins - new_pins)
+                added_pins = sorted(new_pins - old_pins)
+                parts = []
+                if removed_pins:
+                    parts.append(f"Removed {', '.join(removed_pins)}")
+                if added_pins:
+                    parts.append(f"Added {', '.join(added_pins)}")
+                delta_str = "; ".join(parts)
+                matched.append((r_name, a_name, delta_str))
+                del remaining_added[a_name]
+                del remaining_removed[r_name]
+                break
+
+    return matched, remaining_added, remaining_removed
+
+
 def _collect_timing_pin_changes(old_c: TimingPinConfig, new_c: TimingPinConfig) -> List[str]:
     """Collect changed fields between two TimingPinConfig objects."""
     old_fields = old_c.all_fields()
@@ -189,19 +232,30 @@ def _format_timing_eqnset_console(diff: TimingEqnSetDiff) -> List[str]:
             if old_s.comment != new_s.comment:
                 changes.append(f"comment {old_s.comment} -> {_fmt_val(new_s.comment)}")
             lines.append(f"    ~ {name}: {', '.join(changes)}")
-    if diff.pins_added:
+    matched, rem_added, rem_removed = _match_pin_list_changes(diff.pins_added, diff.pins_removed)
+    if matched:
+        lines.append("  PINS Modified:")
+        for old_name, _new_name, delta in matched:
+            lines.append(f"    ~ {_truncate_name(old_name)} -> {delta}")
+    if rem_added:
         lines.append("  PINS Added:")
-        for name, cfg in diff.pins_added.items():
-            lines.append(f"    + {name}: {_timing_pin_fields_str(cfg)}")
-    if diff.pins_removed:
+        for name, cfg in rem_added.items():
+            lines.append(f"    + {_truncate_name(name)}: {_timing_pin_fields_str(cfg)}")
+    if rem_removed:
         lines.append("  PINS Removed:")
-        for name, cfg in diff.pins_removed.items():
-            lines.append(f"    - {name}: {_timing_pin_fields_str(cfg)}")
+        for name, cfg in rem_removed.items():
+            lines.append(f"    - {_truncate_name(name)}: {_timing_pin_fields_str(cfg)}")
     if diff.pins_changed:
-        lines.append("  PINS Changed:")
+        lines.append("  Edge Changed:")
         for name, (old_c, new_c) in diff.pins_changed.items():
             changes = _collect_timing_pin_changes(old_c, new_c)
-            lines.append(f"    ~ {name}: {', '.join(changes)}")
+            display_name = _truncate_name(name)
+            if len(changes) == 1:
+                lines.append(f"    ~ {display_name}: {changes[0]}")
+            else:
+                lines.append(f"    ~ {display_name}:")
+                for ch in changes:
+                    lines.append(f"      ~ {ch}")
     if diff.timingsets_added:
         lines.append("  TIMINGSET Added:")
         for idx, cfg in diff.timingsets_added.items():
@@ -222,6 +276,12 @@ def _format_timing_spec_console(diff: TimingSpecDiff) -> List[str]:
     """Format a single TimingSpecDiff as console lines."""
     lines = []
     lines.append(f"{diff.suite_name} ({diff.spec_type} spec \"{diff.spec_name}\"):")
+    if diff.eqnsets_old or diff.eqnsets_new:
+        lines.append("  EQNSET references changed:")
+        old_str = ", ".join(f'{idx} "{name}"' for idx, name in diff.eqnsets_old) if diff.eqnsets_old else "(none)"
+        new_str = ", ".join(f'{idx} "{name}"' for idx, name in diff.eqnsets_new) if diff.eqnsets_new else "(none)"
+        lines.append(f"    old: {old_str}")
+        lines.append(f"    new: {new_str}")
     if diff.added:
         lines.append("  Added:")
         for name, spec in diff.added.items():

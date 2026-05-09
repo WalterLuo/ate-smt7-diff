@@ -1418,9 +1418,9 @@ SYNC
 # SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT
 per_40           100                                                [ ns] 
 
-EQNSET 13 "SCAN_XSDS"
-WAVETBL "SCAN_XSDS"
-PORT SCAN_XSDS
+EQNSET 12 "SCAN_SWITCH"
+WAVETBL "SCAN_SWITCH"
+PORT SCAN_SWITCH
 SYNC
 {
 }

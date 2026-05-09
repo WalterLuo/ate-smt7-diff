@@ -173,11 +173,6 @@ def diff_timing_eqnset_blocks_full(
     pins_added = {k: new_block.pins_groups[k] for k in new_pin_keys - old_pin_keys}
     pins_removed = {k: old_block.pins_groups[k] for k in old_pin_keys - new_pin_keys}
     pins_changed = _diff_pins_group(old_block.pins_groups, new_block.pins_groups)
-    # Include added/removed pins within same group name as changed
-    for pk in new_pin_keys - old_pin_keys:
-        pins_changed[pk] = (TimingPinConfig(), new_block.pins_groups[pk])
-    for pk in old_pin_keys - new_pin_keys:
-        pins_changed[pk] = (old_block.pins_groups[pk], TimingPinConfig())
 
     # TIMINGSET diff
     old_ts_keys = set(old_block.timingsets.keys())
