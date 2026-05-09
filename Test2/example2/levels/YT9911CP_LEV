@@ -974,7 +974,6 @@ vout = D0V9_G2		 # [V]
 ilimit = 800		 # [mA]
 t_ms = 5			 # [ms]
 vout_frc_rng = 2	 # [v]
-iout_clamp_rng = 800 # [mA]
 offcurr = act
 
 
@@ -983,7 +982,6 @@ PINS NO_MDIO
 vih = VIH
 vil = VIL
 voh = VOH
-vol = VOL
 
 PINS GPIOA_1 GPIOA_2 # MDC MDIO
 vih = VIH

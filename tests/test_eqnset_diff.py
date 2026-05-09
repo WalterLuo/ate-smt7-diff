@@ -2,14 +2,14 @@
 """Tests for EQNSET block parsing and diff functionality."""
 
 import unittest
-from program_loader import (
+from ate_smt7_diff.models import (
     DpsPinConfig,
     EqnSetBlock,
     EqnSetDiff,
-    LevelLoader,
     LevelSetPinConfig,
-    diff_eqnset_blocks,
 )
+from ate_smt7_diff.parsers.level_parser import LevelLoader
+from ate_smt7_diff.diff.level_diff import diff_eqnset_blocks
 
 
 class TestParseDpsPins(unittest.TestCase):

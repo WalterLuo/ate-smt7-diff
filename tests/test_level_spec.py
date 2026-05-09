@@ -2,7 +2,9 @@
 """Tests for level spec parsing and diff functionality."""
 
 import unittest
-from program_loader import LevelSpec, LevelSpecDiff, LevelLoader, diff_level_specs
+from ate_smt7_diff.models import LevelSpec, LevelSpecDiff
+from ate_smt7_diff.parsers.level_parser import LevelLoader
+from ate_smt7_diff.diff.level_diff import diff_level_specs
 
 
 class TestParseSpecs(unittest.TestCase):
