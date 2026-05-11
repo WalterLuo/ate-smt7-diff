@@ -15,6 +15,7 @@ from ate_smt7_diff.models import (
     TimingEqnSetBlock,
     TimingEqnSetDiff,
     TimingSpecDiff,
+    VectorSuiteDiff,
     WaveTblDiff,
 )
 
@@ -435,6 +436,60 @@ def _format_testtable_markdown(diff: TestTableSuiteDiff) -> List[str]:
     return lines
 
 
+def _format_vector_markdown(diff: VectorSuiteDiff) -> List[str]:
+    """Format a single VectorSuiteDiff as Markdown lines."""
+    lines = []
+    if diff.diff_type == "added":
+        lines.append(f"### {diff.suite_name}: Pattern Added")
+        if diff.new_mappings:
+            lines.append("")
+            lines.append("**Mappings:**")
+            for m in diff.new_mappings:
+                if m.is_direct:
+                    lines.append(f"- `{m.pattern_name}`")
+                else:
+                    lines.append(f"- `{m.pattern_name}` -> `{m.mapped_file}`")
+    elif diff.diff_type == "removed":
+        lines.append(f"### {diff.suite_name}: Pattern Removed")
+        if diff.old_mappings:
+            lines.append("")
+            lines.append("**Mappings:**")
+            for m in diff.old_mappings:
+                if m.is_direct:
+                    lines.append(f"- ~~`{m.pattern_name}`~~")
+                else:
+                    lines.append(f"- ~~`{m.pattern_name}` -> `{m.mapped_file}`~~")
+    elif diff.diff_type == "changed":
+        lines.append(f"### {diff.suite_name}: Pattern Mapping Changed")
+        if diff.old_mappings:
+            lines.append("")
+            lines.append("**Old Mappings:**")
+            for m in diff.old_mappings:
+                if m.is_direct:
+                    lines.append(f"- ~~`{m.pattern_name}`~~")
+                else:
+                    lines.append(f"- ~~`{m.pattern_name}` -> `{m.mapped_file}`~~")
+        if diff.new_mappings:
+            lines.append("")
+            lines.append("**New Mappings:**")
+            for m in diff.new_mappings:
+                if m.is_direct:
+                    lines.append(f"- `{m.pattern_name}`")
+                else:
+                    lines.append(f"- `{m.pattern_name}` -> `{m.mapped_file}`")
+    elif diff.diff_type == "file_date_changed":
+        lines.append(f"### {diff.suite_name}: Pattern File Date Changed")
+        if diff.file_date_changes:
+            lines.append("")
+            lines.append("| File | Old mtime | New mtime |")
+            lines.append("|------|-----------|-----------|")
+            for fc in diff.file_date_changes:
+                lines.append(
+                    f"| `{fc.file_path}` | `{fc.old_mtime}` | `{fc.new_mtime}` |"
+                )
+    return lines
+
+
 def format_suite_markdown(report: SuiteConfigReport) -> str:
     """Format suite config diff as Markdown."""
     lines = []
@@ -578,5 +633,12 @@ def format_markdown(report: DiffReport) -> str:
         lines.append("")
         for diff in report.testtable_diffs:
             lines.extend(_format_testtable_markdown(diff))
+
+    if report.vector_diffs:
+        lines.append("")
+        lines.append("## Vector / Pattern Diff")
+        lines.append("")
+        for diff in report.vector_diffs:
+            lines.extend(_format_vector_markdown(diff))
 
     return "\n".join(lines)

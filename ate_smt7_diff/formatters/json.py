@@ -431,4 +431,37 @@ def format_json(report: DiffReport) -> str:
             for diff in report.testtable_diffs
         ]
 
+    if report.vector_diffs:
+        result["vector_diff"] = [
+            {
+                "suite_name": diff.suite_name,
+                "diff_type": diff.diff_type,
+                "old_mappings": [
+                    {
+                        "pattern_name": m.pattern_name,
+                        "mapped_file": m.mapped_file,
+                        "is_direct": m.is_direct,
+                    }
+                    for m in (diff.old_mappings or ())
+                ],
+                "new_mappings": [
+                    {
+                        "pattern_name": m.pattern_name,
+                        "mapped_file": m.mapped_file,
+                        "is_direct": m.is_direct,
+                    }
+                    for m in (diff.new_mappings or ())
+                ],
+                "file_date_changes": [
+                    {
+                        "file_path": fc.file_path,
+                        "old_mtime": fc.old_mtime,
+                        "new_mtime": fc.new_mtime,
+                    }
+                    for fc in diff.file_date_changes
+                ],
+            }
+            for diff in report.vector_diffs
+        ]
+
     return json.dumps(result, indent=2, ensure_ascii=False)

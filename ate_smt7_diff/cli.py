@@ -31,7 +31,7 @@ def main() -> None:
     parser.add_argument(
         "--load-configs",
         action="store_true",
-        help="Load associated timing/level/pattern/testtable config files"
+        help="Load associated timing/level/vector/testtable config files"
     )
     parser.add_argument(
         "--testtable-diff",
@@ -54,8 +54,8 @@ def main() -> None:
         report = diff_flow_files(
             str(old_path), str(new_path),
             include_suite_diff=args.suite_diff,
-            include_config_views=args.load_configs,
-            include_testtable_diff=args.testtable_diff,
+            include_config_views=args.load_configs or args.testtable_diff,
+            include_testtable_diff=args.load_configs or args.testtable_diff,
         )
     except (FileNotFoundError, PermissionError, ValueError) as e:
         print(f"Error: {e}", file=sys.stderr)

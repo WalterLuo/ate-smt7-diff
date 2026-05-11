@@ -60,6 +60,7 @@ class DiffReport:
     timing_eqnset_diffs: Optional[List["TimingEqnSetDiff"]] = None
     timing_wavetbl_diffs: Optional[List["WaveTblDiff"]] = None
     testtable_diffs: Optional[List["TestTableSuiteDiff"]] = None
+    vector_diffs: Optional[List["VectorSuiteDiff"]] = None
 
     @cached_property
     def added(self) -> List[str]:
@@ -439,6 +440,54 @@ class TestTableSuiteDiff:
         return bool(self.rows_added or self.rows_removed or self.rows_changed)
 
 
+# ---------------------------------------------------------------------------
+# Vector / Pattern models
+# ---------------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class VectorPatternMapping:
+    """A single pattern-to-file mapping from the vector file."""
+    pattern_name: str
+    mapped_file: Optional[str]
+    is_direct: bool
+
+
+@dataclass(frozen=True)
+class VectorSuiteMapping:
+    """Resolved vector mappings for a single suite.
+
+    ``path`` is the absolute resolved directory where mapped files live.
+    """
+    suite_name: str
+    seqlbl: str
+    path: str
+    pattern_mappings: Tuple[VectorPatternMapping, ...] = field(default_factory=tuple)
+
+
+@dataclass(frozen=True)
+class VectorFileDateChange:
+    """A single file whose modification date differs."""
+    file_path: str
+    old_mtime: float
+    new_mtime: float
+
+
+@dataclass(frozen=True)
+class VectorSuiteDiff:
+    """Diff result for vector mappings of a single suite."""
+    suite_name: str
+    diff_type: str
+    old_mappings: Optional[Tuple[VectorPatternMapping, ...]] = None
+    new_mappings: Optional[Tuple[VectorPatternMapping, ...]] = None
+    file_date_changes: Tuple[VectorFileDateChange, ...] = field(default_factory=tuple)
+
+    @property
+    def has_changes(self) -> bool:
+        return bool(
+            self.diff_type in ("changed", "added", "removed", "file_date_changed")
+        )
+
+
 @dataclass(frozen=True)
 class ProgramContext:
     """Parsed context section from a flow file with resolved file paths."""
@@ -512,3 +561,4 @@ class SuiteConfigView:
     timing_wavetbl_names: Tuple[str, ...] = field(default_factory=tuple)
     timing_wavetbl_blocks: Dict[str, WaveTblBlock] = field(default_factory=dict)
     testtable_rows: Optional[Dict[Tuple[str, str, str], "TestTableRow"]] = None
+    vector_mappings: Optional[VectorSuiteMapping] = None

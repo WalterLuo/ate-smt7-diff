@@ -21,6 +21,8 @@ from ate_smt7_diff.models import (
     TimingEqnSetDiff,
     TimingSpec,
     TimingSpecDiff,
+    VectorSuiteDiff,
+    VectorSuiteMapping,
     WaveTblBlock,
 )
 from ate_smt7_diff.parsers.flow_parser import extract_test_flow_section, parse_test_flow
@@ -33,6 +35,7 @@ from ate_smt7_diff.parsers.suite_parser import (
 from ate_smt7_diff.parsers.level_parser import LevelLoader
 from ate_smt7_diff.parsers.timing_parser import TimingLoader
 from ate_smt7_diff.parsers.testtable_parser import TestTableLoader
+from ate_smt7_diff.parsers.vector_parser import VectorLoader
 from ate_smt7_diff.diff.flow_diff import compute_diff, detect_moves, detect_swaps
 from ate_smt7_diff.diff.suite_diff import diff_suite_configs
 from ate_smt7_diff.diff.level_diff import diff_level_specs, diff_eqnset_blocks
@@ -43,6 +46,7 @@ from ate_smt7_diff.diff.timing_diff import (
     diff_wavetbls,
 )
 from ate_smt7_diff.diff.testtable_diff import diff_testtables
+from ate_smt7_diff.diff.vector_diff import diff_vectors
 
 
 def load_program_context(flow_path: str) -> ProgramContext:
@@ -436,6 +440,10 @@ def build_suite_views(
     if ctx.testtable_path and ctx.testtable_path.exists():
         testtable_loader = TestTableLoader(str(ctx.testtable_path))
 
+    vector_loader: Optional[VectorLoader] = None
+    if ctx.vector_path and ctx.vector_path.exists():
+        vector_loader = VectorLoader(str(ctx.vector_path))
+
     flow_lines = Path(flow_path).read_text(encoding="utf-8").splitlines()
     ts_lines = extract_test_suites_section(flow_lines)
     suite_configs = parse_suite_config(ts_lines)
@@ -462,6 +470,24 @@ def build_suite_views(
 
         testtable_rows = testtable_loader.rows_by_suite.get(suite_name) if testtable_loader else None
 
+        # Resolve vector pattern mappings for this suite
+        vector_mappings: Optional[VectorSuiteMapping] = None
+        seqlbl_raw = cfg.get("override_seqlbl")
+        if seqlbl_raw and vector_loader:
+            seqlbl = seqlbl_raw.strip('"')
+            lookup = vector_loader.lookup(seqlbl)
+            if lookup is not None:
+                path_dir, mappings = lookup
+                # Resolve path relative to the vector file's directory
+                vector_base = ctx.vector_path.parent if ctx.vector_path else ctx.program_root
+                resolved_path = str((vector_base / path_dir).resolve())
+                vector_mappings = VectorSuiteMapping(
+                    suite_name=suite_name,
+                    seqlbl=seqlbl,
+                    path=resolved_path,
+                    pattern_mappings=mappings,
+                )
+
         views[suite_name] = SuiteConfigView(
             suite_name=suite_name,
             flow_config=cfg,
@@ -482,6 +508,7 @@ def build_suite_views(
             timing_wavetbl_names=timing_wavetbl_names,
             timing_wavetbl_blocks=timing_wavetbl_blocks,
             testtable_rows=testtable_rows,
+            vector_mappings=vector_mappings,
         )
 
     return views
@@ -529,6 +556,7 @@ def diff_flow_files(
     timing_spec_diffs: Optional[List[TimingSpecDiff]] = None
     timing_eqnset_diffs: Optional[List[TimingEqnSetDiff]] = None
     timing_wavetbl_diffs: Optional[List["WaveTblDiff"]] = None
+    vector_diffs: Optional[List[VectorSuiteDiff]] = None
     if include_config_views:
         old_names = {t.suite_name for t in old_tests}
         new_names = {t.suite_name for t in new_tests}
@@ -579,6 +607,15 @@ def diff_flow_files(
         if not timing_wavetbl_diffs:
             timing_wavetbl_diffs = None
 
+        # Vector diff
+        vector_diffs = diff_vectors(
+            sorted(common_suites),
+            old_views or {},
+            new_views or {},
+        )
+        if not vector_diffs:
+            vector_diffs = None
+
     testtable_diffs = None
     if include_testtable_diff:
         old_names = {t.suite_name for t in old_tests}
@@ -628,4 +665,5 @@ def diff_flow_files(
         timing_eqnset_diffs=timing_eqnset_diffs,
         timing_wavetbl_diffs=timing_wavetbl_diffs,
         testtable_diffs=testtable_diffs,
+        vector_diffs=vector_diffs,
     )

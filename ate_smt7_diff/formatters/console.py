@@ -19,6 +19,7 @@ from ate_smt7_diff.models import (
     TimingPinConfig,
     TimingSetConfig,
     TimingSpecDiff,
+    VectorSuiteDiff,
     WaveTblDiff,
     WaveTblPinsGroupDiff,
 )
@@ -449,6 +450,48 @@ def _format_testtable_console(diff: TestTableSuiteDiff) -> List[str]:
     return lines
 
 
+def _format_vector_console(diff: VectorSuiteDiff) -> List[str]:
+    """Format a single VectorSuiteDiff as console lines."""
+    lines = []
+    if diff.diff_type == "added":
+        lines.append(f"{diff.suite_name}: Pattern Added")
+        if diff.new_mappings:
+            for m in diff.new_mappings:
+                if m.is_direct:
+                    lines.append(f"    + {m.pattern_name}")
+                else:
+                    lines.append(f"    + {m.pattern_name} -> {m.mapped_file}")
+    elif diff.diff_type == "removed":
+        lines.append(f"{diff.suite_name}: Pattern Removed")
+        if diff.old_mappings:
+            for m in diff.old_mappings:
+                if m.is_direct:
+                    lines.append(f"    - {m.pattern_name}")
+                else:
+                    lines.append(f"    - {m.pattern_name} -> {m.mapped_file}")
+    elif diff.diff_type == "changed":
+        lines.append(f"{diff.suite_name}: Pattern Mapping Changed")
+        if diff.old_mappings:
+            lines.append("  Old:")
+            for m in diff.old_mappings:
+                if m.is_direct:
+                    lines.append(f"    - {m.pattern_name}")
+                else:
+                    lines.append(f"    - {m.pattern_name} -> {m.mapped_file}")
+        if diff.new_mappings:
+            lines.append("  New:")
+            for m in diff.new_mappings:
+                if m.is_direct:
+                    lines.append(f"    + {m.pattern_name}")
+                else:
+                    lines.append(f"    + {m.pattern_name} -> {m.mapped_file}")
+    elif diff.diff_type == "file_date_changed":
+        lines.append(f"{diff.suite_name}: Pattern File Date Changed")
+        for fc in diff.file_date_changes:
+            lines.append(f"    ~ {fc.file_path}: mtime changed")
+    return lines
+
+
 def format_suite_console(report: SuiteConfigReport) -> str:
     """Format suite config diff as colored console output."""
     lines = []
@@ -636,5 +679,13 @@ def format_console(report: DiffReport) -> str:
         lines.append("=" * 60)
         for diff in report.testtable_diffs:
             lines.extend(_format_testtable_console(diff))
+
+    if report.vector_diffs:
+        lines.append("")
+        lines.append("=" * 60)
+        lines.append("Vector / Pattern Diff")
+        lines.append("=" * 60)
+        for diff in report.vector_diffs:
+            lines.extend(_format_vector_console(diff))
 
     return "\n".join(lines)

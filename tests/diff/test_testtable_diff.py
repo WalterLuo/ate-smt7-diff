@@ -237,3 +237,48 @@ class TestDiffTestTables:
         }
         result = diff_testtable_suites("SuiteA", old_rows, new_rows)
         assert result is None
+
+    def test_test_number_change_treated_as_changed(self) -> None:
+        old_rows = {
+            ("SuiteA", "test1", "100"): TestTableRow(
+                suite_name="SuiteA", test_name="test1", test_number="100",
+                columns={"Suite name": "SuiteA", "Test name": "test1", "Test number": "100", "Lsl": "10"}
+            ),
+        }
+        new_rows = {
+            ("SuiteA", "test1", "200"): TestTableRow(
+                suite_name="SuiteA", test_name="test1", test_number="200",
+                columns={"Suite name": "SuiteA", "Test name": "test1", "Test number": "200", "Lsl": "10"}
+            ),
+        }
+        result = diff_testtable_suites("SuiteA", old_rows, new_rows)
+        assert result is not None
+        assert len(result.rows_added) == 0
+        assert len(result.rows_removed) == 0
+        assert len(result.rows_changed) == 1
+        changed = result.rows_changed[0]
+        assert changed.test_name == "test1"
+        assert changed.test_number == "200"
+        assert changed.changed == {"Test number": ("100", "200")}
+
+    def test_test_number_and_column_change(self) -> None:
+        old_rows = {
+            ("SuiteA", "test1", "100"): TestTableRow(
+                suite_name="SuiteA", test_name="test1", test_number="100",
+                columns={"Suite name": "SuiteA", "Test name": "test1", "Test number": "100", "Lsl": "10", "Usl": "20"}
+            ),
+        }
+        new_rows = {
+            ("SuiteA", "test1", "200"): TestTableRow(
+                suite_name="SuiteA", test_name="test1", test_number="200",
+                columns={"Suite name": "SuiteA", "Test name": "test1", "Test number": "200", "Lsl": "15", "Usl": "20"}
+            ),
+        }
+        result = diff_testtable_suites("SuiteA", old_rows, new_rows)
+        assert result is not None
+        assert len(result.rows_changed) == 1
+        changed = result.rows_changed[0]
+        assert changed.changed == {
+            "Lsl": ("10", "15"),
+            "Test number": ("100", "200"),
+        }
