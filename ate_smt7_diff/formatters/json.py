@@ -274,4 +274,101 @@ def format_json(report: DiffReport) -> str:
             for diff in report.timing_eqnset_diffs
         ]
 
+    if report.timing_wavetbl_diffs:
+        result["timing_wavetbl_diff"] = [
+            {
+                "suite_name": diff.suite_name,
+                "wavetbl_name": diff.wavetbl_name,
+                "replaced_from": diff.replaced_from,
+                "replaced_block": {
+                    "pins_groups": {
+                        name: {
+                            "rows": [
+                                {"label": row.label, "edge_spec": row.edge_spec, "state": row.state}
+                                for row in group.rows
+                            ],
+                            "brk": group.brk,
+                            "f": group.f,
+                        }
+                        for name, group in diff.new_block.pins_groups.items()
+                    }
+                } if diff.replaced_from and diff.new_block else None,
+                "added_block": {
+                    "pins_groups": {
+                        name: {
+                            "rows": [
+                                {"label": row.label, "edge_spec": row.edge_spec, "state": row.state}
+                                for row in group.rows
+                            ],
+                            "brk": group.brk,
+                            "f": group.f,
+                        }
+                        for name, group in diff.new_block.pins_groups.items()
+                    }
+                } if diff.new_block and not diff.old_block and not diff.replaced_from else None,
+                "removed_block": {
+                    "pins_groups": {
+                        name: {
+                            "rows": [
+                                {"label": row.label, "edge_spec": row.edge_spec, "state": row.state}
+                                for row in group.rows
+                            ],
+                            "brk": group.brk,
+                            "f": group.f,
+                        }
+                        for name, group in diff.old_block.pins_groups.items()
+                    }
+                } if diff.old_block and not diff.new_block and not diff.replaced_from else None,
+                "pins_groups": {
+                    "added": {
+                        name: {
+                            "rows": [
+                                {"label": row.label, "edge_spec": row.edge_spec, "state": row.state}
+                                for row in group.rows
+                            ],
+                            "brk": group.brk,
+                            "f": group.f,
+                        }
+                        for name, group in diff.pins_groups_added.items()
+                    },
+                    "removed": {
+                        name: {
+                            "rows": [
+                                {"label": row.label, "edge_spec": row.edge_spec, "state": row.state}
+                                for row in group.rows
+                            ],
+                            "brk": group.brk,
+                            "f": group.f,
+                        }
+                        for name, group in diff.pins_groups_removed.items()
+                    },
+                    "changed": {
+                        name: {
+                            "rows_added": [
+                                {"label": row.label, "edge_spec": row.edge_spec, "state": row.state}
+                                for row in pg_diff.rows_added
+                            ],
+                            "rows_removed": [
+                                {"label": row.label, "edge_spec": row.edge_spec, "state": row.state}
+                                for row in pg_diff.rows_removed
+                            ],
+                            "rows_changed": [
+                                {
+                                    "old": {"label": old_r.label, "edge_spec": old_r.edge_spec, "state": old_r.state},
+                                    "new": {"label": new_r.label, "edge_spec": new_r.edge_spec, "state": new_r.state},
+                                }
+                                for old_r, new_r in pg_diff.rows_changed
+                            ],
+                            "brk_old": pg_diff.brk_old,
+                            "brk_new": pg_diff.brk_new,
+                            "f_old": pg_diff.f_old,
+                            "f_new": pg_diff.f_new,
+                        }
+                        for name, pg_diff in diff.pins_groups_changed.items()
+                    },
+                } if diff.old_block and diff.new_block and not diff.replaced_from else None,
+            }
+            for diff in report.timing_wavetbl_diffs
+        ]
+
     return json.dumps(result, indent=2, ensure_ascii=False)

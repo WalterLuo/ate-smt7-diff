@@ -58,6 +58,7 @@ class DiffReport:
     eqnset_diffs: Optional[List["EqnSetDiff"]] = None
     timing_spec_diffs: Optional[List["TimingSpecDiff"]] = None
     timing_eqnset_diffs: Optional[List["TimingEqnSetDiff"]] = None
+    timing_wavetbl_diffs: Optional[List["WaveTblDiff"]] = None
 
     @cached_property
     def added(self) -> List[str]:
@@ -332,6 +333,75 @@ class TimingEqnSetDiff:
         )
 
 
+# ---------------------------------------------------------------------------
+# Timing wavetable models
+# ---------------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class WaveTblRow:
+    """A single row within a WAVETBL PINS group."""
+    label: str
+    edge_spec: str
+    state: str
+
+
+@dataclass(frozen=True)
+class WaveTblPinsGroup:
+    """A PINS group within a WAVETBL block."""
+    pins_name: str
+    rows: Tuple[WaveTblRow, ...] = field(default_factory=tuple)
+    brk: str = ""
+    f: str = ""
+
+
+@dataclass(frozen=True)
+class WaveTblBlock:
+    """Complete WAVETBL block from timing file."""
+    name: str
+    pins_groups: Dict[str, WaveTblPinsGroup] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class WaveTblPinsGroupDiff:
+    """Diff result for a single PINS group comparison."""
+    pins_name: str
+    rows_added: Tuple[WaveTblRow, ...] = field(default_factory=tuple)
+    rows_removed: Tuple[WaveTblRow, ...] = field(default_factory=tuple)
+    rows_changed: Tuple[Tuple[WaveTblRow, WaveTblRow], ...] = field(default_factory=tuple)
+    brk_old: str = ""
+    brk_new: str = ""
+    f_old: str = ""
+    f_new: str = ""
+
+    @property
+    def has_changes(self) -> bool:
+        return bool(
+            self.rows_added or self.rows_removed or self.rows_changed
+            or self.brk_old != self.brk_new
+            or self.f_old != self.f_new
+        )
+
+
+@dataclass(frozen=True)
+class WaveTblDiff:
+    """Diff result for a WAVETBL block comparison."""
+    suite_name: str
+    wavetbl_name: str
+    pins_groups_added: Dict[str, WaveTblPinsGroup] = field(default_factory=dict)
+    pins_groups_removed: Dict[str, WaveTblPinsGroup] = field(default_factory=dict)
+    pins_groups_changed: Dict[str, WaveTblPinsGroupDiff] = field(default_factory=dict)
+    old_block: Optional[WaveTblBlock] = None
+    new_block: Optional[WaveTblBlock] = None
+    replaced_from: Optional[str] = None
+
+    @property
+    def has_changes(self) -> bool:
+        return bool(
+            self.pins_groups_added or self.pins_groups_removed or self.pins_groups_changed
+            or self.old_block or self.new_block or self.replaced_from
+        )
+
+
 @dataclass(frozen=True)
 class ProgramContext:
     """Parsed context section from a flow file with resolved file paths."""
@@ -402,3 +472,5 @@ class SuiteConfigView:
     timing_eqnset_block: Optional[TimingEqnSetBlock] = None
     timing_spec_eqnsets: Optional[List[Tuple[int, str]]] = None
     timing_eqnset_blocks: Dict[int, TimingEqnSetBlock] = field(default_factory=dict)
+    timing_wavetbl_names: Tuple[str, ...] = field(default_factory=tuple)
+    timing_wavetbl_blocks: Dict[str, WaveTblBlock] = field(default_factory=dict)

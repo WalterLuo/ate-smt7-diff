@@ -20,6 +20,7 @@ from ate_smt7_diff.models import (
     TimingEqnSetBlock,
     TimingSpec,
     TimingSpecDiff,
+    WaveTblBlock,
 )
 from ate_smt7_diff.parsers.flow_parser import extract_test_flow_section, parse_test_flow
 from ate_smt7_diff.parsers.suite_parser import (
@@ -33,7 +34,12 @@ from ate_smt7_diff.parsers.timing_parser import TimingLoader
 from ate_smt7_diff.diff.flow_diff import compute_diff, detect_moves, detect_swaps
 from ate_smt7_diff.diff.suite_diff import diff_suite_configs
 from ate_smt7_diff.diff.level_diff import diff_level_specs, diff_eqnset_blocks
-from ate_smt7_diff.diff.timing_diff import diff_timing_specs, diff_timing_eqnset_blocks, diff_timing_eqnset_blocks_full
+from ate_smt7_diff.diff.timing_diff import (
+    diff_timing_specs,
+    diff_timing_eqnset_blocks,
+    diff_timing_eqnset_blocks_full,
+    diff_wavetbls,
+)
 
 
 def load_program_context(flow_path: str) -> ProgramContext:
@@ -150,16 +156,20 @@ def _extract_timing_data(
     Optional[TimingEqnSetBlock],
     Optional[List[Tuple[int, str]]],
     Dict[int, TimingEqnSetBlock],
+    Tuple[str, ...],
+    Dict[str, WaveTblBlock],
 ]:
-    """Extract timing snippet, specs, EQNSET block, and port-spec EQNSET refs."""
+    """Extract timing snippet, specs, EQNSET block, port-spec EQNSET refs, and WAVETBLs."""
     if not timing_loader or not timing_spec:
-        return None, None, None, None, {}
+        return None, None, None, None, {}, (), {}
 
     timing_snippet: Optional[str] = None
     timing_specs: Optional[Dict[str, TimingSpec]] = None
     timing_eqnset_block: Optional[TimingEqnSetBlock] = None
     timing_spec_eqnsets: Optional[List[Tuple[int, str]]] = None
     timing_eqnset_blocks: Dict[int, TimingEqnSetBlock] = {}
+    wavetbl_names: List[str] = []
+    wavetbl_blocks: Dict[str, WaveTblBlock] = {}
 
     is_port_spec = timing_eqn is None
 
@@ -177,6 +187,8 @@ def _extract_timing_data(
                     block = timing_loader.parse_eqsp_eqnset_block(eqnset_line)
                     if block is not None:
                         timing_eqnset_blocks[eq_idx] = block
+            # Extract WAVETBL names from SPECIFICATION block
+            wavetbl_names = timing_loader.extract_wavetbl_names_from_specification(spec_idx)
         else:
             spec_idx = timing_loader.lookup_spec_set(timing_spec)
             if spec_idx is not None:
@@ -188,8 +200,30 @@ def _extract_timing_data(
             timing_eqnset_block = timing_loader.parse_eqsp_eqnset_block(eqn_idx)
             if timing_eqnset_block:
                 timing_specs = timing_eqnset_block.specs
+            # Extract WAVETBL name from EQNSET block
+            wt_name = timing_loader.extract_wavetbl_name_from_eqnset(eqn_idx)
+            if wt_name:
+                wavetbl_names = [wt_name]
 
-    return timing_snippet, timing_specs, timing_eqnset_block, timing_spec_eqnsets, timing_eqnset_blocks
+    # Load WAVETBL blocks
+    for wt_name in wavetbl_names:
+        if wt_name in wavetbl_blocks:
+            continue
+        wt_idx = timing_loader.lookup_wavetbl(wt_name)
+        if wt_idx is not None:
+            wt_block = timing_loader.parse_wavetbl(wt_idx)
+            if wt_block is not None:
+                wavetbl_blocks[wt_name] = wt_block
+
+    return (
+        timing_snippet,
+        timing_specs,
+        timing_eqnset_block,
+        timing_spec_eqnsets,
+        timing_eqnset_blocks,
+        tuple(wavetbl_names),
+        wavetbl_blocks,
+    )
 
 
 def _extract_level_data(
@@ -262,6 +296,8 @@ def build_suite_views(
             timing_eqnset_block,
             timing_spec_eqnsets,
             timing_eqnset_blocks,
+            timing_wavetbl_names,
+            timing_wavetbl_blocks,
         ) = _extract_timing_data(timing_loader, timing_spec, timing_eqn, timing_timset)
         level_snippet, level_specs, eqnset_block = _extract_level_data(
             level_loader, level_eqn, level_spec
@@ -284,6 +320,8 @@ def build_suite_views(
             timing_eqnset_block=timing_eqnset_block,
             timing_spec_eqnsets=timing_spec_eqnsets,
             timing_eqnset_blocks=timing_eqnset_blocks,
+            timing_wavetbl_names=timing_wavetbl_names,
+            timing_wavetbl_blocks=timing_wavetbl_blocks,
         )
 
     return views
@@ -329,6 +367,7 @@ def diff_flow_files(
     eqnset_diffs: Optional[List[EqnSetDiff]] = None
     timing_spec_diffs: Optional[List[TimingSpecDiff]] = None
     timing_eqnset_diffs: Optional[List[TimingEqnSetDiff]] = None
+    timing_wavetbl_diffs: Optional[List["WaveTblDiff"]] = None
     if include_config_views:
         old_names = {t.suite_name for t in old_tests}
         new_names = {t.suite_name for t in new_tests}
@@ -340,6 +379,7 @@ def diff_flow_files(
         eqnset_diffs = []
         timing_spec_diffs = []
         timing_eqnset_diffs = []
+        timing_wavetbl_diffs = []
         for suite_name in sorted(common_suites):
             old_v = old_views.get(suite_name)
             new_v = new_views.get(suite_name)
@@ -409,6 +449,14 @@ def diff_flow_files(
                     )
                     if te_diff and te_diff.has_changes:
                         timing_eqnset_diffs.append(te_diff)
+
+                # WAVETBL diff
+                wt_diffs = diff_wavetbls(
+                    suite_name,
+                    old_v.timing_wavetbl_blocks,
+                    new_v.timing_wavetbl_blocks,
+                )
+                timing_wavetbl_diffs.extend(wt_diffs)
         if not level_spec_diffs:
             level_spec_diffs = None
         if not eqnset_diffs:
@@ -417,6 +465,8 @@ def diff_flow_files(
             timing_spec_diffs = None
         if not timing_eqnset_diffs:
             timing_eqnset_diffs = None
+        if not timing_wavetbl_diffs:
+            timing_wavetbl_diffs = None
 
     return DiffReport(
         old_file=old_path,
@@ -431,4 +481,5 @@ def diff_flow_files(
         eqnset_diffs=eqnset_diffs,
         timing_spec_diffs=timing_spec_diffs,
         timing_eqnset_diffs=timing_eqnset_diffs,
+        timing_wavetbl_diffs=timing_wavetbl_diffs,
     )

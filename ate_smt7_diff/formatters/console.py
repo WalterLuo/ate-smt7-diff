@@ -17,6 +17,8 @@ from ate_smt7_diff.models import (
     TimingPinConfig,
     TimingSetConfig,
     TimingSpecDiff,
+    WaveTblDiff,
+    WaveTblPinsGroupDiff,
 )
 
 
@@ -304,6 +306,86 @@ def _format_timing_spec_console(diff: TimingSpecDiff) -> List[str]:
     return lines
 
 
+def _format_wavetbl_block_content(block: "WaveTblBlock", marker: str) -> List[str]:
+    """Format full WAVETBL block content with a +/- marker."""
+    lines = []
+    for name, group in block.pins_groups.items():
+        lines.append(f"    {marker} {name}")
+        for row in group.rows:
+            lines.append(f"      {row.label} \"{row.edge_spec}\" {row.state}")
+        if group.brk:
+            lines.append(f"      brk \"{group.brk}\"")
+        if group.f:
+            lines.append(f"      f \"{group.f}\"")
+    return lines
+
+
+def _format_wavetbl_console(diff: WaveTblDiff) -> List[str]:
+    """Format a single WaveTblDiff as console lines."""
+    lines = []
+
+    # Replacement
+    if diff.replaced_from:
+        lines.append(
+            f"{diff.suite_name}: WAVETBL Replaced: {diff.replaced_from} -> {diff.wavetbl_name}"
+        )
+        if diff.new_block:
+            lines.extend(_format_wavetbl_block_content(diff.new_block, "+"))
+        return lines
+
+    lines.append(f"{diff.suite_name} (WAVETBL \"{diff.wavetbl_name}\"):")
+
+    # Whole block added/removed
+    if diff.new_block and not diff.old_block:
+        lines.append("  WAVETBL Added:")
+        lines.extend(_format_wavetbl_block_content(diff.new_block, "+"))
+    elif diff.old_block and not diff.new_block:
+        lines.append("  WAVETBL Removed:")
+        lines.extend(_format_wavetbl_block_content(diff.old_block, "-"))
+
+    # Internal PINS changes (only when both blocks exist with same name)
+    if diff.pins_groups_added:
+        lines.append("  PINS Added:")
+        for name, group in diff.pins_groups_added.items():
+            lines.append(f"    + {name}")
+            for row in group.rows:
+                lines.append(f"      {row.label} \"{row.edge_spec}\" {row.state}")
+            if group.brk:
+                lines.append(f"      brk \"{group.brk}\"")
+            if group.f:
+                lines.append(f"      f \"{group.f}\"")
+    if diff.pins_groups_removed:
+        lines.append("  PINS Removed:")
+        for name, group in diff.pins_groups_removed.items():
+            lines.append(f"    - {name}")
+            for row in group.rows:
+                lines.append(f"      {row.label} \"{row.edge_spec}\" {row.state}")
+            if group.brk:
+                lines.append(f"      brk \"{group.brk}\"")
+            if group.f:
+                lines.append(f"      f \"{group.f}\"")
+    if diff.pins_groups_changed:
+        lines.append("  PINS Changed:")
+        for name, pg_diff in diff.pins_groups_changed.items():
+            lines.append(f"    ~ {name}")
+            for row in pg_diff.rows_added:
+                lines.append(f"      + {row.label} \"{row.edge_spec}\" {row.state}")
+            for row in pg_diff.rows_removed:
+                lines.append(f"      - {row.label} \"{row.edge_spec}\" {row.state}")
+            for old_r, new_r in pg_diff.rows_changed:
+                changes = []
+                if old_r.edge_spec != new_r.edge_spec:
+                    changes.append(f'edge_spec "{old_r.edge_spec}" -> "{new_r.edge_spec}"')
+                if old_r.state != new_r.state:
+                    changes.append(f'state "{old_r.state}" -> "{new_r.state}"')
+                lines.append(f"      ~ {old_r.label}: {', '.join(changes)}")
+            if pg_diff.brk_old != pg_diff.brk_new:
+                lines.append(f"      ~ brk \"{pg_diff.brk_old}\" -> \"{pg_diff.brk_new}\"")
+            if pg_diff.f_old != pg_diff.f_new:
+                lines.append(f"      ~ f \"{pg_diff.f_old}\" -> \"{pg_diff.f_new}\"")
+    return lines
+
+
 def format_suite_console(report: SuiteConfigReport) -> str:
     """Format suite config diff as colored console output."""
     lines = []
@@ -475,5 +557,13 @@ def format_console(report: DiffReport) -> str:
         lines.append("=" * 60)
         for diff in report.timing_eqnset_diffs:
             lines.extend(_format_timing_eqnset_console(diff))
+
+    if report.timing_wavetbl_diffs:
+        lines.append("")
+        lines.append("=" * 60)
+        lines.append("Timing Wavetable Diff")
+        lines.append("=" * 60)
+        for diff in report.timing_wavetbl_diffs:
+            lines.extend(_format_wavetbl_console(diff))
 
     return "\n".join(lines)

@@ -14,6 +14,9 @@ from ate_smt7_diff.models import (
     TimingPinConfig,
     TimingSetConfig,
     TimingSpec,
+    WaveTblBlock,
+    WaveTblPinsGroup,
+    WaveTblRow,
 )
 
 
@@ -39,6 +42,7 @@ class TimingLoader:
             self.lines = raw.splitlines()
 
         in_eqsp_tim = False
+        in_eqsp_wvt = False
         current_eqn: Optional[int] = None
 
         for i, line in enumerate(self.lines):
@@ -52,11 +56,19 @@ class TimingLoader:
                     if name:
                         self.spec_sets[name] = i
 
-            # WAVETBL entries
+            # WAVETBL entries - index standalone definitions
             elif stripped.startswith("WAVETBL "):
-                name = stripped[8:].strip().strip('"')
-                if name:
+                name = stripped[8:].split("#", 1)[0].strip().strip('"')
+                if name and name not in self.wavetbls:
                     self.wavetbls[name] = i
+
+            # WAVETBL entries inside EQSP TIM,WVT region (same-line format)
+            elif in_eqsp_wvt and "WAVETBL " in stripped:
+                match = re.search(r'WAVETBL\s+"([^"]*)"', stripped)
+                if match:
+                    name = match.group(1)
+                    if name and name not in self.wavetbls:
+                        self.wavetbls[name] = i
 
             # SPECIFICATION entries (Port Spec mode)
             elif stripped.startswith('SPECIFICATION "'):
@@ -67,11 +79,25 @@ class TimingLoader:
             # EQSP TIM,EQN / EQSP TIM,SPS region entry
             elif stripped.startswith("EQSP TIM,EQN") or stripped.startswith("EQSP TIM,SPS"):
                 in_eqsp_tim = True
+                in_eqsp_wvt = False
                 current_eqn = None
+
+            # EQSP TIM,WVT region entry
+            elif stripped.startswith("EQSP TIM,WVT"):
+                in_eqsp_wvt = True
+                in_eqsp_tim = False
+                current_eqn = None
+                # Also extract WAVETBL if it's on the same line
+                match = re.search(r'WAVETBL\s+"([^"]*)"', stripped)
+                if match:
+                    name = match.group(1)
+                    if name and name not in self.wavetbls:
+                        self.wavetbls[name] = i
 
             # EQSP region exit
             elif stripped.startswith("EQSP TIM,END") or stripped == "@":
                 in_eqsp_tim = False
+                in_eqsp_wvt = False
                 current_eqn = None
 
             # EQNSET within EQSP TIM,EQN or EQSP TIM,SPS
@@ -526,3 +552,154 @@ class TimingLoader:
             pins_groups=pins_groups,
             timingsets=timingsets,
         )
+
+    def parse_wavetbl(self, wavetbl_idx: int) -> Optional[WaveTblBlock]:
+        """Parse a WAVETBL block into WaveTblBlock."""
+        if wavetbl_idx is None or wavetbl_idx >= len(self.lines):
+            return None
+
+        header = self.lines[wavetbl_idx].strip()
+        # Handle both standalone "WAVETBL ..." and same-line "EQSP TIM,WVT,...WAVETBL ..."
+        if header.startswith("WAVETBL "):
+            name = header[8:].strip().strip('"')
+        else:
+            match = re.search(r'WAVETBL\s+"([^"]*)"', header)
+            if match:
+                name = match.group(1)
+            else:
+                return None
+
+        if not name:
+            return None
+
+        pins_groups: Dict[str, WaveTblPinsGroup] = {}
+        current_pins_name = ""
+        current_rows: List[WaveTblRow] = []
+        current_brk = ""
+        current_f = ""
+
+        def _save_current_group() -> None:
+            nonlocal current_pins_name, current_rows, current_brk, current_f
+            if current_pins_name:
+                pins_groups[current_pins_name] = WaveTblPinsGroup(
+                    pins_name=current_pins_name,
+                    rows=tuple(current_rows),
+                    brk=current_brk,
+                    f=current_f,
+                )
+            current_pins_name = ""
+            current_rows = []
+            current_brk = ""
+            current_f = ""
+
+        for line in self.lines[wavetbl_idx + 1:]:
+            stripped = line.strip()
+
+            if not stripped:
+                continue
+
+            if stripped.startswith("WAVETBL "):
+                break
+            if stripped.startswith("SPST TIM,,"):
+                break
+            if stripped.startswith('SPECIFICATION "'):
+                break
+            if stripped.startswith("EQSP TIM,END"):
+                break
+            if stripped == "@":
+                break
+
+            if "#" in stripped:
+                stripped = stripped.split("#", 1)[0].rstrip()
+            if not stripped:
+                continue
+
+            if stripped.startswith("PINS "):
+                _save_current_group()
+                pins_part = stripped[5:].strip()
+                current_pins_name = pins_part
+                continue
+
+            if stripped.startswith("f ") or stripped.startswith("f\t"):
+                quote_match = re.search(r'"([^"]*)"', stripped)
+                if quote_match:
+                    current_f = quote_match.group(1)
+                continue
+
+            if stripped.startswith("brk ") or stripped.startswith("brk\t"):
+                quote_match = re.search(r'"([^"]*)"', stripped)
+                if quote_match:
+                    current_brk = quote_match.group(1)
+                continue
+
+            row_match = re.match(r'(\S+)\s+"([^"]*)"(?:\s+(.*))?', stripped)
+            if row_match:
+                label = row_match.group(1)
+                edge_spec = row_match.group(2)
+                state = (row_match.group(3) or "").strip()
+                current_rows.append(WaveTblRow(
+                    label=label,
+                    edge_spec=edge_spec,
+                    state=state,
+                ))
+
+        _save_current_group()
+
+        return WaveTblBlock(name=name, pins_groups=pins_groups)
+
+    def extract_wavetbl_name_from_eqnset(self, eqnset_idx: int) -> Optional[str]:
+        """Extract WAVETBL name from an EQNSET block."""
+        if eqnset_idx >= len(self.lines):
+            return None
+
+        header = self.lines[eqnset_idx].strip()
+        if not header.startswith("EQNSET "):
+            return None
+
+        for line in self.lines[eqnset_idx + 1:]:
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if stripped.startswith("EQNSET ") or stripped.startswith("EQSP TIM,END") or stripped == "@":
+                break
+            if stripped.startswith("WAVETBL "):
+                return stripped[8:].strip().strip('"')
+
+        return None
+
+    def extract_wavetbl_names_from_specification(self, spec_idx: int) -> List[str]:
+        """Extract all WAVETBL names from a SPECIFICATION block."""
+        if spec_idx >= len(self.lines):
+            return []
+
+        result: List[str] = []
+        depth = 0
+        start = spec_idx + 1
+        if start < len(self.lines) and self.lines[start].strip() == "{":
+            depth = 1
+            start += 1
+
+        for line in self.lines[start:]:
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if stripped == "{":
+                depth += 1
+                continue
+            if stripped == "}":
+                depth -= 1
+                if depth <= 0:
+                    break
+                continue
+            if depth <= 0 and (
+                stripped.startswith('SPECIFICATION "')
+                or stripped.startswith("EQSP TIM,END")
+                or stripped == "@"
+            ):
+                break
+            if stripped.startswith("WAVETBL "):
+                name = stripped[8:].strip().strip('"')
+                if name:
+                    result.append(name)
+
+        return result

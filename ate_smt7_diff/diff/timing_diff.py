@@ -3,7 +3,7 @@
 Timing spec diff algorithms.
 """
 
-from typing import Dict, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from ate_smt7_diff.models import (
     TimingEqnSetBlock,
@@ -12,6 +12,11 @@ from ate_smt7_diff.models import (
     TimingSetConfig,
     TimingSpec,
     TimingSpecDiff,
+    WaveTblBlock,
+    WaveTblDiff,
+    WaveTblPinsGroup,
+    WaveTblPinsGroupDiff,
+    WaveTblRow,
 )
 
 
@@ -202,3 +207,150 @@ def diff_timing_eqnset_blocks_full(
         timingsets_removed=timingsets_removed,
         timingsets_changed=timingsets_changed,
     )
+
+
+def diff_wavetbl_pins_group(
+    old_group: WaveTblPinsGroup,
+    new_group: WaveTblPinsGroup,
+) -> Optional[WaveTblPinsGroupDiff]:
+    """Compute differences between two WAVETBL PINS groups."""
+    old_rows = {r.label: r for r in old_group.rows}
+    new_rows = {r.label: r for r in new_group.rows}
+
+    old_labels = set(old_rows.keys())
+    new_labels = set(new_rows.keys())
+
+    rows_added = tuple(new_rows[k] for k in new_labels - old_labels)
+    rows_removed = tuple(old_rows[k] for k in old_labels - new_labels)
+    rows_changed = tuple(
+        (old_rows[k], new_rows[k])
+        for k in old_labels & new_labels
+        if old_rows[k] != new_rows[k]
+    )
+
+    brk_changed = old_group.brk != new_group.brk
+    f_changed = old_group.f != new_group.f
+
+    if not rows_added and not rows_removed and not rows_changed and not brk_changed and not f_changed:
+        return None
+
+    return WaveTblPinsGroupDiff(
+        pins_name=old_group.pins_name or new_group.pins_name,
+        rows_added=rows_added,
+        rows_removed=rows_removed,
+        rows_changed=rows_changed,
+        brk_old=old_group.brk,
+        brk_new=new_group.brk,
+        f_old=old_group.f,
+        f_new=new_group.f,
+    )
+
+
+def diff_wavetbl_blocks(
+    suite_name: str,
+    wavetbl_name: str,
+    old_block: Optional[WaveTblBlock],
+    new_block: Optional[WaveTblBlock],
+) -> Optional[WaveTblDiff]:
+    """Compute differences between two WAVETBL blocks."""
+    if old_block is None and new_block is None:
+        return None
+
+    if old_block is None:
+        return WaveTblDiff(
+            suite_name=suite_name,
+            wavetbl_name=wavetbl_name,
+            new_block=new_block,
+        )
+
+    if new_block is None:
+        return WaveTblDiff(
+            suite_name=suite_name,
+            wavetbl_name=wavetbl_name,
+            old_block=old_block,
+        )
+
+    old_keys = set(old_block.pins_groups.keys())
+    new_keys = set(new_block.pins_groups.keys())
+
+    pins_groups_added = {k: new_block.pins_groups[k] for k in new_keys - old_keys}
+    pins_groups_removed = {k: old_block.pins_groups[k] for k in old_keys - new_keys}
+    pins_groups_changed = {}
+
+    for k in old_keys & new_keys:
+        pg_diff = diff_wavetbl_pins_group(
+            old_block.pins_groups[k],
+            new_block.pins_groups[k],
+        )
+        if pg_diff is not None:
+            pins_groups_changed[k] = pg_diff
+
+    if not pins_groups_added and not pins_groups_removed and not pins_groups_changed:
+        return None
+
+    return WaveTblDiff(
+        suite_name=suite_name,
+        wavetbl_name=wavetbl_name,
+        pins_groups_added=pins_groups_added,
+        pins_groups_removed=pins_groups_removed,
+        pins_groups_changed=pins_groups_changed,
+    )
+
+
+def diff_wavetbls(
+    suite_name: str,
+    old_blocks: Dict[str, WaveTblBlock],
+    new_blocks: Dict[str, WaveTblBlock],
+) -> List[WaveTblDiff]:
+    """Compute differences across all WAVETBL blocks for a suite."""
+    all_names = set(old_blocks.keys()) | set(new_blocks.keys())
+    result: List[WaveTblDiff] = []
+    added_diffs: List[WaveTblDiff] = []
+    removed_diffs: List[WaveTblDiff] = []
+
+    for name in sorted(all_names):
+        diff = diff_wavetbl_blocks(
+            suite_name=suite_name,
+            wavetbl_name=name,
+            old_block=old_blocks.get(name),
+            new_block=new_blocks.get(name),
+        )
+        if diff is None:
+            continue
+        if diff.new_block and not diff.old_block:
+            added_diffs.append(diff)
+        elif diff.old_block and not diff.new_block:
+            removed_diffs.append(diff)
+        else:
+            result.append(diff)
+
+    # Detect replacements: added block whose pins group keys match a removed block
+    matched_removed: Dict[str, WaveTblDiff] = {}
+    for a_diff in added_diffs:
+        a_keys = set(a_diff.new_block.pins_groups.keys()) if a_diff.new_block else set()
+        matched = None
+        for r_diff in removed_diffs:
+            if r_diff.wavetbl_name in matched_removed:
+                continue
+            r_keys = set(r_diff.old_block.pins_groups.keys()) if r_diff.old_block else set()
+            if a_keys and a_keys == r_keys:
+                matched = r_diff
+                break
+        if matched is not None:
+            matched_removed[matched.wavetbl_name] = matched
+            result.append(
+                WaveTblDiff(
+                    suite_name=suite_name,
+                    wavetbl_name=a_diff.wavetbl_name,
+                    new_block=a_diff.new_block,
+                    replaced_from=matched.wavetbl_name,
+                )
+            )
+        else:
+            result.append(a_diff)
+
+    for r_diff in removed_diffs:
+        if r_diff.wavetbl_name not in matched_removed:
+            result.append(r_diff)
+
+    return result
