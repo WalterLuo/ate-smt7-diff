@@ -5,7 +5,18 @@ Markdown formatter for diff reports.
 
 from typing import List
 
-from ate_smt7_diff.models import DiffReport, DiffType, EqnSetDiff, LevelSpecDiff, SuiteConfigReport, TimingEqnSetBlock, TimingEqnSetDiff, TimingSpecDiff, WaveTblDiff
+from ate_smt7_diff.models import (
+    DiffReport,
+    DiffType,
+    EqnSetDiff,
+    LevelSpecDiff,
+    SuiteConfigReport,
+    TestTableSuiteDiff,
+    TimingEqnSetBlock,
+    TimingEqnSetDiff,
+    TimingSpecDiff,
+    WaveTblDiff,
+)
 
 
 def _fmt_val(val: str) -> str:
@@ -397,6 +408,33 @@ def _format_wavetbl_markdown(diff: WaveTblDiff) -> List[str]:
     return lines
 
 
+def _format_testtable_markdown(diff: TestTableSuiteDiff) -> List[str]:
+    """Format a single TestTableSuiteDiff as Markdown lines."""
+    lines = []
+    lines.append(f"### {diff.suite_name}")
+    if diff.rows_added:
+        lines.append("")
+        lines.append("**Rows Added:**")
+        for row in diff.rows_added:
+            lines.append(f"- `{row.test_name}` ({row.test_number})")
+    if diff.rows_removed:
+        lines.append("")
+        lines.append("**Rows Removed:**")
+        for row in diff.rows_removed:
+            lines.append(f"- ~~`{row.test_name}` ({row.test_number})~~")
+    if diff.rows_changed:
+        lines.append("")
+        lines.append("**Rows Changed:**")
+        lines.append("| Test | Number | Column | Old | New |")
+        lines.append("|------|--------|--------|-----|-----|")
+        for rd in diff.rows_changed:
+            for col, (old_val, new_val) in sorted(rd.changed.items()):
+                lines.append(
+                    f"| `{rd.test_name}` | `{rd.test_number}` | `{col}` | `{old_val}` | `{_fmt_val(new_val)}` |"
+                )
+    return lines
+
+
 def format_suite_markdown(report: SuiteConfigReport) -> str:
     """Format suite config diff as Markdown."""
     lines = []
@@ -533,5 +571,12 @@ def format_markdown(report: DiffReport) -> str:
         lines.append("")
         for diff in report.timing_wavetbl_diffs:
             lines.extend(_format_wavetbl_markdown(diff))
+
+    if report.testtable_diffs:
+        lines.append("")
+        lines.append("## Testtable Diff")
+        lines.append("")
+        for diff in report.testtable_diffs:
+            lines.extend(_format_testtable_markdown(diff))
 
     return "\n".join(lines)

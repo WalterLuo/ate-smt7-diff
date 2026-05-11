@@ -13,6 +13,7 @@ from ate_smt7_diff.models import (
     LevelSetPinConfig,
     LevelSpecDiff,
     SuiteConfigReport,
+    TestTableSuiteDiff,
     TimingEqnSetBlock,
     TimingEqnSetDiff,
     TimingPinConfig,
@@ -425,6 +426,29 @@ def _format_wavetbl_console(diff: WaveTblDiff) -> List[str]:
     return lines
 
 
+def _format_testtable_console(diff: TestTableSuiteDiff) -> List[str]:
+    """Format a single TestTableSuiteDiff as console lines."""
+    lines = []
+    lines.append(f"{diff.suite_name}:")
+    if diff.rows_added:
+        lines.append("  Rows Added:")
+        for row in diff.rows_added:
+            lines.append(f"    + {row.test_name} ({row.test_number})")
+    if diff.rows_removed:
+        lines.append("  Rows Removed:")
+        for row in diff.rows_removed:
+            lines.append(f"    - {row.test_name} ({row.test_number})")
+    if diff.rows_changed:
+        lines.append("  Rows Changed:")
+        for rd in diff.rows_changed:
+            changes = ", ".join(
+                f"{k} {_fmt_val(ov)} -> {_fmt_val(nv)}"
+                for k, (ov, nv) in sorted(rd.changed.items())
+            )
+            lines.append(f"    ~ {rd.test_name} ({rd.test_number}): {changes}")
+    return lines
+
+
 def format_suite_console(report: SuiteConfigReport) -> str:
     """Format suite config diff as colored console output."""
     lines = []
@@ -604,5 +628,13 @@ def format_console(report: DiffReport) -> str:
         lines.append("=" * 60)
         for diff in report.timing_wavetbl_diffs:
             lines.extend(_format_wavetbl_console(diff))
+
+    if report.testtable_diffs:
+        lines.append("")
+        lines.append("=" * 60)
+        lines.append("Testtable Diff")
+        lines.append("=" * 60)
+        for diff in report.testtable_diffs:
+            lines.extend(_format_testtable_console(diff))
 
     return "\n".join(lines)

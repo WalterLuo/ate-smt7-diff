@@ -59,6 +59,7 @@ class DiffReport:
     timing_spec_diffs: Optional[List["TimingSpecDiff"]] = None
     timing_eqnset_diffs: Optional[List["TimingEqnSetDiff"]] = None
     timing_wavetbl_diffs: Optional[List["WaveTblDiff"]] = None
+    testtable_diffs: Optional[List["TestTableSuiteDiff"]] = None
 
     @cached_property
     def added(self) -> List[str]:
@@ -409,6 +410,36 @@ class WaveTblDiff:
 
 
 @dataclass(frozen=True)
+class TestTableRow:
+    """A single row from a testtable CSV file."""
+    suite_name: str
+    test_name: str
+    test_number: str
+    columns: Dict[str, str] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class TestTableRowDiff:
+    """Column-level changes for a single row with matching key."""
+    test_name: str
+    test_number: str
+    changed: Dict[str, Tuple[str, str]] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class TestTableSuiteDiff:
+    """Diff result for all testtable rows belonging to one suite."""
+    suite_name: str
+    rows_added: Tuple[TestTableRow, ...] = field(default_factory=tuple)
+    rows_removed: Tuple[TestTableRow, ...] = field(default_factory=tuple)
+    rows_changed: Tuple[TestTableRowDiff, ...] = field(default_factory=tuple)
+
+    @property
+    def has_changes(self) -> bool:
+        return bool(self.rows_added or self.rows_removed or self.rows_changed)
+
+
+@dataclass(frozen=True)
 class ProgramContext:
     """Parsed context section from a flow file with resolved file paths."""
     program_root: Path
@@ -480,3 +511,4 @@ class SuiteConfigView:
     timing_eqnset_blocks: Dict[int, TimingEqnSetBlock] = field(default_factory=dict)
     timing_wavetbl_names: Tuple[str, ...] = field(default_factory=tuple)
     timing_wavetbl_blocks: Dict[str, WaveTblBlock] = field(default_factory=dict)
+    testtable_rows: Optional[Dict[Tuple[str, str, str], "TestTableRow"]] = None

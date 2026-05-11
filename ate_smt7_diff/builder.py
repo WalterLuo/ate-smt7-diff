@@ -32,6 +32,7 @@ from ate_smt7_diff.parsers.suite_parser import (
 )
 from ate_smt7_diff.parsers.level_parser import LevelLoader
 from ate_smt7_diff.parsers.timing_parser import TimingLoader
+from ate_smt7_diff.parsers.testtable_parser import TestTableLoader
 from ate_smt7_diff.diff.flow_diff import compute_diff, detect_moves, detect_swaps
 from ate_smt7_diff.diff.suite_diff import diff_suite_configs
 from ate_smt7_diff.diff.level_diff import diff_level_specs, diff_eqnset_blocks
@@ -41,6 +42,7 @@ from ate_smt7_diff.diff.timing_diff import (
     diff_timing_eqnset_blocks_full,
     diff_wavetbls,
 )
+from ate_smt7_diff.diff.testtable_diff import diff_testtables
 
 
 def load_program_context(flow_path: str) -> ProgramContext:
@@ -430,6 +432,10 @@ def build_suite_views(
     if ctx.levels_path and ctx.levels_path.exists():
         level_loader = LevelLoader(ctx.levels_path)
 
+    testtable_loader: Optional[TestTableLoader] = None
+    if ctx.testtable_path and ctx.testtable_path.exists():
+        testtable_loader = TestTableLoader(str(ctx.testtable_path))
+
     flow_lines = Path(flow_path).read_text(encoding="utf-8").splitlines()
     ts_lines = extract_test_suites_section(flow_lines)
     suite_configs = parse_suite_config(ts_lines)
@@ -454,6 +460,8 @@ def build_suite_views(
             level_loader, level_eqn, level_spec
         )
 
+        testtable_rows = testtable_loader.rows_by_suite.get(suite_name) if testtable_loader else None
+
         views[suite_name] = SuiteConfigView(
             suite_name=suite_name,
             flow_config=cfg,
@@ -473,6 +481,7 @@ def build_suite_views(
             timing_eqnset_blocks=timing_eqnset_blocks,
             timing_wavetbl_names=timing_wavetbl_names,
             timing_wavetbl_blocks=timing_wavetbl_blocks,
+            testtable_rows=testtable_rows,
         )
 
     return views
@@ -483,6 +492,7 @@ def diff_flow_files(
     new_path: str,
     include_suite_diff: bool = False,
     include_config_views: bool = False,
+    include_testtable_diff: bool = False,
 ) -> DiffReport:
     """Main entry: parse two flow files and compute diff."""
     try:
@@ -569,6 +579,40 @@ def diff_flow_files(
         if not timing_wavetbl_diffs:
             timing_wavetbl_diffs = None
 
+    testtable_diffs = None
+    if include_testtable_diff:
+        old_names = {t.suite_name for t in old_tests}
+        new_names = {t.suite_name for t in new_tests}
+        common_suites = old_names & new_names
+
+        if old_views is not None and new_views is not None:
+            # Reuse already-loaded testtable data from config views
+            old_rows_by_suite = {
+                suite_name: view.testtable_rows
+                for suite_name, view in old_views.items()
+                if view.testtable_rows is not None
+            }
+            new_rows_by_suite = {
+                suite_name: view.testtable_rows
+                for suite_name, view in new_views.items()
+                if view.testtable_rows is not None
+            }
+        else:
+            old_ctx = load_program_context(old_path)
+            new_ctx = load_program_context(new_path)
+            old_testtable = TestTableLoader(str(old_ctx.testtable_path)) if old_ctx.testtable_path else None
+            new_testtable = TestTableLoader(str(new_ctx.testtable_path)) if new_ctx.testtable_path else None
+            old_rows_by_suite = old_testtable.rows_by_suite if old_testtable else {}
+            new_rows_by_suite = new_testtable.rows_by_suite if new_testtable else {}
+
+        testtable_diffs = diff_testtables(
+            sorted(common_suites),
+            old_rows_by_suite,
+            new_rows_by_suite,
+        )
+        if not testtable_diffs:
+            testtable_diffs = None
+
     return DiffReport(
         old_file=old_path,
         new_file=new_path,
@@ -583,4 +627,5 @@ def diff_flow_files(
         timing_spec_diffs=timing_spec_diffs,
         timing_eqnset_diffs=timing_eqnset_diffs,
         timing_wavetbl_diffs=timing_wavetbl_diffs,
+        testtable_diffs=testtable_diffs,
     )

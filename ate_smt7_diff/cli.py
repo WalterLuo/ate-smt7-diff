@@ -33,6 +33,11 @@ def main() -> None:
         action="store_true",
         help="Load associated timing/level/pattern/testtable config files"
     )
+    parser.add_argument(
+        "--testtable-diff",
+        action="store_true",
+        help="Also diff testtable CSV files for common test suites"
+    )
     args = parser.parse_args()
 
     old_path = Path(args.old_file).resolve()
@@ -50,6 +55,7 @@ def main() -> None:
             str(old_path), str(new_path),
             include_suite_diff=args.suite_diff,
             include_config_views=args.load_configs,
+            include_testtable_diff=args.testtable_diff,
         )
     except (FileNotFoundError, PermissionError, ValueError) as e:
         print(f"Error: {e}", file=sys.stderr)

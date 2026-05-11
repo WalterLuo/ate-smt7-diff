@@ -396,4 +396,39 @@ def format_json(report: DiffReport) -> str:
             for diff in report.timing_wavetbl_diffs
         ]
 
+    if report.testtable_diffs:
+        result["testtable_diff"] = [
+            {
+                "suite_name": diff.suite_name,
+                "rows_added": [
+                    {
+                        "test_name": row.test_name,
+                        "test_number": row.test_number,
+                        "columns": row.columns,
+                    }
+                    for row in diff.rows_added
+                ],
+                "rows_removed": [
+                    {
+                        "test_name": row.test_name,
+                        "test_number": row.test_number,
+                        "columns": row.columns,
+                    }
+                    for row in diff.rows_removed
+                ],
+                "rows_changed": [
+                    {
+                        "test_name": rd.test_name,
+                        "test_number": rd.test_number,
+                        "changed": {
+                            col: {"old": old_val, "new": new_val}
+                            for col, (old_val, new_val) in rd.changed.items()
+                        },
+                    }
+                    for rd in diff.rows_changed
+                ],
+            }
+            for diff in report.testtable_diffs
+        ]
+
     return json.dumps(result, indent=2, ensure_ascii=False)
