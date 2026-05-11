@@ -220,7 +220,8 @@ class TestDiffWavetbls:
         assert not diff.pins_groups_removed
         assert not diff.pins_groups_changed
 
-    def test_no_replacement_when_keys_differ(self):
+    def test_replacement_fallback_when_single_unmatched_pair(self):
+        """When exactly one old and one new block remain unmatched, pair as replacement."""
         old_blocks = {
             "old_wt": make_block("old_wt", [make_group("A", [WaveTblRow("0", "d1:0", "0")])]),
         }
@@ -228,8 +229,25 @@ class TestDiffWavetbls:
             "new_wt": make_block("new_wt", [make_group("B", [WaveTblRow("0", "d1:1", "1")])]),
         }
         result = diff_wavetbls("suite", old_blocks, new_blocks)
-        assert len(result) == 2
+        assert len(result) == 1
+        diff = result[0]
+        assert diff.wavetbl_name == "new_wt"
+        assert diff.replaced_from == "old_wt"
+        assert diff.new_block is not None
+
+    def test_no_fallback_when_multiple_unmatched(self):
+        """When more than one unmatched pair exists, show added/removed separately."""
+        old_blocks = {
+            "old_wt1": make_block("old_wt1", [make_group("A", [WaveTblRow("0", "d1:0", "0")])]),
+            "old_wt2": make_block("old_wt2", [make_group("C", [WaveTblRow("0", "d1:2", "2")])]),
+        }
+        new_blocks = {
+            "new_wt1": make_block("new_wt1", [make_group("B", [WaveTblRow("0", "d1:1", "1")])]),
+            "new_wt2": make_block("new_wt2", [make_group("D", [WaveTblRow("0", "d1:3", "3")])]),
+        }
+        result = diff_wavetbls("suite", old_blocks, new_blocks)
+        assert len(result) == 4
         names = {d.wavetbl_name for d in result}
-        assert names == {"old_wt", "new_wt"}
+        assert names == {"old_wt1", "old_wt2", "new_wt1", "new_wt2"}
         for d in result:
             assert d.replaced_from is None

@@ -297,14 +297,15 @@ class TimingSpecDiff:
     added: Dict[str, TimingSpec] = field(default_factory=dict)
     removed: Dict[str, TimingSpec] = field(default_factory=dict)
     changed: Dict[str, Tuple[TimingSpec, TimingSpec]] = field(default_factory=dict)
-    eqnsets_old: Tuple[Tuple[int, str], ...] = ()
-    eqnsets_new: Tuple[Tuple[int, str], ...] = ()
+    replaced_from: Optional[str] = None
+    old_specs: Optional[Dict[str, TimingSpec]] = None
+    new_specs: Optional[Dict[str, TimingSpec]] = None
 
     @property
     def has_changes(self) -> bool:
         return bool(
             self.added or self.removed or self.changed
-            or self.eqnsets_old or self.eqnsets_new
+            or self.replaced_from
         )
 
 
@@ -323,6 +324,10 @@ class TimingEqnSetDiff:
     timingsets_added: Dict[int, TimingSetConfig] = field(default_factory=dict)
     timingsets_removed: Dict[int, TimingSetConfig] = field(default_factory=dict)
     timingsets_changed: Dict[int, Tuple[TimingSetConfig, TimingSetConfig]] = field(default_factory=dict)
+    old_block: Optional[TimingEqnSetBlock] = None
+    new_block: Optional[TimingEqnSetBlock] = None
+    replaced_from_index: int = 0
+    replaced_from_name: str = ""
 
     @property
     def has_changes(self) -> bool:
@@ -330,6 +335,7 @@ class TimingEqnSetDiff:
             self.specs_added or self.specs_removed or self.specs_changed
             or self.pins_added or self.pins_removed or self.pins_changed
             or self.timingsets_added or self.timingsets_removed or self.timingsets_changed
+            or self.old_block or self.new_block or self.replaced_from_name
         )
 
 

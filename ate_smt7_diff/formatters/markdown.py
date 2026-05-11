@@ -5,7 +5,7 @@ Markdown formatter for diff reports.
 
 from typing import List
 
-from ate_smt7_diff.models import DiffReport, DiffType, EqnSetDiff, LevelSpecDiff, SuiteConfigReport, TimingEqnSetDiff, TimingSpecDiff, WaveTblDiff
+from ate_smt7_diff.models import DiffReport, DiffType, EqnSetDiff, LevelSpecDiff, SuiteConfigReport, TimingEqnSetBlock, TimingEqnSetDiff, TimingSpecDiff, WaveTblDiff
 
 
 def _fmt_val(val: str) -> str:
@@ -117,9 +117,49 @@ def _format_eqnset_markdown(diff: EqnSetDiff) -> List[str]:
     return lines
 
 
+def _format_eqnset_block_markdown(block: TimingEqnSetBlock) -> List[str]:
+    """Format EQNSET block content as Markdown lines."""
+    lines = []
+    if block.specs:
+        lines.append("")
+        lines.append("| Spec | Value | Units |")
+        lines.append("|------|-------|-------|")
+        for name, spec in block.specs.items():
+            lines.append(f"| `{name}` | `{spec.value}` | `{spec.units}` |")
+    if block.pins_groups:
+        lines.append("")
+        lines.append("| PINS | Fields |")
+        lines.append("|------|--------|")
+        for name, cfg in block.pins_groups.items():
+            fields_str = ", ".join(f"{k}={v}" for k, v in cfg.all_fields().items())
+            lines.append(f"| `{name}` | {fields_str} |")
+    if block.timingsets:
+        lines.append("")
+        lines.append("| TIMINGSET | Fields |")
+        lines.append("|-----------|--------|")
+        for idx, cfg in block.timingsets.items():
+            fields_str = ", ".join(f"{k}={v}" for k, v in cfg.all_fields().items())
+            lines.append(f"| {idx} | {fields_str} |")
+    return lines
+
+
 def _format_timing_eqnset_markdown(diff: TimingEqnSetDiff) -> List[str]:
     """Format a single TimingEqnSetDiff as Markdown lines."""
     lines = []
+
+    # Replacement
+    if diff.replaced_from_name:
+        lines.append(
+            f"### {diff.suite_name}: Timing EQNSET Replaced: "
+            f"{diff.replaced_from_index} \"{diff.replaced_from_name}\" -> "
+            f"{diff.eqnset_index} \"{diff.eqnset_name}\""
+        )
+        if diff.new_block:
+            lines.append("")
+            lines.append("**New EQNSET content:**")
+            lines.extend(_format_eqnset_block_markdown(diff.new_block))
+        return lines
+
     lines.append(f"### {diff.suite_name} (EQNSET {diff.eqnset_index} \"{diff.eqnset_name}\")")
 
     if diff.specs_added or diff.specs_removed or diff.specs_changed:
@@ -212,6 +252,23 @@ def _format_timing_eqnset_markdown(diff: TimingEqnSetDiff) -> List[str]:
 def _format_timing_spec_markdown(diff: TimingSpecDiff) -> List[str]:
     """Format a single TimingSpecDiff as Markdown lines."""
     lines = []
+
+    # Replacement
+    if diff.replaced_from:
+        lines.append(
+            f"### {diff.suite_name}: Timing Spec Replaced: "
+            f"{diff.replaced_from} -> {diff.spec_name}"
+        )
+        if diff.new_specs:
+            lines.append("")
+            lines.append("**New spec content:**")
+            lines.append("")
+            lines.append("| Spec | Value | Units |")
+            lines.append("|------|-------|-------|")
+            for name, spec in diff.new_specs.items():
+                lines.append(f"| `{name}` | `{spec.value}` | `{spec.units}` |")
+        return lines
+
     lines.append(f"### {diff.suite_name} ({diff.spec_type} spec \"{diff.spec_name}\")")
     if diff.added:
         lines.append("")

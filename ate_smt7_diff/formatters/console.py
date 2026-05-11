@@ -13,6 +13,7 @@ from ate_smt7_diff.models import (
     LevelSetPinConfig,
     LevelSpecDiff,
     SuiteConfigReport,
+    TimingEqnSetBlock,
     TimingEqnSetDiff,
     TimingPinConfig,
     TimingSetConfig,
@@ -211,9 +212,40 @@ def _collect_timingset_changes(old_c: TimingSetConfig, new_c: TimingSetConfig) -
     return changes
 
 
+def _format_eqnset_block_console(block: TimingEqnSetBlock) -> List[str]:
+    """Format EQNSET block content as console lines."""
+    lines = []
+    if block.specs:
+        lines.append("    SPECS:")
+        for name, spec in block.specs.items():
+            lines.append(f"      {name}: value={spec.value}, units={spec.units}")
+    if block.pins_groups:
+        lines.append("    PINS:")
+        for name, cfg in block.pins_groups.items():
+            lines.append(f"      {name}: {_timing_pin_fields_str(cfg)}")
+    if block.timingsets:
+        lines.append("    TIMINGSET:")
+        for idx, cfg in block.timingsets.items():
+            lines.append(f"      TIMINGSET {idx}: {_timing_pin_fields_str(cfg)}")
+    return lines
+
+
 def _format_timing_eqnset_console(diff: TimingEqnSetDiff) -> List[str]:
     """Format a single TimingEqnSetDiff as console lines."""
     lines = []
+
+    # Replacement
+    if diff.replaced_from_name:
+        lines.append(
+            f"{diff.suite_name}: Timing EQNSET Replaced: "
+            f"{diff.replaced_from_index} \"{diff.replaced_from_name}\" -> "
+            f"{diff.eqnset_index} \"{diff.eqnset_name}\""
+        )
+        if diff.new_block:
+            lines.append("  New EQNSET content:")
+            lines.extend(_format_eqnset_block_console(diff.new_block))
+        return lines
+
     lines.append(f"{diff.suite_name} (EQNSET {diff.eqnset_index} \"{diff.eqnset_name}\"):")
     if diff.specs_added:
         lines.append("  SPECS Added:")
@@ -277,13 +309,20 @@ def _format_timing_eqnset_console(diff: TimingEqnSetDiff) -> List[str]:
 def _format_timing_spec_console(diff: TimingSpecDiff) -> List[str]:
     """Format a single TimingSpecDiff as console lines."""
     lines = []
+
+    # Replacement
+    if diff.replaced_from:
+        lines.append(
+            f"{diff.suite_name}: Timing Spec Replaced: "
+            f"{diff.replaced_from} -> {diff.spec_name}"
+        )
+        if diff.new_specs:
+            lines.append("  New spec content:")
+            for name, spec in diff.new_specs.items():
+                lines.append(f"    {name}: value={spec.value}, units={spec.units}")
+        return lines
+
     lines.append(f"{diff.suite_name} ({diff.spec_type} spec \"{diff.spec_name}\"):")
-    if diff.eqnsets_old or diff.eqnsets_new:
-        lines.append("  EQNSET references changed:")
-        old_str = ", ".join(f'{idx} "{name}"' for idx, name in diff.eqnsets_old) if diff.eqnsets_old else "(none)"
-        new_str = ", ".join(f'{idx} "{name}"' for idx, name in diff.eqnsets_new) if diff.eqnsets_new else "(none)"
-        lines.append(f"    old: {old_str}")
-        lines.append(f"    new: {new_str}")
     if diff.added:
         lines.append("  Added:")
         for name, spec in diff.added.items():

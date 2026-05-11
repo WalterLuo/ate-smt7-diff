@@ -178,6 +178,15 @@ def format_json(report: DiffReport) -> str:
                 "suite_name": diff.suite_name,
                 "spec_type": diff.spec_type,
                 "spec_name": diff.spec_name,
+                "replaced_from": diff.replaced_from,
+                "new_specs": {
+                    name: {
+                        "value": spec.value,
+                        "units": spec.units,
+                        "comment": spec.comment,
+                    }
+                    for name, spec in (diff.new_specs or {}).items()
+                } if diff.replaced_from else None,
                 "added": {
                     name: {
                         "value": spec.value,
@@ -219,6 +228,22 @@ def format_json(report: DiffReport) -> str:
                 "suite_name": diff.suite_name,
                 "eqnset_index": diff.eqnset_index,
                 "eqnset_name": diff.eqnset_name,
+                "replaced_from_index": diff.replaced_from_index,
+                "replaced_from_name": diff.replaced_from_name,
+                "replaced_block": {
+                    "specs": {
+                        name: {"value": spec.value, "units": spec.units, "comment": spec.comment}
+                        for name, spec in diff.new_block.specs.items()
+                    },
+                    "pins": {
+                        name: cfg.all_fields()
+                        for name, cfg in diff.new_block.pins_groups.items()
+                    },
+                    "timingsets": {
+                        str(idx): cfg.all_fields()
+                        for idx, cfg in diff.new_block.timingsets.items()
+                    },
+                } if diff.replaced_from_name and diff.new_block else None,
                 "specs": {
                     "added": {
                         name: {"value": spec.value, "units": spec.units, "comment": spec.comment}

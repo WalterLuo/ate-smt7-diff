@@ -302,7 +302,17 @@ def diff_wavetbls(
     old_blocks: Dict[str, WaveTblBlock],
     new_blocks: Dict[str, WaveTblBlock],
 ) -> List[WaveTblDiff]:
-    """Compute differences across all WAVETBL blocks for a suite."""
+    """Compute differences across all WAVETBL blocks for a suite.
+
+    Added and removed blocks are first compared by pins_groups keys.
+    When an added block and a removed block share the exact same set
+    of pins group names, they are reported as a replacement
+    (replaced_from) rather than separate add/remove entries.
+
+    If after exact-key matching exactly one added and one removed
+    block remain unmatched, they are paired as a replacement
+    regardless of content differences (fallback heuristic).
+    """
     all_names = set(old_blocks.keys()) | set(new_blocks.keys())
     result: List[WaveTblDiff] = []
     added_diffs: List[WaveTblDiff] = []
@@ -324,33 +334,48 @@ def diff_wavetbls(
         else:
             result.append(diff)
 
-    # Detect replacements: added block whose pins group keys match a removed block
-    matched_removed: Dict[str, WaveTblDiff] = {}
+    matched_added_ids: Set[int] = set()
+    matched_removed_ids: Set[int] = set()
+
+    # Step 1: Exact match by pins_groups keys
     for a_diff in added_diffs:
         a_keys = set(a_diff.new_block.pins_groups.keys()) if a_diff.new_block else set()
-        matched = None
         for r_diff in removed_diffs:
-            if r_diff.wavetbl_name in matched_removed:
+            if id(r_diff) in matched_removed_ids:
                 continue
             r_keys = set(r_diff.old_block.pins_groups.keys()) if r_diff.old_block else set()
             if a_keys and a_keys == r_keys:
-                matched = r_diff
-                break
-        if matched is not None:
-            matched_removed[matched.wavetbl_name] = matched
-            result.append(
-                WaveTblDiff(
-                    suite_name=suite_name,
-                    wavetbl_name=a_diff.wavetbl_name,
-                    new_block=a_diff.new_block,
-                    replaced_from=matched.wavetbl_name,
+                result.append(
+                    WaveTblDiff(
+                        suite_name=suite_name,
+                        wavetbl_name=a_diff.wavetbl_name,
+                        new_block=a_diff.new_block,
+                        replaced_from=r_diff.wavetbl_name,
+                    )
                 )
+                matched_added_ids.add(id(a_diff))
+                matched_removed_ids.add(id(r_diff))
+                break
+
+    remaining_added = [d for d in added_diffs if id(d) not in matched_added_ids]
+    remaining_removed = [d for d in removed_diffs if id(d) not in matched_removed_ids]
+
+    # Step 2: Fallback - if exactly one unmatched added and one unmatched removed,
+    # pair them as replacement regardless of content differences.
+    if len(remaining_added) == 1 and len(remaining_removed) == 1:
+        a_diff = remaining_added[0]
+        r_diff = remaining_removed[0]
+        result.append(
+            WaveTblDiff(
+                suite_name=suite_name,
+                wavetbl_name=a_diff.wavetbl_name,
+                new_block=a_diff.new_block,
+                replaced_from=r_diff.wavetbl_name,
             )
-        else:
-            result.append(a_diff)
+        )
+        remaining_added = []
+        remaining_removed = []
 
-    for r_diff in removed_diffs:
-        if r_diff.wavetbl_name not in matched_removed:
-            result.append(r_diff)
-
+    result.extend(remaining_added)
+    result.extend(remaining_removed)
     return result
