@@ -6,7 +6,37 @@ build-backend = "setuptools.build_meta"
 name = "ate-smt7-diff"
 version = "0.1.0"
 description = "SMT7 ATE test program diff engine"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 
 [project.scripts]
 ate-smt7-diff = "ate_smt7_diff.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=9.0", "ruff>=0.11", "mypy>=1.15", "bandit>=1.8"]
+
+[tool.setuptools.packages.find]
+include = ["ate_smt7_diff*"]
+exclude = ["Test1*", "Test2*", "tests*"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "C90", "N", "UP", "B", "SIM", "PLR"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[tool.bandit]
+exclude_dirs = ["tests", "Test1", "Test2"]
+skips = ["B101"]

@@ -5,7 +5,6 @@ Loads and indexes level files, parses SPECSET, EQNSET, DPSPINS, and LEVELSET blo
 """
 
 import re
-from typing import Dict, List, Optional, Tuple
 
 from ate_smt7_diff.models import (
     DpsPinConfig,
@@ -20,20 +19,21 @@ class LevelLoader:
 
     def __init__(self, path: str) -> None:
         self.path = path
-        self.lines: List[str] = []
-        self.eqnsets: Dict[int, int] = {}
-        self.eqnset_specs: Dict[Tuple[int, int], int] = {}
+        self.lines: list[str] = []
+        self.eqnsets: dict[int, int] = {}
+        self.eqnset_specs: dict[tuple[int, int], int] = {}
         self._load()
 
     def _load(self) -> None:
         from pathlib import Path
+
         try:
             raw = Path(self.path).read_text(encoding="utf-8")
         except (FileNotFoundError, PermissionError, UnicodeDecodeError) as e:
             raise ValueError(f"Failed to read level file {self.path}: {e}") from e
 
         self.lines = raw.splitlines()
-        current_eqn: Optional[int] = None
+        current_eqn: int | None = None
         for i, line in enumerate(self.lines):
             stripped = line.strip()
             if stripped.startswith("EQNSET "):
@@ -55,11 +55,11 @@ class LevelLoader:
                         continue
                     self.eqnset_specs[(current_eqn, spec_idx)] = i
 
-    def lookup_eqnset(self, eqn_index: int) -> Optional[int]:
+    def lookup_eqnset(self, eqn_index: int) -> int | None:
         """Return line index of EQNSET entry."""
         return self.eqnsets.get(eqn_index)
 
-    def lookup_specset(self, eqn_index: int, spec_index: int) -> Optional[int]:
+    def lookup_specset(self, eqn_index: int, spec_index: int) -> int | None:
         """Return line index of SPECSET entry within EQNSET."""
         return self.eqnset_specs.get((eqn_index, spec_index))
 
@@ -67,23 +67,23 @@ class LevelLoader:
         """Extract lines from start_idx until next EQNSET or end of file."""
         if start_idx >= len(self.lines):
             return ""
-        result: List[str] = []
+        result: list[str] = []
         for line in self.lines[start_idx:]:
             if line.strip().startswith("EQNSET ") and result:
                 break
             result.append(line)
         return "\n".join(result)
 
-    def parse_specs(self, specset_idx: int) -> Dict[str, LevelSpec]:
+    def parse_specs(self, specset_idx: int) -> dict[str, LevelSpec]:
         """Parse spec lines from a SPECSET block into structured dict."""
         if specset_idx >= len(self.lines):
             return {}
 
-        result: Dict[str, LevelSpec] = {}
+        result: dict[str, LevelSpec] = {}
         in_specs = False
-        units_re = re.compile(r'\[([^]]*)\]')
+        units_re = re.compile(r"\[([^]]*)\]")
 
-        for line in self.lines[specset_idx + 1:]:
+        for line in self.lines[specset_idx + 1 :]:
             stripped = line.strip()
             if not stripped:
                 continue
@@ -98,8 +98,8 @@ class LevelLoader:
             units_match = units_re.search(line)
             units = units_match.group(1).strip() if units_match else ""
             if units_match:
-                line_without_units = line[:units_match.start()]
-                comment = line[units_match.end():].strip()
+                line_without_units = line[: units_match.start()]
+                comment = line[units_match.end() :].strip()
             else:
                 line_without_units = line
                 comment = ""
@@ -128,8 +128,8 @@ class LevelLoader:
         if dpspins_idx >= len(self.lines):
             return DpsPinConfig()
 
-        fields: Dict[str, str] = {}
-        for line in self.lines[dpspins_idx + 1:]:
+        fields: dict[str, str] = {}
+        for line in self.lines[dpspins_idx + 1 :]:
             stripped = line.strip()
             if not stripped:
                 continue
@@ -162,14 +162,14 @@ class LevelLoader:
             extra=extra,
         )
 
-    def parse_levelset(self, levelset_idx: int) -> Dict[str, LevelSetPinConfig]:
+    def parse_levelset(self, levelset_idx: int) -> dict[str, LevelSetPinConfig]:
         """Parse a LEVELSET block into dict of PINS group -> LevelSetPinConfig."""
         if levelset_idx >= len(self.lines):
             return {}
 
-        result: Dict[str, LevelSetPinConfig] = {}
-        current_pins: Optional[str] = None
-        current_fields: Dict[str, str] = {}
+        result: dict[str, LevelSetPinConfig] = {}
+        current_pins: str | None = None
+        current_fields: dict[str, str] = {}
 
         def flush_pins() -> None:
             nonlocal current_pins, current_fields
@@ -186,7 +186,7 @@ class LevelLoader:
             current_pins = None
             current_fields = {}
 
-        for line in self.lines[levelset_idx + 1:]:
+        for line in self.lines[levelset_idx + 1 :]:
             stripped = line.strip()
             if not stripped:
                 continue
@@ -218,7 +218,7 @@ class LevelLoader:
         flush_pins()
         return result
 
-    def parse_eqnset_block(self, eqnset_idx: int) -> Optional[EqnSetBlock]:
+    def parse_eqnset_block(self, eqnset_idx: int) -> EqnSetBlock | None:
         """Parse an EQNSET block from the EQSP LEV,EQN region."""
         if eqnset_idx >= len(self.lines):
             return None
@@ -239,9 +239,9 @@ class LevelLoader:
         if len(parts) >= 3:
             eqnset_name = parts[2].strip().strip('"')
 
-        specs: Dict[str, LevelSpec] = {}
-        dpspins: Dict[str, DpsPinConfig] = {}
-        levelsets: Dict[int, Dict[str, LevelSetPinConfig]] = {}
+        specs: dict[str, LevelSpec] = {}
+        dpspins: dict[str, DpsPinConfig] = {}
+        levelsets: dict[int, dict[str, LevelSetPinConfig]] = {}
 
         i = eqnset_idx + 1
         while i < len(self.lines):
@@ -267,10 +267,10 @@ class LevelLoader:
                         or spec_line == "@"
                     ):
                         break
-                    units_match = re.search(r'\[([^]]*)\]', spec_line)
+                    units_match = re.search(r"\[([^]]*)\]", spec_line)
                     units = units_match.group(1).strip() if units_match else ""
                     if units_match:
-                        line_without_units = spec_line[:units_match.start()]
+                        line_without_units = spec_line[: units_match.start()]
                     else:
                         line_without_units = spec_line
                     spec_parts = line_without_units.split()

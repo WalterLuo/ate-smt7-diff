@@ -4,10 +4,22 @@ Builder / assembler layer.
 Orchestrates parsing, diff computation, and config view building.
 """
 
+import contextlib
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
 
+from ate_smt7_diff.diff.flow_diff import compute_diff, detect_moves, detect_swaps
+from ate_smt7_diff.diff.level_diff import diff_eqnset_blocks, diff_level_specs
+from ate_smt7_diff.diff.suite_diff import diff_suite_configs
+from ate_smt7_diff.diff.testmethod_diff import diff_testmethods
+from ate_smt7_diff.diff.testtable_diff import diff_testtables
+from ate_smt7_diff.diff.timing_diff import (
+    diff_timing_eqnset_blocks,
+    diff_timing_eqnset_blocks_full,
+    diff_timing_specs,
+    diff_wavetbls,
+)
+from ate_smt7_diff.diff.vector_diff import diff_vectors
 from ate_smt7_diff.models import (
     DiffReport,
     EqnSetBlock,
@@ -17,6 +29,8 @@ from ate_smt7_diff.models import (
     ProgramContext,
     SuiteConfigReport,
     SuiteConfigView,
+    TestMethodDiff,
+    TestMethodInfo,
     TimingEqnSetBlock,
     TimingEqnSetDiff,
     TimingSpec,
@@ -24,29 +38,23 @@ from ate_smt7_diff.models import (
     VectorSuiteDiff,
     VectorSuiteMapping,
     WaveTblBlock,
+    WaveTblDiff,
 )
 from ate_smt7_diff.parsers.flow_parser import extract_test_flow_section, parse_test_flow
+from ate_smt7_diff.parsers.level_parser import LevelLoader
 from ate_smt7_diff.parsers.suite_parser import (
     extract_context_section,
     extract_test_suites_section,
     parse_context,
     parse_suite_config,
 )
-from ate_smt7_diff.parsers.level_parser import LevelLoader
-from ate_smt7_diff.parsers.timing_parser import TimingLoader
-from ate_smt7_diff.parsers.testtable_parser import TestTableLoader
-from ate_smt7_diff.parsers.vector_parser import VectorLoader
-from ate_smt7_diff.diff.flow_diff import compute_diff, detect_moves, detect_swaps
-from ate_smt7_diff.diff.suite_diff import diff_suite_configs
-from ate_smt7_diff.diff.level_diff import diff_level_specs, diff_eqnset_blocks
-from ate_smt7_diff.diff.timing_diff import (
-    diff_timing_specs,
-    diff_timing_eqnset_blocks,
-    diff_timing_eqnset_blocks_full,
-    diff_wavetbls,
+from ate_smt7_diff.parsers.testmethod_parser import (
+    extract_testmethods_section,
+    parse_testmethods,
 )
-from ate_smt7_diff.diff.testtable_diff import diff_testtables
-from ate_smt7_diff.diff.vector_diff import diff_vectors
+from ate_smt7_diff.parsers.testtable_parser import TestTableLoader
+from ate_smt7_diff.parsers.timing_parser import TimingLoader
+from ate_smt7_diff.parsers.vector_parser import VectorLoader
 
 
 def load_program_context(flow_path: str) -> ProgramContext:
@@ -77,15 +85,15 @@ def load_program_context(flow_path: str) -> ProgramContext:
 
 
 def _resolve_timing_config(
-    cfg: Dict[str, str], suite_name: str
-) -> Tuple[Optional[str], Optional[int], Optional[int], Optional[str]]:
+    cfg: dict[str, str], suite_name: str
+) -> tuple[str | None, int | None, int | None, str | None]:
     """Resolve timing spec set, EQNSET, SPECSET index, and timset from suite config."""
-    timing_spec: Optional[str] = None
+    timing_spec: str | None = None
     tim_raw = cfg.get("override_tim_spec_set")
     if tim_raw:
         timing_spec = tim_raw.strip('"')
 
-    timing_eqn: Optional[int] = None
+    timing_eqn: int | None = None
     tim_eqn_raw = cfg.get("override_tim_equ_set")
     if tim_eqn_raw:
         try:
@@ -93,18 +101,17 @@ def _resolve_timing_config(
         except ValueError:
             logging.warning(
                 "Invalid override_tim_equ_set '%s' for suite %s",
-                tim_eqn_raw, suite_name,
+                tim_eqn_raw,
+                suite_name,
             )
 
-    timing_spec_idx: Optional[int] = None
+    timing_spec_idx: int | None = None
     tim_spec_idx_raw = cfg.get("override_tim_spec_set")
     if tim_spec_idx_raw:
-        try:
+        with contextlib.suppress(ValueError):
             timing_spec_idx = int(tim_spec_idx_raw)
-        except ValueError:
-            pass
 
-    timing_timset: Optional[str] = None
+    timing_timset: str | None = None
     timset_raw = cfg.get("override_timset")
     if timset_raw:
         timing_timset = timset_raw.strip('"')
@@ -113,10 +120,10 @@ def _resolve_timing_config(
 
 
 def _resolve_level_config(
-    cfg: Dict[str, str], suite_name: str
-) -> Tuple[Optional[int], Optional[int], Optional[int]]:
+    cfg: dict[str, str], suite_name: str
+) -> tuple[int | None, int | None, int | None]:
     """Resolve level EQNSET, SPECSET, and levset from suite config."""
-    level_eqn: Optional[int] = None
+    level_eqn: int | None = None
     lev_eqn_raw = cfg.get("override_lev_equ_set")
     if lev_eqn_raw:
         try:
@@ -124,10 +131,11 @@ def _resolve_level_config(
         except ValueError:
             logging.warning(
                 "Invalid override_lev_equ_set '%s' for suite %s",
-                lev_eqn_raw, suite_name,
+                lev_eqn_raw,
+                suite_name,
             )
 
-    level_spec: Optional[int] = None
+    level_spec: int | None = None
     lev_spec_raw = cfg.get("override_lev_spec_set")
     if lev_spec_raw:
         try:
@@ -135,10 +143,11 @@ def _resolve_level_config(
         except ValueError:
             logging.warning(
                 "Invalid override_lev_spec_set '%s' for suite %s",
-                lev_spec_raw, suite_name,
+                lev_spec_raw,
+                suite_name,
             )
 
-    level_levset: Optional[int] = None
+    level_levset: int | None = None
     levset_raw = cfg.get("override_levset")
     if levset_raw:
         try:
@@ -146,37 +155,38 @@ def _resolve_level_config(
         except ValueError:
             logging.warning(
                 "Invalid override_levset '%s' for suite %s",
-                levset_raw, suite_name,
+                levset_raw,
+                suite_name,
             )
 
     return level_eqn, level_spec, level_levset
 
 
 def _extract_timing_data(
-    timing_loader: Optional[TimingLoader],
-    timing_spec: Optional[str],
-    timing_eqn: Optional[int],
-    timing_timset: Optional[str],
-) -> Tuple[
-    Optional[str],
-    Optional[Dict[str, TimingSpec]],
-    Optional[TimingEqnSetBlock],
-    Optional[List[Tuple[int, str]]],
-    Dict[int, TimingEqnSetBlock],
-    Tuple[str, ...],
-    Dict[str, WaveTblBlock],
+    timing_loader: TimingLoader | None,
+    timing_spec: str | None,
+    timing_eqn: int | None,
+    timing_timset: str | None,
+) -> tuple[
+    str | None,
+    dict[str, TimingSpec] | None,
+    TimingEqnSetBlock | None,
+    list[tuple[int, str]] | None,
+    dict[int, TimingEqnSetBlock],
+    tuple[str, ...],
+    dict[str, WaveTblBlock],
 ]:
     """Extract timing snippet, specs, EQNSET block, port-spec EQNSET refs, and WAVETBLs."""
     if not timing_loader or not timing_spec:
         return None, None, None, None, {}, (), {}
 
-    timing_snippet: Optional[str] = None
-    timing_specs: Optional[Dict[str, TimingSpec]] = None
-    timing_eqnset_block: Optional[TimingEqnSetBlock] = None
-    timing_spec_eqnsets: Optional[List[Tuple[int, str]]] = None
-    timing_eqnset_blocks: Dict[int, TimingEqnSetBlock] = {}
-    wavetbl_names: List[str] = []
-    wavetbl_blocks: Dict[str, WaveTblBlock] = {}
+    timing_snippet: str | None = None
+    timing_specs: dict[str, TimingSpec] | None = None
+    timing_eqnset_block: TimingEqnSetBlock | None = None
+    timing_spec_eqnsets: list[tuple[int, str]] | None = None
+    timing_eqnset_blocks: dict[int, TimingEqnSetBlock] = {}
+    wavetbl_names: list[str] = []
+    wavetbl_blocks: dict[str, WaveTblBlock] = {}
 
     is_port_spec = timing_eqn is None
 
@@ -234,15 +244,15 @@ def _extract_timing_data(
 
 
 def _extract_level_data(
-    level_loader: Optional[LevelLoader],
-    level_eqn: Optional[int],
-    level_spec: Optional[int],
-) -> Tuple[Optional[str], Optional[Dict[str, LevelSpec]], Optional[EqnSetBlock]]:
+    level_loader: LevelLoader | None,
+    level_eqn: int | None,
+    level_spec: int | None,
+) -> tuple[str | None, dict[str, LevelSpec] | None, EqnSetBlock | None]:
     """Extract level snippet, specs, and EQNSET block."""
     if not level_loader or level_eqn is None:
         return None, None, None
 
-    level_snippet: Optional[str] = None
+    level_snippet: str | None = None
     if level_spec is not None:
         spec_idx = level_loader.lookup_specset(level_eqn, level_spec)
         if spec_idx is not None:
@@ -252,13 +262,13 @@ def _extract_level_data(
             if eqn_idx is not None:
                 level_snippet = level_loader.extract_snippet(eqn_idx)
 
-    level_specs: Optional[Dict[str, LevelSpec]] = None
+    level_specs: dict[str, LevelSpec] | None = None
     if level_spec is not None:
         spec_idx = level_loader.lookup_specset(level_eqn, level_spec)
         if spec_idx is not None:
             level_specs = level_loader.parse_specs(spec_idx)
 
-    eqnset_block: Optional[EqnSetBlock] = None
+    eqnset_block: EqnSetBlock | None = None
     eqn_idx = level_loader.lookup_eqnset(level_eqn)
     if eqn_idx is not None:
         eqnset_block = level_loader.parse_eqnset_block(eqn_idx)
@@ -270,8 +280,8 @@ def _diff_port_timing(
     suite_name: str,
     old_v: SuiteConfigView,
     new_v: SuiteConfigView,
-    timing_spec_diffs: List[TimingSpecDiff],
-    timing_eqnset_diffs: List[TimingEqnSetDiff],
+    timing_spec_diffs: list[TimingSpecDiff],
+    timing_eqnset_diffs: list[TimingEqnSetDiff],
 ) -> None:
     """Diff port-spec timing (no override_tim_equ_set)."""
     spec_name = old_v.timing_spec_set or new_v.timing_spec_set or ""
@@ -293,11 +303,11 @@ def _diff_port_timing(
     new_eqnsets = tuple(new_v.timing_spec_eqnsets or [])
 
     if old_eqnsets != new_eqnsets:
-        old_eqnset_set: Set[Tuple[int, str]] = set(old_eqnsets)
-        new_eqnset_set: Set[Tuple[int, str]] = set(new_eqnsets)
-        common_eqnsets: Set[Tuple[int, str]] = old_eqnset_set & new_eqnset_set
-        old_only: Set[Tuple[int, str]] = old_eqnset_set - new_eqnset_set
-        new_only: Set[Tuple[int, str]] = new_eqnset_set - old_eqnset_set
+        old_eqnset_set: set[tuple[int, str]] = set(old_eqnsets)
+        new_eqnset_set: set[tuple[int, str]] = set(new_eqnsets)
+        common_eqnsets: set[tuple[int, str]] = old_eqnset_set & new_eqnset_set
+        old_only: set[tuple[int, str]] = old_eqnset_set - new_eqnset_set
+        new_only: set[tuple[int, str]] = new_eqnset_set - old_eqnset_set
 
         if len(old_only) == 1 and len(new_only) == 1:
             old_eq = old_only.pop()
@@ -378,8 +388,8 @@ def _diff_regular_timing(
     suite_name: str,
     old_v: SuiteConfigView,
     new_v: SuiteConfigView,
-    timing_spec_diffs: List[TimingSpecDiff],
-    timing_eqnset_diffs: List[TimingEqnSetDiff],
+    timing_spec_diffs: list[TimingSpecDiff],
+    timing_eqnset_diffs: list[TimingEqnSetDiff],
 ) -> None:
     """Diff regular timing (by override_tim_equ_set)."""
     if old_v.timing_eqn_set != new_v.timing_eqn_set:
@@ -418,8 +428,8 @@ def _diff_regular_timing(
 
 def build_suite_views(
     flow_path: str,
-    common_suites: Set[str],
-) -> Dict[str, SuiteConfigView]:
+    common_suites: set[str],
+) -> dict[str, SuiteConfigView]:
     """
     Build SuiteConfigView for each common suite.
 
@@ -428,19 +438,19 @@ def build_suite_views(
     """
     ctx = load_program_context(flow_path)
 
-    timing_loader: Optional[TimingLoader] = None
+    timing_loader: TimingLoader | None = None
     if ctx.timing_path and ctx.timing_path.exists():
         timing_loader = TimingLoader(ctx.timing_path)
 
-    level_loader: Optional[LevelLoader] = None
+    level_loader: LevelLoader | None = None
     if ctx.levels_path and ctx.levels_path.exists():
         level_loader = LevelLoader(ctx.levels_path)
 
-    testtable_loader: Optional[TestTableLoader] = None
+    testtable_loader: TestTableLoader | None = None
     if ctx.testtable_path and ctx.testtable_path.exists():
         testtable_loader = TestTableLoader(str(ctx.testtable_path))
 
-    vector_loader: Optional[VectorLoader] = None
+    vector_loader: VectorLoader | None = None
     if ctx.vector_path and ctx.vector_path.exists():
         vector_loader = VectorLoader(str(ctx.vector_path))
 
@@ -448,11 +458,17 @@ def build_suite_views(
     ts_lines = extract_test_suites_section(flow_lines)
     suite_configs = parse_suite_config(ts_lines)
 
-    views: Dict[str, SuiteConfigView] = {}
+    # Parse testmethods block once
+    tm_lines = extract_testmethods_section(flow_lines)
+    testmethods_map = parse_testmethods(tm_lines)
+
+    views: dict[str, SuiteConfigView] = {}
     for suite_name in sorted(common_suites):
         cfg = suite_configs.get(suite_name, {})
 
-        timing_spec, timing_eqn, timing_spec_idx, timing_timset = _resolve_timing_config(cfg, suite_name)
+        timing_spec, timing_eqn, timing_spec_idx, timing_timset = _resolve_timing_config(
+            cfg, suite_name
+        )
         level_eqn, level_spec, level_levset = _resolve_level_config(cfg, suite_name)
 
         (
@@ -468,10 +484,12 @@ def build_suite_views(
             level_loader, level_eqn, level_spec
         )
 
-        testtable_rows = testtable_loader.rows_by_suite.get(suite_name) if testtable_loader else None
+        testtable_rows = (
+            testtable_loader.rows_by_suite.get(suite_name) if testtable_loader else None
+        )
 
         # Resolve vector pattern mappings for this suite
-        vector_mappings: Optional[VectorSuiteMapping] = None
+        vector_mappings: VectorSuiteMapping | None = None
         seqlbl_raw = cfg.get("override_seqlbl")
         if seqlbl_raw and vector_loader:
             seqlbl = seqlbl_raw.strip('"')
@@ -486,6 +504,29 @@ def build_suite_views(
                     seqlbl=seqlbl,
                     path=resolved_path,
                     pattern_mappings=mappings,
+                )
+
+        # Resolve testmethod reference for this suite
+        testmethod: TestMethodInfo | None = None
+        override_testf = cfg.get("override_testf")
+        if override_testf:
+            tm_id = override_testf.strip().rstrip(";")
+            tm_class = testmethods_map.get(tm_id)
+            if tm_class:
+                # Convert dot-separated class path to file path with .cpp extension
+                rel_path = tm_class.replace(".", "/") + ".cpp"
+                tm_file_path = ctx.program_root / rel_path
+                content: str | None = None
+                if tm_file_path.exists():
+                    try:
+                        content = tm_file_path.read_text(encoding="utf-8")
+                    except (UnicodeDecodeError, PermissionError, OSError):
+                        content = None
+                testmethod = TestMethodInfo(
+                    tm_id=tm_id,
+                    testmethod_class=tm_class,
+                    file_path=tm_file_path if tm_file_path.exists() else None,
+                    content=content,
                 )
 
         views[suite_name] = SuiteConfigView(
@@ -509,6 +550,7 @@ def build_suite_views(
             timing_wavetbl_blocks=timing_wavetbl_blocks,
             testtable_rows=testtable_rows,
             vector_mappings=vector_mappings,
+            testmethod=testmethod,
         )
 
     return views
@@ -520,6 +562,7 @@ def diff_flow_files(
     include_suite_diff: bool = False,
     include_config_views: bool = False,
     include_testtable_diff: bool = False,
+    include_testmethod_diff: bool = False,
 ) -> DiffReport:
     """Main entry: parse two flow files and compute diff."""
     try:
@@ -542,21 +585,22 @@ def diff_flow_files(
     diffs = detect_moves(diffs)
     diffs = detect_swaps(diffs)
 
-    suite_report: Optional[SuiteConfigReport] = None
+    suite_report: SuiteConfigReport | None = None
     if include_suite_diff:
         old_names = {t.suite_name for t in old_tests}
         new_names = {t.suite_name for t in new_tests}
         common_suites = old_names & new_names
         suite_report = diff_suite_configs(old_path, new_path, common_suites)
 
-    old_views: Optional[Dict[str, SuiteConfigView]] = None
-    new_views: Optional[Dict[str, SuiteConfigView]] = None
-    level_spec_diffs: Optional[List[LevelSpecDiff]] = None
-    eqnset_diffs: Optional[List[EqnSetDiff]] = None
-    timing_spec_diffs: Optional[List[TimingSpecDiff]] = None
-    timing_eqnset_diffs: Optional[List[TimingEqnSetDiff]] = None
-    timing_wavetbl_diffs: Optional[List["WaveTblDiff"]] = None
-    vector_diffs: Optional[List[VectorSuiteDiff]] = None
+    old_views: dict[str, SuiteConfigView] | None = None
+    new_views: dict[str, SuiteConfigView] | None = None
+    level_spec_diffs: list[LevelSpecDiff] | None = None
+    eqnset_diffs: list[EqnSetDiff] | None = None
+    timing_spec_diffs: list[TimingSpecDiff] | None = None
+    timing_eqnset_diffs: list[TimingEqnSetDiff] | None = None
+    timing_wavetbl_diffs: list[WaveTblDiff] | None = None
+    vector_diffs: list[VectorSuiteDiff] | None = None
+    testmethod_diffs: list[TestMethodDiff] | None = None
     if include_config_views:
         old_names = {t.suite_name for t in old_tests}
         new_names = {t.suite_name for t in new_tests}
@@ -616,6 +660,16 @@ def diff_flow_files(
         if not vector_diffs:
             vector_diffs = None
 
+        # Testmethod diff
+        if include_testmethod_diff:
+            testmethod_diffs = diff_testmethods(
+                sorted(common_suites),
+                old_views or {},
+                new_views or {},
+            )
+            if not testmethod_diffs:
+                testmethod_diffs = None
+
     testtable_diffs = None
     if include_testtable_diff:
         old_names = {t.suite_name for t in old_tests}
@@ -637,8 +691,12 @@ def diff_flow_files(
         else:
             old_ctx = load_program_context(old_path)
             new_ctx = load_program_context(new_path)
-            old_testtable = TestTableLoader(str(old_ctx.testtable_path)) if old_ctx.testtable_path else None
-            new_testtable = TestTableLoader(str(new_ctx.testtable_path)) if new_ctx.testtable_path else None
+            old_testtable = (
+                TestTableLoader(str(old_ctx.testtable_path)) if old_ctx.testtable_path else None
+            )
+            new_testtable = (
+                TestTableLoader(str(new_ctx.testtable_path)) if new_ctx.testtable_path else None
+            )
             old_rows_by_suite = old_testtable.rows_by_suite if old_testtable else {}
             new_rows_by_suite = new_testtable.rows_by_suite if new_testtable else {}
 
@@ -666,4 +724,5 @@ def diff_flow_files(
         timing_wavetbl_diffs=timing_wavetbl_diffs,
         testtable_diffs=testtable_diffs,
         vector_diffs=vector_diffs,
+        testmethod_diffs=testmethod_diffs,
     )

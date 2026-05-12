@@ -4,7 +4,6 @@ Suite configuration diff algorithms.
 """
 
 from pathlib import Path
-from typing import Dict, List, Set
 
 from ate_smt7_diff.models import SuiteConfigDiff, SuiteConfigReport
 from ate_smt7_diff.parsers.suite_parser import (
@@ -14,9 +13,7 @@ from ate_smt7_diff.parsers.suite_parser import (
 
 
 def compute_suite_config_diff(
-    suite_name: str,
-    old_config: Dict[str, str],
-    new_config: Dict[str, str]
+    suite_name: str, old_config: dict[str, str], new_config: dict[str, str]
 ) -> SuiteConfigDiff:
     """Compute configuration differences for a single suite."""
     old_keys = set(old_config.keys())
@@ -41,7 +38,7 @@ def compute_suite_config_diff(
 def diff_suite_configs(
     old_path: str,
     new_path: str,
-    common_suites: Set[str],
+    common_suites: set[str],
 ) -> SuiteConfigReport:
     """
     Main entry: parse two flow files' test_suites and compute config diff.
@@ -70,8 +67,8 @@ def diff_suite_configs(
     old_configs = parse_suite_config(old_section)
     new_configs = parse_suite_config(new_section)
 
-    diffs: List[SuiteConfigDiff] = []
-    missing_in_test_suites: List[str] = []
+    diffs: list[SuiteConfigDiff] = []
+    missing_in_test_suites: list[str] = []
 
     for suite_name in sorted(common_suites):
         in_old = suite_name in old_configs

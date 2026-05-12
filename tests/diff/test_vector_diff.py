@@ -8,11 +8,9 @@ import pytest
 
 from ate_smt7_diff.diff.vector_diff import diff_vectors
 from ate_smt7_diff.models import (
-    VectorFileDateChange,
+    SuiteConfigView,
     VectorPatternMapping,
     VectorSuiteMapping,
-    VectorSuiteDiff,
-    SuiteConfigView,
 )
 
 
@@ -186,57 +184,52 @@ def test_diff_vectors_no_mapping_both_sides(old_view_no_mapping, new_view_no_map
 
 
 def test_diff_vectors_file_date_changed():
-    with tempfile.TemporaryDirectory() as old_dir:
-        with tempfile.TemporaryDirectory() as new_dir:
-            old_file = Path(old_dir) / "NO_SCAN_XSDS"
-            new_file = Path(new_dir) / "NO_SCAN_XSDS"
-            old_file.write_text("old content")
-            new_file.write_text("new content")
+    with tempfile.TemporaryDirectory() as old_dir, tempfile.TemporaryDirectory() as new_dir:
+        old_file = Path(old_dir) / "DC_SCAN_XSDS@NO_SCAN_XSDS"
+        new_file = Path(new_dir) / "DC_SCAN_XSDS@NO_SCAN_XSDS"
+        old_file.write_text("old content")
+        new_file.write_text("new content")
 
-            old_view = SuiteConfigView(
+        old_view = SuiteConfigView(
+            suite_name="XSDS_DC_HV",
+            flow_config={"override_seqlbl": '"DC_SCAN_XSDS"'},
+            timing_spec_set=None,
+            level_eqn_set=None,
+            level_spec_set=None,
+            level_levset=None,
+            timing_snippet=None,
+            level_snippet=None,
+            level_specs=None,
+            vector_mappings=VectorSuiteMapping(
                 suite_name="XSDS_DC_HV",
-                flow_config={"override_seqlbl": '"DC_SCAN_XSDS"'},
-                timing_spec_set=None,
-                level_eqn_set=None,
-                level_spec_set=None,
-                level_levset=None,
-                timing_snippet=None,
-                level_snippet=None,
-                level_specs=None,
-                vector_mappings=VectorSuiteMapping(
-                    suite_name="XSDS_DC_HV",
-                    seqlbl="DC_SCAN_XSDS",
-                    path=old_dir,
-                    pattern_mappings=(
-                        VectorPatternMapping("DC_SCAN_XSDS", "NO_SCAN_XSDS", False),
-                    ),
-                ),
-            )
-            new_view = SuiteConfigView(
+                seqlbl="DC_SCAN_XSDS",
+                path=old_dir,
+                pattern_mappings=(VectorPatternMapping("DC_SCAN_XSDS", "NO_SCAN_XSDS", False),),
+            ),
+        )
+        new_view = SuiteConfigView(
+            suite_name="XSDS_DC_HV",
+            flow_config={"override_seqlbl": '"DC_SCAN_XSDS"'},
+            timing_spec_set=None,
+            level_eqn_set=None,
+            level_spec_set=None,
+            level_levset=None,
+            timing_snippet=None,
+            level_snippet=None,
+            level_specs=None,
+            vector_mappings=VectorSuiteMapping(
                 suite_name="XSDS_DC_HV",
-                flow_config={"override_seqlbl": '"DC_SCAN_XSDS"'},
-                timing_spec_set=None,
-                level_eqn_set=None,
-                level_spec_set=None,
-                level_levset=None,
-                timing_snippet=None,
-                level_snippet=None,
-                level_specs=None,
-                vector_mappings=VectorSuiteMapping(
-                    suite_name="XSDS_DC_HV",
-                    seqlbl="DC_SCAN_XSDS",
-                    path=new_dir,
-                    pattern_mappings=(
-                        VectorPatternMapping("DC_SCAN_XSDS", "NO_SCAN_XSDS", False),
-                    ),
-                ),
-            )
+                seqlbl="DC_SCAN_XSDS",
+                path=new_dir,
+                pattern_mappings=(VectorPatternMapping("DC_SCAN_XSDS", "NO_SCAN_XSDS", False),),
+            ),
+        )
 
-            old_views = {"XSDS_DC_HV": old_view}
-            new_views = {"XSDS_DC_HV": new_view}
-            diffs = diff_vectors(["XSDS_DC_HV"], old_views, new_views)
-            assert len(diffs) == 1
-            assert diffs[0].diff_type == "file_date_changed"
-            assert diffs[0].suite_name == "XSDS_DC_HV"
-            assert len(diffs[0].file_date_changes) == 1
-            assert diffs[0].file_date_changes[0].file_path == str(new_file)
+        old_views = {"XSDS_DC_HV": old_view}
+        new_views = {"XSDS_DC_HV": new_view}
+        diffs = diff_vectors(["XSDS_DC_HV"], old_views, new_views)
+        assert len(diffs) == 1
+        assert diffs[0].diff_type == "file_date_changed"
+        assert diffs[0].suite_name == "XSDS_DC_HV"
+        assert len(diffs[0].file_date_changes) == 1
+        assert diffs[0].file_date_changes[0].file_path == str(new_file)

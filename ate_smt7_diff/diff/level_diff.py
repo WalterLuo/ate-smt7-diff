@@ -3,8 +3,6 @@
 Level spec and EQNSET diff algorithms.
 """
 
-from typing import Dict, Optional, Tuple
-
 from ate_smt7_diff.models import (
     EqnSetBlock,
     EqnSetDiff,
@@ -16,9 +14,9 @@ from ate_smt7_diff.models import (
 
 def diff_level_specs(
     suite_name: str,
-    old_specs: Optional[Dict[str, LevelSpec]],
-    new_specs: Optional[Dict[str, LevelSpec]],
-) -> Optional[LevelSpecDiff]:
+    old_specs: dict[str, LevelSpec] | None,
+    new_specs: dict[str, LevelSpec] | None,
+) -> LevelSpecDiff | None:
     """Compute level spec differences between two spec dictionaries."""
     if old_specs is None and new_specs is None:
         return None
@@ -56,9 +54,9 @@ def diff_level_specs(
 
 
 def _diff_levelset_pins(
-    old_pins: Dict[str, LevelSetPinConfig],
-    new_pins: Dict[str, LevelSetPinConfig],
-) -> Dict[str, Tuple[LevelSetPinConfig, LevelSetPinConfig]]:
+    old_pins: dict[str, LevelSetPinConfig],
+    new_pins: dict[str, LevelSetPinConfig],
+) -> dict[str, tuple[LevelSetPinConfig, LevelSetPinConfig]]:
     """Compare PINS groups within a single LEVELSET."""
     return {
         name: (old_pins[name], new_pins[name])
@@ -69,9 +67,9 @@ def _diff_levelset_pins(
 
 def diff_eqnset_blocks(
     suite_name: str,
-    old_block: Optional[EqnSetBlock],
-    new_block: Optional[EqnSetBlock],
-) -> Optional[EqnSetDiff]:
+    old_block: EqnSetBlock | None,
+    new_block: EqnSetBlock | None,
+) -> EqnSetDiff | None:
     """Compute EQNSET block differences between two program versions."""
     if old_block is None and new_block is None:
         return None
@@ -110,7 +108,7 @@ def diff_eqnset_blocks(
     new_ls_keys = set(new_block.levelsets.keys())
     levelsets_added = {k: new_block.levelsets[k] for k in new_ls_keys - old_ls_keys}
     levelsets_removed = {k: old_block.levelsets[k] for k in old_ls_keys - new_ls_keys}
-    levelsets_changed: Dict[int, Dict[str, Tuple[LevelSetPinConfig, LevelSetPinConfig]]] = {}
+    levelsets_changed: dict[int, dict[str, tuple[LevelSetPinConfig, LevelSetPinConfig]]] = {}
     for k in old_ls_keys & new_ls_keys:
         old_pins = old_block.levelsets[k]
         new_pins = new_block.levelsets[k]

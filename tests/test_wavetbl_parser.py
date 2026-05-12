@@ -3,9 +3,8 @@
 
 import pytest
 
-from ate_smt7_diff.models import WaveTblBlock, WaveTblPinsGroup, WaveTblRow
+from ate_smt7_diff.models import WaveTblRow
 from ate_smt7_diff.parsers.timing_parser import TimingLoader
-
 
 SAMPLE_TIMING = """\
 EQSP TIM,WVT,#9000068300WAVETBL "OS_FUNC"

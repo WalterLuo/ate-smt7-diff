@@ -6,16 +6,14 @@ Rows are matched by (suite_name, test_name); test_number is treated
 as a regular column and reported in changed when it differs.
 """
 
-from typing import Dict, List, Optional, Tuple
-
 from ate_smt7_diff.models import TestTableRow, TestTableRowDiff, TestTableSuiteDiff
 
 
 def _rows_by_test_name(
-    rows: Dict[Tuple[str, str, str], TestTableRow]
-) -> Dict[Tuple[str, str], TestTableRow]:
+    rows: dict[tuple[str, str, str], TestTableRow],
+) -> dict[tuple[str, str], TestTableRow]:
     """Re-index rows by (suite_name, test_name)."""
-    result: Dict[Tuple[str, str], TestTableRow] = {}
+    result: dict[tuple[str, str], TestTableRow] = {}
     for key, row in rows.items():
         name_key = (key[0], key[1])
         result[name_key] = row
@@ -24,9 +22,9 @@ def _rows_by_test_name(
 
 def diff_testtable_suites(
     suite_name: str,
-    old_rows: Dict[Tuple[str, str, str], TestTableRow],
-    new_rows: Dict[Tuple[str, str, str], TestTableRow],
-) -> Optional[TestTableSuiteDiff]:
+    old_rows: dict[tuple[str, str, str], TestTableRow],
+    new_rows: dict[tuple[str, str, str], TestTableRow],
+) -> TestTableSuiteDiff | None:
     """Compare testtable rows for a single suite.
 
     Rows are matched by (suite_name, test_name).  test_number is treated
@@ -44,11 +42,11 @@ def diff_testtable_suites(
     added = tuple(new_by_name[k] for k in sorted(new_names - old_names))
     removed = tuple(old_by_name[k] for k in sorted(old_names - new_names))
 
-    changed_rows: List[TestTableRowDiff] = []
+    changed_rows: list[TestTableRowDiff] = []
     for k in sorted(old_names & new_names):
         old_row = old_by_name[k]
         new_row = new_by_name[k]
-        column_changes: Dict[str, Tuple[str, str]] = {}
+        column_changes: dict[str, tuple[str, str]] = {}
         all_cols = set(old_row.columns.keys()) | set(new_row.columns.keys())
         for col in sorted(all_cols):
             if col in ("Suite name", "Test name"):
@@ -78,15 +76,15 @@ def diff_testtable_suites(
 
 
 def diff_testtables(
-    common_suites: List[str],
-    old_rows_by_suite: Dict[str, Dict[Tuple[str, str, str], TestTableRow]],
-    new_rows_by_suite: Dict[str, Dict[Tuple[str, str, str], TestTableRow]],
-) -> List[TestTableSuiteDiff]:
+    common_suites: list[str],
+    old_rows_by_suite: dict[str, dict[tuple[str, str, str], TestTableRow]],
+    new_rows_by_suite: dict[str, dict[tuple[str, str, str], TestTableRow]],
+) -> list[TestTableSuiteDiff]:
     """Compare testtables for all common suites.
 
     Returns a list of TestTableSuiteDiff with changes only.
     """
-    diffs: List[TestTableSuiteDiff] = []
+    diffs: list[TestTableSuiteDiff] = []
     for suite_name in common_suites:
         old_rows = old_rows_by_suite.get(suite_name, {})
         new_rows = new_rows_by_suite.get(suite_name, {})

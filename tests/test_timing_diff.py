@@ -2,18 +2,17 @@
 """Tests for timing diff functionality."""
 
 import unittest
+
+from ate_smt7_diff.diff.timing_diff import (
+    diff_timing_eqnset_blocks,
+    diff_timing_eqnset_blocks_full,
+    diff_timing_specs,
+)
 from ate_smt7_diff.models import (
     TimingEqnSetBlock,
-    TimingEqnSetDiff,
     TimingPinConfig,
     TimingSetConfig,
     TimingSpec,
-    TimingSpecDiff,
-)
-from ate_smt7_diff.diff.timing_diff import (
-    diff_timing_specs,
-    diff_timing_eqnset_blocks,
-    diff_timing_eqnset_blocks_full,
 )
 
 

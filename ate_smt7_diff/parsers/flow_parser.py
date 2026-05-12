@@ -5,20 +5,18 @@ Extracts and parses 'test_flow' blocks into a flat list of TestItems.
 """
 
 import re
-from typing import List
 
 from ate_smt7_diff.models import TestItem
 
-
 # Module-level compiled regex patterns for parsing test_flow
-_RUN_RE = re.compile(r'^\s*run\(\s*([^)]+?)\s*\)\s*;\s*$')
-_RUN_BRANCH_RE = re.compile(r'^\s*run_and_branch\(\s*([^)]+?)\s*\)\s*$')
+_RUN_RE = re.compile(r"^\s*run\(\s*([^)]+?)\s*\)\s*;\s*$")
+_RUN_BRANCH_RE = re.compile(r"^\s*run_and_branch\(\s*([^)]+?)\s*\)\s*$")
 _GROUP_END_RE = re.compile(
     r'^\s*}\s*,\s*(open|close|groupbypass)\s*,\s*"((?:[^"\\\\]|\\\\.)*)"\s*$'
 )
 
 
-def extract_test_flow_section(lines: List[str]) -> List[str]:
+def extract_test_flow_section(lines: list[str]) -> list[str]:
     """Extract lines between 'test_flow' and its matching 'end'."""
     in_test_flow = False
     test_flow_lines = []
@@ -38,7 +36,7 @@ def extract_test_flow_section(lines: List[str]) -> List[str]:
     return test_flow_lines
 
 
-def parse_test_flow(lines: List[str]) -> List[TestItem]:
+def parse_test_flow(lines: list[str]) -> list[TestItem]:
     """
     Parse test_flow lines into a flat list of TestItems.
 
@@ -48,39 +46,43 @@ def parse_test_flow(lines: List[str]) -> List[TestItem]:
       - { ... }, open,"GroupName", ""
       - { ... }, close,"GroupName", ""
     """
-    result: List[TestItem] = []
-    group_stack: List[str] = []
+    result: list[TestItem] = []
+    group_stack: list[str] = []
     i = 0
 
     while i < len(lines):
         line = lines[i]
         stripped = line.strip()
 
-        if not stripped or stripped.startswith('//'):
+        if not stripped or stripped.startswith("//"):
             i += 1
             continue
 
         match = _RUN_RE.match(line)
         if match:
             suite_name = match.group(1).strip()
-            result.append(TestItem(
-                suite_name=suite_name,
-                group_path=tuple(group_stack),
-                line_number=i + 1,
-                is_branch=False
-            ))
+            result.append(
+                TestItem(
+                    suite_name=suite_name,
+                    group_path=tuple(group_stack),
+                    line_number=i + 1,
+                    is_branch=False,
+                )
+            )
             i += 1
             continue
 
         match = _RUN_BRANCH_RE.match(line)
         if match:
             suite_name = match.group(1).strip()
-            result.append(TestItem(
-                suite_name=suite_name,
-                group_path=tuple(group_stack),
-                line_number=i + 1,
-                is_branch=True
-            ))
+            result.append(
+                TestItem(
+                    suite_name=suite_name,
+                    group_path=tuple(group_stack),
+                    line_number=i + 1,
+                    is_branch=True,
+                )
+            )
             i += 1
             continue
 
@@ -103,7 +105,7 @@ def parse_test_flow(lines: List[str]) -> List[TestItem]:
             i += 1
             continue
 
-        if stripped == '{':
+        if stripped == "{":
             i += 1
             continue
 

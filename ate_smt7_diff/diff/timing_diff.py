@@ -3,8 +3,6 @@
 Timing spec diff algorithms.
 """
 
-from typing import Dict, List, Optional, Tuple
-
 from ate_smt7_diff.models import (
     TimingEqnSetBlock,
     TimingEqnSetDiff,
@@ -16,7 +14,6 @@ from ate_smt7_diff.models import (
     WaveTblDiff,
     WaveTblPinsGroup,
     WaveTblPinsGroupDiff,
-    WaveTblRow,
 )
 
 
@@ -24,9 +21,9 @@ def diff_timing_specs(
     suite_name: str,
     spec_type: str,
     spec_name: str,
-    old_specs: Optional[Dict[str, TimingSpec]],
-    new_specs: Optional[Dict[str, TimingSpec]],
-) -> Optional[TimingSpecDiff]:
+    old_specs: dict[str, TimingSpec] | None,
+    new_specs: dict[str, TimingSpec] | None,
+) -> TimingSpecDiff | None:
     """Compute timing spec differences between two spec dictionaries."""
     if old_specs is None and new_specs is None:
         return None
@@ -78,9 +75,9 @@ def diff_timing_specs(
 
 def diff_timing_eqnset_blocks(
     suite_name: str,
-    old_block: Optional[TimingEqnSetBlock],
-    new_block: Optional[TimingEqnSetBlock],
-) -> Optional[TimingSpecDiff]:
+    old_block: TimingEqnSetBlock | None,
+    new_block: TimingEqnSetBlock | None,
+) -> TimingSpecDiff | None:
     """Compute EQSP TIM,SPS block differences between two program versions."""
     if old_block is None and new_block is None:
         return None
@@ -101,9 +98,9 @@ def diff_timing_eqnset_blocks(
 
 
 def _diff_pins_group(
-    old_pins: Dict[str, TimingPinConfig],
-    new_pins: Dict[str, TimingPinConfig],
-) -> Dict[str, Tuple[TimingPinConfig, TimingPinConfig]]:
+    old_pins: dict[str, TimingPinConfig],
+    new_pins: dict[str, TimingPinConfig],
+) -> dict[str, tuple[TimingPinConfig, TimingPinConfig]]:
     """Compare PINS groups within EQNSET blocks."""
     return {
         name: (old_pins[name], new_pins[name])
@@ -113,9 +110,9 @@ def _diff_pins_group(
 
 
 def _diff_timingsets(
-    old_ts: Dict[int, TimingSetConfig],
-    new_ts: Dict[int, TimingSetConfig],
-) -> Dict[int, Tuple[TimingSetConfig, TimingSetConfig]]:
+    old_ts: dict[int, TimingSetConfig],
+    new_ts: dict[int, TimingSetConfig],
+) -> dict[int, tuple[TimingSetConfig, TimingSetConfig]]:
     """Compare TIMINGSET entries within EQNSET blocks."""
     return {
         idx: (old_ts[idx], new_ts[idx])
@@ -126,15 +123,19 @@ def _diff_timingsets(
 
 def diff_timing_eqnset_blocks_full(
     suite_name: str,
-    old_block: Optional[TimingEqnSetBlock],
-    new_block: Optional[TimingEqnSetBlock],
-) -> Optional[TimingEqnSetDiff]:
+    old_block: TimingEqnSetBlock | None,
+    new_block: TimingEqnSetBlock | None,
+) -> TimingEqnSetDiff | None:
     """Compute full EQNSET block differences including pins and timingsets."""
     if old_block is None and new_block is None:
         return None
 
-    eqnset_index = old_block.eqnset_index if old_block else (new_block.eqnset_index if new_block else 0)
-    eqnset_name = old_block.eqnset_name if old_block else (new_block.eqnset_name if new_block else "")
+    eqnset_index = (
+        old_block.eqnset_index if old_block else (new_block.eqnset_index if new_block else 0)
+    )
+    eqnset_name = (
+        old_block.eqnset_name if old_block else (new_block.eqnset_name if new_block else "")
+    )
 
     if old_block is None:
         return TimingEqnSetDiff(
@@ -187,9 +188,15 @@ def diff_timing_eqnset_blocks_full(
     timingsets_changed = _diff_timingsets(old_block.timingsets, new_block.timingsets)
 
     if not (
-        specs_added or specs_removed or specs_changed
-        or pins_added or pins_removed or pins_changed
-        or timingsets_added or timingsets_removed or timingsets_changed
+        specs_added
+        or specs_removed
+        or specs_changed
+        or pins_added
+        or pins_removed
+        or pins_changed
+        or timingsets_added
+        or timingsets_removed
+        or timingsets_changed
     ):
         return None
 
@@ -212,7 +219,7 @@ def diff_timing_eqnset_blocks_full(
 def diff_wavetbl_pins_group(
     old_group: WaveTblPinsGroup,
     new_group: WaveTblPinsGroup,
-) -> Optional[WaveTblPinsGroupDiff]:
+) -> WaveTblPinsGroupDiff | None:
     """Compute differences between two WAVETBL PINS groups."""
     old_rows = {r.label: r for r in old_group.rows}
     new_rows = {r.label: r for r in new_group.rows}
@@ -223,15 +230,19 @@ def diff_wavetbl_pins_group(
     rows_added = tuple(new_rows[k] for k in new_labels - old_labels)
     rows_removed = tuple(old_rows[k] for k in old_labels - new_labels)
     rows_changed = tuple(
-        (old_rows[k], new_rows[k])
-        for k in old_labels & new_labels
-        if old_rows[k] != new_rows[k]
+        (old_rows[k], new_rows[k]) for k in old_labels & new_labels if old_rows[k] != new_rows[k]
     )
 
     brk_changed = old_group.brk != new_group.brk
     f_changed = old_group.f != new_group.f
 
-    if not rows_added and not rows_removed and not rows_changed and not brk_changed and not f_changed:
+    if (
+        not rows_added
+        and not rows_removed
+        and not rows_changed
+        and not brk_changed
+        and not f_changed
+    ):
         return None
 
     return WaveTblPinsGroupDiff(
@@ -249,9 +260,9 @@ def diff_wavetbl_pins_group(
 def diff_wavetbl_blocks(
     suite_name: str,
     wavetbl_name: str,
-    old_block: Optional[WaveTblBlock],
-    new_block: Optional[WaveTblBlock],
-) -> Optional[WaveTblDiff]:
+    old_block: WaveTblBlock | None,
+    new_block: WaveTblBlock | None,
+) -> WaveTblDiff | None:
     """Compute differences between two WAVETBL blocks."""
     if old_block is None and new_block is None:
         return None
@@ -299,9 +310,9 @@ def diff_wavetbl_blocks(
 
 def diff_wavetbls(
     suite_name: str,
-    old_blocks: Dict[str, WaveTblBlock],
-    new_blocks: Dict[str, WaveTblBlock],
-) -> List[WaveTblDiff]:
+    old_blocks: dict[str, WaveTblBlock],
+    new_blocks: dict[str, WaveTblBlock],
+) -> list[WaveTblDiff]:
     """Compute differences across all WAVETBL blocks for a suite.
 
     Added and removed blocks are first compared by pins_groups keys.
@@ -314,9 +325,9 @@ def diff_wavetbls(
     regardless of content differences (fallback heuristic).
     """
     all_names = set(old_blocks.keys()) | set(new_blocks.keys())
-    result: List[WaveTblDiff] = []
-    added_diffs: List[WaveTblDiff] = []
-    removed_diffs: List[WaveTblDiff] = []
+    result: list[WaveTblDiff] = []
+    added_diffs: list[WaveTblDiff] = []
+    removed_diffs: list[WaveTblDiff] = []
 
     for name in sorted(all_names):
         diff = diff_wavetbl_blocks(
@@ -334,8 +345,8 @@ def diff_wavetbls(
         else:
             result.append(diff)
 
-    matched_added_ids: Set[int] = set()
-    matched_removed_ids: Set[int] = set()
+    matched_added_ids: set[int] = set()
+    matched_removed_ids: set[int] = set()
 
     # Step 1: Exact match by pins_groups keys
     for a_diff in added_diffs:

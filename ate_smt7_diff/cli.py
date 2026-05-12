@@ -9,8 +9,8 @@ from pathlib import Path
 
 from ate_smt7_diff.builder import diff_flow_files
 from ate_smt7_diff.formatters.console import format_console
-from ate_smt7_diff.formatters.markdown import format_markdown
 from ate_smt7_diff.formatters.json import format_json
+from ate_smt7_diff.formatters.markdown import format_markdown
 
 
 def main() -> None:
@@ -18,25 +18,31 @@ def main() -> None:
     parser.add_argument("old_file", help="Path to old .flow file")
     parser.add_argument("new_file", help="Path to new .flow file")
     parser.add_argument(
-        "--format", "-f",
+        "--format",
+        "-f",
         choices=["console", "markdown", "json"],
         default="console",
-        help="Output format"
+        help="Output format",
     )
     parser.add_argument(
         "--suite-diff",
         action="store_true",
-        help="Also diff test suite configurations for common tests"
+        help="Also diff test suite configurations for common tests",
     )
     parser.add_argument(
         "--load-configs",
         action="store_true",
-        help="Load associated timing/level/vector/testtable config files"
+        help="Load associated timing/level/vector/testtable config files",
     )
     parser.add_argument(
         "--testtable-diff",
         action="store_true",
-        help="Also diff testtable CSV files for common test suites"
+        help="Also diff testtable CSV files for common test suites",
+    )
+    parser.add_argument(
+        "--testmethod-diff",
+        action="store_true",
+        help="Also diff testmethod source files for common test suites",
     )
     args = parser.parse_args()
 
@@ -52,10 +58,12 @@ def main() -> None:
 
     try:
         report = diff_flow_files(
-            str(old_path), str(new_path),
-            include_suite_diff=args.suite_diff,
-            include_config_views=args.load_configs or args.testtable_diff,
+            str(old_path),
+            str(new_path),
+            include_suite_diff=args.suite_diff or args.load_configs,
+            include_config_views=args.load_configs or args.testtable_diff or args.testmethod_diff,
             include_testtable_diff=args.load_configs or args.testtable_diff,
+            include_testmethod_diff=args.load_configs or args.testmethod_diff,
         )
     except (FileNotFoundError, PermissionError, ValueError) as e:
         print(f"Error: {e}", file=sys.stderr)

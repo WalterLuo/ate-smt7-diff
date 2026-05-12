@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from ate_smt7_diff.parsers.vector_parser import VectorLoader
 from ate_smt7_diff.models import VectorPatternMapping
+from ate_smt7_diff.parsers.vector_parser import VectorLoader
 
 
 @pytest.fixture

@@ -4,7 +4,6 @@ JSON formatter for diff reports.
 """
 
 import json
-from typing import Dict, List
 
 from ate_smt7_diff.models import DiffReport, SuiteConfigReport
 
@@ -15,15 +14,14 @@ def format_suite_json(report: SuiteConfigReport) -> dict:
     for diff in report.diffs:
         if not diff.has_changes:
             continue
-        diffs.append({
-            "suite_name": diff.suite_name,
-            "changed": {
-                k: {"old": ov, "new": nv}
-                for k, (ov, nv) in diff.changed.items()
-            },
-            "added": diff.added,
-            "removed": diff.removed,
-        })
+        diffs.append(
+            {
+                "suite_name": diff.suite_name,
+                "changed": {k: {"old": ov, "new": nv} for k, (ov, nv) in diff.changed.items()},
+                "added": diff.added,
+                "removed": diff.removed,
+            }
+        )
 
     return {
         "suite_config_diff": {
@@ -40,22 +38,24 @@ def format_json(report: DiffReport) -> str:
     # Build order_changed entries with first matched occurrence positions
     order_changed_entries = []
 
-    old_pos_map: Dict[str, List[int]] = {}
+    old_pos_map: dict[str, list[int]] = {}
     for i, t in enumerate(report.old_tests):
         old_pos_map.setdefault(t.suite_name, []).append(i)
 
-    new_pos_map: Dict[str, List[int]] = {}
+    new_pos_map: dict[str, list[int]] = {}
     for i, t in enumerate(report.new_tests):
         new_pos_map.setdefault(t.suite_name, []).append(i)
 
     for name in report.order_changed:
         old_order = old_pos_map.get(name, [None])[0]
         new_order = new_pos_map.get(name, [None])[0]
-        order_changed_entries.append({
-            "test_name": name,
-            "old_order": (old_order + 1) if old_order is not None else None,
-            "new_order": (new_order + 1) if new_order is not None else None,
-        })
+        order_changed_entries.append(
+            {
+                "test_name": name,
+                "old_order": (old_order + 1) if old_order is not None else None,
+                "new_order": (new_order + 1) if new_order is not None else None,
+            }
+        )
 
     result = {
         "added_tests": report.added,
@@ -65,7 +65,7 @@ def format_json(report: DiffReport) -> str:
             "added_count": len(report.added),
             "removed_count": len(report.removed),
             "order_changed_count": len(report.order_changed),
-        }
+        },
     }
 
     if report.suite_config_report is not None:
@@ -126,13 +126,9 @@ def format_json(report: DiffReport) -> str:
                 "eqnset_index": diff.eqnset_index,
                 "eqnset_name": diff.eqnset_name,
                 "dpspins": {
-                    "added": {
-                        name: cfg.all_fields()
-                        for name, cfg in diff.dpspins_added.items()
-                    },
+                    "added": {name: cfg.all_fields() for name, cfg in diff.dpspins_added.items()},
                     "removed": {
-                        name: cfg.all_fields()
-                        for name, cfg in diff.dpspins_removed.items()
+                        name: cfg.all_fields() for name, cfg in diff.dpspins_removed.items()
                     },
                     "changed": {
                         name: {
@@ -144,17 +140,11 @@ def format_json(report: DiffReport) -> str:
                 },
                 "levelsets": {
                     "added": {
-                        str(idx): {
-                            name: cfg.all_fields()
-                            for name, cfg in pins.items()
-                        }
+                        str(idx): {name: cfg.all_fields() for name, cfg in pins.items()}
                         for idx, pins in diff.levelsets_added.items()
                     },
                     "removed": {
-                        str(idx): {
-                            name: cfg.all_fields()
-                            for name, cfg in pins.items()
-                        }
+                        str(idx): {name: cfg.all_fields() for name, cfg in pins.items()}
                         for idx, pins in diff.levelsets_removed.items()
                     },
                     "changed": {
@@ -186,7 +176,9 @@ def format_json(report: DiffReport) -> str:
                         "comment": spec.comment,
                     }
                     for name, spec in (diff.new_specs or {}).items()
-                } if diff.replaced_from else None,
+                }
+                if diff.replaced_from
+                else None,
                 "added": {
                     name: {
                         "value": spec.value,
@@ -236,14 +228,14 @@ def format_json(report: DiffReport) -> str:
                         for name, spec in diff.new_block.specs.items()
                     },
                     "pins": {
-                        name: cfg.all_fields()
-                        for name, cfg in diff.new_block.pins_groups.items()
+                        name: cfg.all_fields() for name, cfg in diff.new_block.pins_groups.items()
                     },
                     "timingsets": {
-                        str(idx): cfg.all_fields()
-                        for idx, cfg in diff.new_block.timingsets.items()
+                        str(idx): cfg.all_fields() for idx, cfg in diff.new_block.timingsets.items()
                     },
-                } if diff.replaced_from_name and diff.new_block else None,
+                }
+                if diff.replaced_from_name and diff.new_block
+                else None,
                 "specs": {
                     "added": {
                         name: {"value": spec.value, "units": spec.units, "comment": spec.comment}
@@ -255,21 +247,23 @@ def format_json(report: DiffReport) -> str:
                     },
                     "changed": {
                         name: {
-                            "old": {"value": old_s.value, "units": old_s.units, "comment": old_s.comment},
-                            "new": {"value": new_s.value, "units": new_s.units, "comment": new_s.comment},
+                            "old": {
+                                "value": old_s.value,
+                                "units": old_s.units,
+                                "comment": old_s.comment,
+                            },
+                            "new": {
+                                "value": new_s.value,
+                                "units": new_s.units,
+                                "comment": new_s.comment,
+                            },
                         }
                         for name, (old_s, new_s) in diff.specs_changed.items()
                     },
                 },
                 "pins": {
-                    "added": {
-                        name: cfg.all_fields()
-                        for name, cfg in diff.pins_added.items()
-                    },
-                    "removed": {
-                        name: cfg.all_fields()
-                        for name, cfg in diff.pins_removed.items()
-                    },
+                    "added": {name: cfg.all_fields() for name, cfg in diff.pins_added.items()},
+                    "removed": {name: cfg.all_fields() for name, cfg in diff.pins_removed.items()},
                     "changed": {
                         name: {
                             "old": old_c.all_fields(),
@@ -280,12 +274,10 @@ def format_json(report: DiffReport) -> str:
                 },
                 "timingsets": {
                     "added": {
-                        str(idx): cfg.all_fields()
-                        for idx, cfg in diff.timingsets_added.items()
+                        str(idx): cfg.all_fields() for idx, cfg in diff.timingsets_added.items()
                     },
                     "removed": {
-                        str(idx): cfg.all_fields()
-                        for idx, cfg in diff.timingsets_removed.items()
+                        str(idx): cfg.all_fields() for idx, cfg in diff.timingsets_removed.items()
                     },
                     "changed": {
                         str(idx): {
@@ -317,7 +309,9 @@ def format_json(report: DiffReport) -> str:
                         }
                         for name, group in diff.new_block.pins_groups.items()
                     }
-                } if diff.replaced_from and diff.new_block else None,
+                }
+                if diff.replaced_from and diff.new_block
+                else None,
                 "added_block": {
                     "pins_groups": {
                         name: {
@@ -330,7 +324,9 @@ def format_json(report: DiffReport) -> str:
                         }
                         for name, group in diff.new_block.pins_groups.items()
                     }
-                } if diff.new_block and not diff.old_block and not diff.replaced_from else None,
+                }
+                if diff.new_block and not diff.old_block and not diff.replaced_from
+                else None,
                 "removed_block": {
                     "pins_groups": {
                         name: {
@@ -343,7 +339,9 @@ def format_json(report: DiffReport) -> str:
                         }
                         for name, group in diff.old_block.pins_groups.items()
                     }
-                } if diff.old_block and not diff.new_block and not diff.replaced_from else None,
+                }
+                if diff.old_block and not diff.new_block and not diff.replaced_from
+                else None,
                 "pins_groups": {
                     "added": {
                         name: {
@@ -379,8 +377,16 @@ def format_json(report: DiffReport) -> str:
                             ],
                             "rows_changed": [
                                 {
-                                    "old": {"label": old_r.label, "edge_spec": old_r.edge_spec, "state": old_r.state},
-                                    "new": {"label": new_r.label, "edge_spec": new_r.edge_spec, "state": new_r.state},
+                                    "old": {
+                                        "label": old_r.label,
+                                        "edge_spec": old_r.edge_spec,
+                                        "state": old_r.state,
+                                    },
+                                    "new": {
+                                        "label": new_r.label,
+                                        "edge_spec": new_r.edge_spec,
+                                        "state": new_r.state,
+                                    },
                                 }
                                 for old_r, new_r in pg_diff.rows_changed
                             ],
@@ -391,7 +397,9 @@ def format_json(report: DiffReport) -> str:
                         }
                         for name, pg_diff in diff.pins_groups_changed.items()
                     },
-                } if diff.old_block and diff.new_block and not diff.replaced_from else None,
+                }
+                if diff.old_block and diff.new_block and not diff.replaced_from
+                else None,
             }
             for diff in report.timing_wavetbl_diffs
         ]
@@ -462,6 +470,20 @@ def format_json(report: DiffReport) -> str:
                 ],
             }
             for diff in report.vector_diffs
+        ]
+
+    if report.testmethod_diffs:
+        result["testmethod_diff"] = [
+            {
+                "suite_name": diff.suite_name,
+                "diff_type": diff.diff_type,
+                "old_tm_id": diff.old_tm_id,
+                "new_tm_id": diff.new_tm_id,
+                "old_class": diff.old_class,
+                "new_class": diff.new_class,
+                "file_diff": list(diff.file_diff),
+            }
+            for diff in report.testmethod_diffs
         ]
 
     return json.dumps(result, indent=2, ensure_ascii=False)

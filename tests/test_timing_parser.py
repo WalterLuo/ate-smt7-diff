@@ -2,7 +2,7 @@
 """Tests for timing parser functionality."""
 
 import unittest
-from ate_smt7_diff.models import TimingPinConfig, TimingSetConfig, TimingSpec
+
 from ate_smt7_diff.parsers.timing_parser import TimingLoader
 
 
@@ -69,8 +69,8 @@ class TestParseSpecificationSpecs(unittest.TestCase):
     def test_parse_basic_specs(self):
         lines = [
             'SPECIFICATION "TEST"',
-            'TCLK  10.0  [ns]',
-            'TPER  20.0  [ns]  # comment',
+            "TCLK  10.0  [ns]",
+            "TPER  20.0  [ns]  # comment",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -84,7 +84,7 @@ class TestParseSpecificationSpecs(unittest.TestCase):
     def test_parse_stops_at_next_specification(self):
         lines = [
             'SPECIFICATION "TEST"',
-            'TCLK  10.0  [ns]',
+            "TCLK  10.0  [ns]",
             'SPECIFICATION "NEXT"',
         ]
         loader = TimingLoader.__new__(TimingLoader)
@@ -111,9 +111,9 @@ class TestParseEqspEqnsetBlock(unittest.TestCase):
         lines = [
             'EQNSET 1 "TIM1"',
             'SPECSET 1 "SPS1"',
-            '# SPECNAME  VALUE  [UNITS]',
-            'TCLK  10.0  [ns]',
-            'TPER  20.0  [ns]',
+            "# SPECNAME  VALUE  [UNITS]",
+            "TCLK  10.0  [ns]",
+            "TPER  20.0  [ns]",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -131,8 +131,8 @@ class TestParseEqspEqnsetBlock(unittest.TestCase):
         lines = [
             'EQNSET 1 "TIM1"',
             'SPECSET 1 "SPS1"',
-            '# SPECNAME  VALUE  [UNITS]',
-            'TCLK  10.0  [ns]',
+            "# SPECNAME  VALUE  [UNITS]",
+            "TCLK  10.0  [ns]",
             'EQNSET 2 "TIM2"',
         ]
         loader = TimingLoader.__new__(TimingLoader)
@@ -146,9 +146,9 @@ class TestParseEqspEqnsetBlock(unittest.TestCase):
         lines = [
             'EQNSET 1 "TIM1"',
             'SPECSET 1 "SPS1"',
-            '# SPECNAME  VALUE  [UNITS]',
-            'TCLK  10.0  [ns]',
-            '@',
+            "# SPECNAME  VALUE  [UNITS]",
+            "TCLK  10.0  [ns]",
+            "@",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -172,7 +172,7 @@ class TestExtractSnippet(unittest.TestCase):
     def test_extract_snippet_boundary(self):
         lines = [
             'SPECIFICATION "TEST"',
-            'TCLK  10.0  [ns]',
+            "TCLK  10.0  [ns]",
             'WAVETBL "W1"',
         ]
         loader = TimingLoader.__new__(TimingLoader)
@@ -185,16 +185,16 @@ class TestExtractSnippet(unittest.TestCase):
     def test_extract_braced_snippet(self):
         lines = [
             'SPECIFICATION "TEST"',
-            '{',
-            'CHECK all',
+            "{",
+            "CHECK all",
             'EQNSET 10 "E1"',
             'WAVETBL "W1"',
-            'PORT P1',
-            'SYNC',
-            '{',
-            '}',
-            'TCLK  10.0  [ns]',
-            '}',
+            "PORT P1",
+            "SYNC",
+            "{",
+            "}",
+            "TCLK  10.0  [ns]",
+            "}",
             'EQNSET 3 "NEXT"',
         ]
         loader = TimingLoader.__new__(TimingLoader)
@@ -204,7 +204,7 @@ class TestExtractSnippet(unittest.TestCase):
         self.assertIn("TCLK", snippet)
         self.assertIn("WAVETBL", snippet)
         self.assertIn("PORT P1", snippet)
-        self.assertNotIn('EQNSET 3', snippet)
+        self.assertNotIn("EQNSET 3", snippet)
 
     def test_extract_eqsp_snippet_boundary(self):
         lines = [
@@ -215,9 +215,9 @@ class TestExtractSnippet(unittest.TestCase):
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
         snippet = loader.extract_eqsp_snippet(0)
-        self.assertIn('EQNSET 1', snippet)
+        self.assertIn("EQNSET 1", snippet)
         self.assertIn("SPECSET", snippet)
-        self.assertNotIn('EQNSET 2', snippet)
+        self.assertNotIn("EQNSET 2", snippet)
 
 
 class TestParseBracedSpecification(unittest.TestCase):
@@ -226,16 +226,16 @@ class TestParseBracedSpecification(unittest.TestCase):
     def test_parse_braced_specification(self):
         lines = [
             'SPECIFICATION "TEST"',
-            '{',
-            'CHECK all',
+            "{",
+            "CHECK all",
             'EQNSET 10 "E1"',
             'WAVETBL "W1"',
-            'PORT P1',
-            'SYNC',
-            '{',
-            '}',
-            'TCLK  10.0  [ns]',
-            '}',
+            "PORT P1",
+            "SYNC",
+            "{",
+            "}",
+            "TCLK  10.0  [ns]",
+            "}",
             'EQNSET 3 "NEXT"',
         ]
         loader = TimingLoader.__new__(TimingLoader)
@@ -249,14 +249,14 @@ class TestParseBracedSpecification(unittest.TestCase):
     def test_parse_duplicate_specs_with_context(self):
         lines = [
             'SPECIFICATION "TEST"',
-            '{',
+            "{",
             'EQNSET 10 "E1"',
-            'PORT P1',
-            'TCLK  10.0  [ns]',
+            "PORT P1",
+            "TCLK  10.0  [ns]",
             'EQNSET 15 "E2"',
-            'PORT P2',
-            'TCLK  20.0  [ns]',
-            '}',
+            "PORT P2",
+            "TCLK  20.0  [ns]",
+            "}",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -268,9 +268,9 @@ class TestParseBracedSpecification(unittest.TestCase):
     def test_parse_stops_at_closing_brace(self):
         lines = [
             'SPECIFICATION "TEST"',
-            '{',
-            'TCLK  10.0  [ns]',
-            '}',
+            "{",
+            "TCLK  10.0  [ns]",
+            "}",
             'WAVETBL "W1"',
         ]
         loader = TimingLoader.__new__(TimingLoader)
@@ -285,9 +285,9 @@ class TestParsePinsGroup(unittest.TestCase):
 
     def test_parse_basic_pins(self):
         lines = [
-            'PINS ALL_IO',
-            'd1 = 0 * per',
-            'r1 = 0.7 * per',
+            "PINS ALL_IO",
+            "d1 = 0 * per",
+            "r1 = 0.7 * per",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -297,11 +297,11 @@ class TestParsePinsGroup(unittest.TestCase):
 
     def test_parse_multiple_edges(self):
         lines = [
-            'PINS GPIOC_1',
-            'd1 = 0.0*per_40',
-            'd2 = 0.25*per_40',
-            'd3 = 0.75*per_40',
-            'r1 = 0.225*per_40',
+            "PINS GPIOC_1",
+            "d1 = 0.0*per_40",
+            "d2 = 0.25*per_40",
+            "d3 = 0.75*per_40",
+            "r1 = 0.225*per_40",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -313,9 +313,9 @@ class TestParsePinsGroup(unittest.TestCase):
 
     def test_parse_unknown_edges_in_extra(self):
         lines = [
-            'PINS TEST',
-            'd1 = 0',
-            'x1 = 1',
+            "PINS TEST",
+            "d1 = 0",
+            "x1 = 1",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -326,10 +326,10 @@ class TestParsePinsGroup(unittest.TestCase):
 
     def test_parse_stops_at_boundary(self):
         lines = [
-            'PINS P1',
-            'd1 = 0',
-            'PINS P2',
-            'd1 = 1',
+            "PINS P1",
+            "d1 = 0",
+            "PINS P2",
+            "d1 = 1",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -343,7 +343,7 @@ class TestParseTimingSet(unittest.TestCase):
     def test_parse_basic_timingset(self):
         lines = [
             'TIMINGSET 1 "OS"',
-            'period = per',
+            "period = per",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -356,8 +356,8 @@ class TestParseTimingSet(unittest.TestCase):
     def test_parse_timingset_with_extra(self):
         lines = [
             'TIMINGSET 1 "T1"',
-            'period = per',
-            'extra_field = 123',
+            "period = per",
+            "extra_field = 123",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -369,9 +369,9 @@ class TestParseTimingSet(unittest.TestCase):
     def test_parse_stops_at_boundary(self):
         lines = [
             'TIMINGSET 1 "T1"',
-            'period = per',
-            'PINS P1',
-            'd1 = 0',
+            "period = per",
+            "PINS P1",
+            "d1 = 0",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -386,13 +386,13 @@ class TestParseEqnsetBlockFull(unittest.TestCase):
     def test_parse_eqnset_with_pins_and_timingset(self):
         lines = [
             'EQNSET 1 "OS_FUNC"',
-            'SPECS',
-            'per',
+            "SPECS",
+            "per",
             'TIMINGSET 1 "OS"',
-            'period = per',
-            'PINS ALL_IO',
-            'd1 = 0 * per',
-            'r1 = 0.7 * per',
+            "period = per",
+            "PINS ALL_IO",
+            "d1 = 0 * per",
+            "r1 = 0.7 * per",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -411,15 +411,15 @@ class TestParseEqnsetBlockFull(unittest.TestCase):
     def test_parse_eqnset_multiple_pins(self):
         lines = [
             'EQNSET 2 "Temp"',
-            'SPECS',
-            'I2C_Per',
+            "SPECS",
+            "I2C_Per",
             'TIMINGSET 1 "Temp"',
-            'period = I2C_Per',
-            'PINS NO_Temp_Sensor',
-            'd1 = 0 * I2C_Per',
-            'PINS SCL_TEMP1 SCL_TEMP2',
-            'd1 = 0   * 	I2C_Per',
-            'd2 = 0.5 *  I2C_Per',
+            "period = I2C_Per",
+            "PINS NO_Temp_Sensor",
+            "d1 = 0 * I2C_Per",
+            "PINS SCL_TEMP1 SCL_TEMP2",
+            "d1 = 0   * 	I2C_Per",
+            "d2 = 0.5 *  I2C_Per",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -437,16 +437,16 @@ class TestParseSpecificationEqnsetIndex(unittest.TestCase):
     def test_parse_single_eqnset(self):
         lines = [
             'SPECIFICATION "BSCAN"',
-            '{',
-            'CHECK all',
+            "{",
+            "CHECK all",
             'EQNSET 4 "gen_tp1_BSCAN"',
             'WAVETBL "gen_tp1_BSCAN"',
-            'PORT BSCAN',
-            'SYNC',
-            '{',
-            '}',
-            'per_40  50  [ ns]',
-            '}',
+            "PORT BSCAN",
+            "SYNC",
+            "{",
+            "}",
+            "per_40  50  [ ns]",
+            "}",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -456,10 +456,10 @@ class TestParseSpecificationEqnsetIndex(unittest.TestCase):
     def test_parse_multiple_eqnsets(self):
         lines = [
             'SPECIFICATION "TEST"',
-            '{',
+            "{",
             'EQNSET 4 "E1"',
             'EQNSET 14 "E2"',
-            '}',
+            "}",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines
@@ -473,9 +473,9 @@ class TestParseSpecificationEqnsetIndex(unittest.TestCase):
     def test_parse_no_eqnset(self):
         lines = [
             'SPECIFICATION "TEST"',
-            '{',
-            'TCLK  10.0  [ns]',
-            '}',
+            "{",
+            "TCLK  10.0  [ns]",
+            "}",
         ]
         loader = TimingLoader.__new__(TimingLoader)
         loader.lines = lines

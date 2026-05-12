@@ -8,9 +8,9 @@ If mappings are identical, checks underlying file modification dates.
 
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional
 
 from ate_smt7_diff.models import (
+    SuiteConfigView,
     VectorFileDateChange,
     VectorSuiteDiff,
     VectorSuiteMapping,
@@ -20,22 +20,28 @@ from ate_smt7_diff.models import (
 def _check_file_dates(
     old_mapping: VectorSuiteMapping,
     new_mapping: VectorSuiteMapping,
-) -> List[VectorFileDateChange]:
+) -> list[VectorFileDateChange]:
     """Check modification dates of mapped files when mappings are identical."""
-    changes: List[VectorFileDateChange] = []
+    changes: list[VectorFileDateChange] = []
 
-    old_files = {
-        m.pattern_name: m.mapped_file or m.pattern_name
-        for m in old_mapping.pattern_mappings
-    }
-    new_files = {
-        m.pattern_name: m.mapped_file or m.pattern_name
-        for m in new_mapping.pattern_mappings
-    }
+    old_files = {m.pattern_name: m for m in old_mapping.pattern_mappings}
+    new_files = {m.pattern_name: m for m in new_mapping.pattern_mappings}
 
     for pattern_name in sorted(set(old_files.keys()) & set(new_files.keys())):
-        old_file = old_files[pattern_name]
-        new_file = new_files[pattern_name]
+        old_m = old_files[pattern_name]
+        new_m = new_files[pattern_name]
+
+        # Actual filename is pattern_name@mapped_file when mapped_file is present
+        old_file = (
+            f"{pattern_name}@{old_m.mapped_file}"
+            if old_m.mapped_file
+            else pattern_name
+        )
+        new_file = (
+            f"{pattern_name}@{new_m.mapped_file}"
+            if new_m.mapped_file
+            else pattern_name
+        )
 
         old_path = Path(old_mapping.path) / old_file
         new_path = Path(new_mapping.path) / new_file
@@ -54,17 +60,19 @@ def _check_file_dates(
         except (FileNotFoundError, PermissionError, OSError) as e:
             logging.warning(
                 "Failed to stat vector file %s or %s: %s",
-                old_path, new_path, e,
+                old_path,
+                new_path,
+                e,
             )
 
     return changes
 
 
 def diff_vectors(
-    common_suites: List[str],
-    old_views: Dict[str, "SuiteConfigView"],
-    new_views: Dict[str, "SuiteConfigView"],
-) -> List[VectorSuiteDiff]:
+    common_suites: list[str],
+    old_views: dict[str, "SuiteConfigView"],
+    new_views: dict[str, "SuiteConfigView"],
+) -> list[VectorSuiteDiff]:
     """Compare vector mappings for all common suites.
 
     For each suite:
@@ -78,7 +86,7 @@ def diff_vectors(
 
     Returns a list of VectorSuiteDiff with changes only.
     """
-    diffs: List[VectorSuiteDiff] = []
+    diffs: list[VectorSuiteDiff] = []
 
     for suite_name in sorted(common_suites):
         old_v = old_views.get(suite_name)
@@ -86,8 +94,8 @@ def diff_vectors(
         if not old_v or not new_v:
             continue
 
-        old_mapping: Optional[VectorSuiteMapping] = old_v.vector_mappings
-        new_mapping: Optional[VectorSuiteMapping] = new_v.vector_mappings
+        old_mapping: VectorSuiteMapping | None = old_v.vector_mappings
+        new_mapping: VectorSuiteMapping | None = new_v.vector_mappings
 
         if old_mapping is None and new_mapping is None:
             continue

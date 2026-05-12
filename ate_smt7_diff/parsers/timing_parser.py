@@ -5,9 +5,9 @@ Loads and indexes timing files for WAVETBL, SPST, SPECIFICATION,
 and EQSP TIM,SPS region lookups.
 """
 
+import contextlib
 import re
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
 
 from ate_smt7_diff.models import (
     TimingEqnSetBlock,
@@ -25,12 +25,12 @@ class TimingLoader:
 
     def __init__(self, path: str) -> None:
         self.path = path
-        self.lines: List[str] = []
-        self.spec_sets: Dict[str, int] = {}      # SPST TIM,,name -> line index
-        self.wavetbls: Dict[str, int] = {}       # WAVETBL name -> line index
-        self.specifications: Dict[str, int] = {}  # SPECIFICATION "name" -> line index
-        self.eqsp_tim_eqnsets: Dict[int, int] = {}  # EQNSET index -> line index (in EQSP TIM,SPS)
-        self.eqsp_tim_specsets: Dict[Tuple[int, int], int] = {}  # (eqn, spec) -> line index
+        self.lines: list[str] = []
+        self.spec_sets: dict[str, int] = {}  # SPST TIM,,name -> line index
+        self.wavetbls: dict[str, int] = {}  # WAVETBL name -> line index
+        self.specifications: dict[str, int] = {}  # SPECIFICATION "name" -> line index
+        self.eqsp_tim_eqnsets: dict[int, int] = {}  # EQNSET index -> line index (in EQSP TIM,SPS)
+        self.eqsp_tim_specsets: dict[tuple[int, int], int] = {}  # (eqn, spec) -> line index
         self._load()
 
     def _load(self) -> None:
@@ -43,7 +43,7 @@ class TimingLoader:
 
         in_eqsp_tim = False
         in_eqsp_wvt = False
-        current_eqn: Optional[int] = None
+        current_eqn: int | None = None
 
         for i, line in enumerate(self.lines):
             stripped = line.strip()
@@ -125,23 +125,23 @@ class TimingLoader:
 
     # --- Lookup methods ---
 
-    def lookup_spec_set(self, name: str) -> Optional[int]:
+    def lookup_spec_set(self, name: str) -> int | None:
         """Return line index of SPST entry for spec set name."""
         return self.spec_sets.get(name)
 
-    def lookup_wavetbl(self, name: str) -> Optional[int]:
+    def lookup_wavetbl(self, name: str) -> int | None:
         """Return line index of WAVETBL entry for name."""
         return self.wavetbls.get(name)
 
-    def lookup_specification(self, name: str) -> Optional[int]:
+    def lookup_specification(self, name: str) -> int | None:
         """Return line index of SPECIFICATION entry for name."""
         return self.specifications.get(name)
 
-    def lookup_eqsp_eqnset(self, eqn_index: int) -> Optional[int]:
+    def lookup_eqsp_eqnset(self, eqn_index: int) -> int | None:
         """Return line index of EQNSET in EQSP TIM,SPS region."""
         return self.eqsp_tim_eqnsets.get(eqn_index)
 
-    def lookup_eqsp_specset(self, eqn_index: int, spec_index: int) -> Optional[int]:
+    def lookup_eqsp_specset(self, eqn_index: int, spec_index: int) -> int | None:
         """Return line index of SPECSET within EQNSET in EQSP TIM,SPS region."""
         return self.eqsp_tim_specsets.get((eqn_index, spec_index))
 
@@ -151,7 +151,7 @@ class TimingLoader:
         """Extract lines from start_idx until next major block or end."""
         if start_idx >= len(self.lines):
             return ""
-        result: List[str] = []
+        result: list[str] = []
 
         # Detect braced blocks (e.g. SPECIFICATION "NAME" { ... })
         depth = 0
@@ -192,27 +192,23 @@ class TimingLoader:
         """Extract lines from start_idx until next EQNSET or EQSP end."""
         if start_idx >= len(self.lines):
             return ""
-        result: List[str] = []
+        result: list[str] = []
         for line in self.lines[start_idx:]:
             s = line.strip()
-            if result and (
-                s.startswith("EQNSET ")
-                or s.startswith("EQSP TIM,END")
-                or s == "@"
-            ):
+            if result and (s.startswith("EQNSET ") or s.startswith("EQSP TIM,END") or s == "@"):
                 break
             result.append(line)
         return "\n".join(result)
 
     # --- Parsing methods ---
 
-    def parse_specification_specs(self, spec_idx: int) -> Dict[str, TimingSpec]:
+    def parse_specification_specs(self, spec_idx: int) -> dict[str, TimingSpec]:
         """Parse a SPECIFICATION block into Dict[str, TimingSpec]."""
         if spec_idx >= len(self.lines):
             return {}
 
-        result: Dict[str, TimingSpec] = {}
-        units_re = re.compile(r'\[([^]]*)\]')
+        result: dict[str, TimingSpec] = {}
+        units_re = re.compile(r"\[([^]]*)\]")
 
         depth = 0
         start = spec_idx + 1
@@ -259,17 +255,24 @@ class TimingLoader:
                 continue
 
             # Skip other structural / comment lines
-            if stripped.startswith((
-                "SYNC", "CHECK ", "SPST TIM,,", 'SPECIFICATION "',
-                "EQSP TIM,END", "@", "#",
-            )):
+            if stripped.startswith(
+                (
+                    "SYNC",
+                    "CHECK ",
+                    "SPST TIM,,",
+                    'SPECIFICATION "',
+                    "EQSP TIM,END",
+                    "@",
+                    "#",
+                )
+            ):
                 continue
 
             units_match = units_re.search(line)
             units = units_match.group(1).strip() if units_match else ""
             if units_match:
-                line_without_units = line[:units_match.start()]
-                comment = line[units_match.end():].strip()
+                line_without_units = line[: units_match.start()]
+                comment = line[units_match.end() :].strip()
             else:
                 line_without_units = line
                 comment = ""
@@ -299,8 +302,8 @@ class TimingLoader:
         if pins_idx >= len(self.lines):
             return TimingPinConfig()
 
-        fields: Dict[str, str] = {}
-        for line in self.lines[pins_idx + 1:]:
+        fields: dict[str, str] = {}
+        for line in self.lines[pins_idx + 1 :]:
             stripped = line.strip()
             if not stripped:
                 continue
@@ -334,7 +337,7 @@ class TimingLoader:
             extra=extra,
         )
 
-    def parse_timingset(self, ts_idx: int) -> Optional[TimingSetConfig]:
+    def parse_timingset(self, ts_idx: int) -> TimingSetConfig | None:
         """Parse a TIMINGSET block into TimingSetConfig."""
         if ts_idx >= len(self.lines):
             return None
@@ -356,8 +359,8 @@ class TimingLoader:
             name = parts[2].strip().strip('"')
 
         period = ""
-        extra: Dict[str, str] = {}
-        for line in self.lines[ts_idx + 1:]:
+        extra: dict[str, str] = {}
+        for line in self.lines[ts_idx + 1 :]:
             stripped = line.strip()
             if not stripped:
                 continue
@@ -389,17 +392,17 @@ class TimingLoader:
             extra=extra,
         )
 
-    def parse_specification_eqnset_index(self, spec_idx: int) -> Optional[int]:
+    def parse_specification_eqnset_index(self, spec_idx: int) -> int | None:
         """Extract the first EQNSET index from a SPECIFICATION block."""
         eqnsets = self.parse_specification_all_eqnsets(spec_idx)
         return eqnsets[0][0] if eqnsets else None
 
-    def parse_specification_all_eqnsets(self, spec_idx: int) -> List[Tuple[int, str]]:
+    def parse_specification_all_eqnsets(self, spec_idx: int) -> list[tuple[int, str]]:
         """Extract all EQNSET (index, name) pairs from a SPECIFICATION block."""
         if spec_idx >= len(self.lines):
             return []
 
-        result: List[Tuple[int, str]] = []
+        result: list[tuple[int, str]] = []
         depth = 0
         start = spec_idx + 1
         if start < len(self.lines) and self.lines[start].strip() == "{":
@@ -438,7 +441,7 @@ class TimingLoader:
 
         return result
 
-    def parse_eqsp_eqnset_block(self, eqnset_idx: int) -> Optional[TimingEqnSetBlock]:
+    def parse_eqsp_eqnset_block(self, eqnset_idx: int) -> TimingEqnSetBlock | None:
         """Parse an EQNSET block from the EQSP TIM,SPS region."""
         if eqnset_idx >= len(self.lines):
             return None
@@ -459,7 +462,7 @@ class TimingLoader:
         if len(parts) >= 3:
             eqnset_name = parts[2].strip().strip('"')
 
-        specs: Dict[str, TimingSpec] = {}
+        specs: dict[str, TimingSpec] = {}
         specset_index = 0
         specset_name = ""
 
@@ -470,20 +473,26 @@ class TimingLoader:
             if not stripped:
                 i += 1
                 continue
-            if stripped.startswith("EQNSET ") or stripped.startswith("EQSP TIM,END") or stripped == "@":
+            if (
+                stripped.startswith("EQNSET ")
+                or stripped.startswith("EQSP TIM,END")
+                or stripped == "@"
+            ):
                 break
             if stripped.startswith("SPECSET "):
                 spec_parts = stripped.split(None, 2)
                 if len(spec_parts) >= 2:
-                    try:
+                    with contextlib.suppress(ValueError):
                         specset_index = int(spec_parts[1])
-                    except ValueError:
-                        pass
                 if len(spec_parts) >= 3:
                     specset_name = spec_parts[2].strip().strip('"')
                 i += 1
                 continue
-            if stripped == "SPECS" or stripped.startswith("# SPECNAME") or stripped.startswith("#SPECNAME"):
+            if (
+                stripped == "SPECS"
+                or stripped.startswith("# SPECNAME")
+                or stripped.startswith("#SPECNAME")
+            ):
                 i += 1
                 while i < len(self.lines):
                     spec_line = self.lines[i].strip()
@@ -499,10 +508,10 @@ class TimingLoader:
                         or spec_line == "@"
                     ):
                         break
-                    units_match = re.search(r'\[([^]]*)\]', spec_line)
+                    units_match = re.search(r"\[([^]]*)\]", spec_line)
                     units = units_match.group(1).strip() if units_match else ""
                     if units_match:
-                        line_without_units = spec_line[:units_match.start()]
+                        line_without_units = spec_line[: units_match.start()]
                     else:
                         line_without_units = spec_line
                     spec_parts = line_without_units.split()
@@ -514,8 +523,8 @@ class TimingLoader:
                 continue
             i += 1
 
-        pins_groups: Dict[str, TimingPinConfig] = {}
-        timingsets: Dict[int, TimingSetConfig] = {}
+        pins_groups: dict[str, TimingPinConfig] = {}
+        timingsets: dict[int, TimingSetConfig] = {}
 
         i = eqnset_idx + 1
         while i < len(self.lines):
@@ -524,7 +533,11 @@ class TimingLoader:
             if not stripped:
                 i += 1
                 continue
-            if stripped.startswith("EQNSET ") or stripped.startswith("EQSP TIM,END") or stripped == "@":
+            if (
+                stripped.startswith("EQNSET ")
+                or stripped.startswith("EQSP TIM,END")
+                or stripped == "@"
+            ):
                 break
             if stripped.startswith("PINS "):
                 pins_part = stripped[5:]
@@ -553,7 +566,7 @@ class TimingLoader:
             timingsets=timingsets,
         )
 
-    def parse_wavetbl(self, wavetbl_idx: int) -> Optional[WaveTblBlock]:
+    def parse_wavetbl(self, wavetbl_idx: int) -> WaveTblBlock | None:
         """Parse a WAVETBL block into WaveTblBlock."""
         if wavetbl_idx is None or wavetbl_idx >= len(self.lines):
             return None
@@ -572,9 +585,9 @@ class TimingLoader:
         if not name:
             return None
 
-        pins_groups: Dict[str, WaveTblPinsGroup] = {}
+        pins_groups: dict[str, WaveTblPinsGroup] = {}
         current_pins_name = ""
-        current_rows: List[WaveTblRow] = []
+        current_rows: list[WaveTblRow] = []
         current_brk = ""
         current_f = ""
 
@@ -592,7 +605,7 @@ class TimingLoader:
             current_brk = ""
             current_f = ""
 
-        for line in self.lines[wavetbl_idx + 1:]:
+        for line in self.lines[wavetbl_idx + 1 :]:
             stripped = line.strip()
 
             if not stripped:
@@ -637,17 +650,19 @@ class TimingLoader:
                 label = row_match.group(1)
                 edge_spec = row_match.group(2)
                 state = (row_match.group(3) or "").strip()
-                current_rows.append(WaveTblRow(
-                    label=label,
-                    edge_spec=edge_spec,
-                    state=state,
-                ))
+                current_rows.append(
+                    WaveTblRow(
+                        label=label,
+                        edge_spec=edge_spec,
+                        state=state,
+                    )
+                )
 
         _save_current_group()
 
         return WaveTblBlock(name=name, pins_groups=pins_groups)
 
-    def extract_wavetbl_name_from_eqnset(self, eqnset_idx: int) -> Optional[str]:
+    def extract_wavetbl_name_from_eqnset(self, eqnset_idx: int) -> str | None:
         """Extract WAVETBL name from an EQNSET block."""
         if eqnset_idx >= len(self.lines):
             return None
@@ -656,23 +671,27 @@ class TimingLoader:
         if not header.startswith("EQNSET "):
             return None
 
-        for line in self.lines[eqnset_idx + 1:]:
+        for line in self.lines[eqnset_idx + 1 :]:
             stripped = line.strip()
             if not stripped:
                 continue
-            if stripped.startswith("EQNSET ") or stripped.startswith("EQSP TIM,END") or stripped == "@":
+            if (
+                stripped.startswith("EQNSET ")
+                or stripped.startswith("EQSP TIM,END")
+                or stripped == "@"
+            ):
                 break
             if stripped.startswith("WAVETBL "):
                 return stripped[8:].strip().strip('"')
 
         return None
 
-    def extract_wavetbl_names_from_specification(self, spec_idx: int) -> List[str]:
+    def extract_wavetbl_names_from_specification(self, spec_idx: int) -> list[str]:
         """Extract all WAVETBL names from a SPECIFICATION block."""
         if spec_idx >= len(self.lines):
             return []
 
-        result: List[str] = []
+        result: list[str] = []
         depth = 0
         start = spec_idx + 1
         if start < len(self.lines) and self.lines[start].strip() == "{":

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Tests for testtable_parser.py."""
 
-import pytest
 from pathlib import Path
+
+import pytest
 
 from ate_smt7_diff.parsers.testtable_parser import TestTableLoader
 
@@ -33,8 +34,7 @@ class TestTestTableLoader:
     def test_missing_required_columns(self, tmp_path: Path, caplog) -> None:
         csv_file = tmp_path / "test.csv"
         csv_file.write_text(
-            '"Suite","Test","Num","Lsl"\n'
-            '"SuiteA","test1","100","10"\n',
+            '"Suite","Test","Num","Lsl"\n"SuiteA","test1","100","10"\n',
             encoding="utf-8",
         )
         loader = TestTableLoader(str(csv_file))
@@ -96,8 +96,7 @@ class TestTestTableLoader:
     def test_whitespace_in_key_fields(self, tmp_path: Path) -> None:
         csv_file = tmp_path / "test.csv"
         csv_file.write_text(
-            '"Suite name","Test name","Test number","Lsl"\n'
-            '" SuiteA "," test1 "," 100 ","10"\n',
+            '"Suite name","Test name","Test number","Lsl"\n" SuiteA "," test1 "," 100 ","10"\n',
             encoding="utf-8",
         )
         loader = TestTableLoader(str(csv_file))

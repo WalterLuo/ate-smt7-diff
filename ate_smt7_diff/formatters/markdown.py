@@ -3,19 +3,19 @@
 Markdown formatter for diff reports.
 """
 
-from typing import List
-
 from ate_smt7_diff.models import (
     DiffReport,
     DiffType,
     EqnSetDiff,
     LevelSpecDiff,
     SuiteConfigReport,
+    TestMethodDiff,
     TestTableSuiteDiff,
     TimingEqnSetBlock,
     TimingEqnSetDiff,
     TimingSpecDiff,
     VectorSuiteDiff,
+    WaveTblBlock,
     WaveTblDiff,
 )
 
@@ -25,7 +25,7 @@ def _fmt_val(val: str) -> str:
     return val if val else "removed"
 
 
-def _format_level_spec_markdown(diff: LevelSpecDiff) -> List[str]:
+def _format_level_spec_markdown(diff: LevelSpecDiff) -> list[str]:
     """Format a single LevelSpecDiff as Markdown lines."""
     lines = []
     lines.append(f"### {diff.suite_name}")
@@ -46,7 +46,9 @@ def _format_level_spec_markdown(diff: LevelSpecDiff) -> List[str]:
         lines.append("|------|-------|-----|-----|")
         for name, (old_s, new_s) in diff.changed.items():
             if old_s.actual != new_s.actual:
-                lines.append(f"| `{name}` | actual | `{old_s.actual}` | `{_fmt_val(new_s.actual)}` |")
+                lines.append(
+                    f"| `{name}` | actual | `{old_s.actual}` | `{_fmt_val(new_s.actual)}` |"
+                )
             if old_s.min != new_s.min:
                 lines.append(f"| `{name}` | min | `{old_s.min}` | `{_fmt_val(new_s.min)}` |")
             if old_s.max != new_s.max:
@@ -54,14 +56,16 @@ def _format_level_spec_markdown(diff: LevelSpecDiff) -> List[str]:
             if old_s.units != new_s.units:
                 lines.append(f"| `{name}` | units | `{old_s.units}` | `{_fmt_val(new_s.units)}` |")
             if old_s.comment != new_s.comment:
-                lines.append(f"| `{name}` | comment | `{old_s.comment}` | `{_fmt_val(new_s.comment)}` |")
+                lines.append(
+                    f"| `{name}` | comment | `{old_s.comment}` | `{_fmt_val(new_s.comment)}` |"
+                )
     return lines
 
 
-def _format_eqnset_markdown(diff: EqnSetDiff) -> List[str]:
+def _format_eqnset_markdown(diff: EqnSetDiff) -> list[str]:
     """Format a single EqnSetDiff as Markdown lines."""
     lines = []
-    lines.append(f"### {diff.suite_name} (EQNSET {diff.eqnset_index} \"{diff.eqnset_name}\")")
+    lines.append(f'### {diff.suite_name} (EQNSET {diff.eqnset_index} "{diff.eqnset_name}")')
 
     if diff.dpspins_added or diff.dpspins_removed or diff.dpspins_changed:
         lines.append("")
@@ -124,12 +128,14 @@ def _format_eqnset_markdown(diff: EqnSetDiff) -> List[str]:
                         old_val = old_fields.get(key, "")
                         new_val = new_fields.get(key, "")
                         if old_val != new_val:
-                            lines.append(f"| {idx} | `{name}` | {key} | `{old_val}` | `{_fmt_val(new_val)}` |")
+                            lines.append(
+                                f"| {idx} | `{name}` | {key} | `{old_val}` | `{_fmt_val(new_val)}` |"
+                            )
 
     return lines
 
 
-def _format_eqnset_block_markdown(block: TimingEqnSetBlock) -> List[str]:
+def _format_eqnset_block_markdown(block: TimingEqnSetBlock) -> list[str]:
     """Format EQNSET block content as Markdown lines."""
     lines = []
     if block.specs:
@@ -155,7 +161,7 @@ def _format_eqnset_block_markdown(block: TimingEqnSetBlock) -> List[str]:
     return lines
 
 
-def _format_timing_eqnset_markdown(diff: TimingEqnSetDiff) -> List[str]:
+def _format_timing_eqnset_markdown(diff: TimingEqnSetDiff) -> list[str]:
     """Format a single TimingEqnSetDiff as Markdown lines."""
     lines = []
 
@@ -163,8 +169,8 @@ def _format_timing_eqnset_markdown(diff: TimingEqnSetDiff) -> List[str]:
     if diff.replaced_from_name:
         lines.append(
             f"### {diff.suite_name}: Timing EQNSET Replaced: "
-            f"{diff.replaced_from_index} \"{diff.replaced_from_name}\" -> "
-            f"{diff.eqnset_index} \"{diff.eqnset_name}\""
+            f'{diff.replaced_from_index} "{diff.replaced_from_name}" -> '
+            f'{diff.eqnset_index} "{diff.eqnset_name}"'
         )
         if diff.new_block:
             lines.append("")
@@ -172,7 +178,7 @@ def _format_timing_eqnset_markdown(diff: TimingEqnSetDiff) -> List[str]:
             lines.extend(_format_eqnset_block_markdown(diff.new_block))
         return lines
 
-    lines.append(f"### {diff.suite_name} (EQNSET {diff.eqnset_index} \"{diff.eqnset_name}\")")
+    lines.append(f'### {diff.suite_name} (EQNSET {diff.eqnset_index} "{diff.eqnset_name}")')
 
     if diff.specs_added or diff.specs_removed or diff.specs_changed:
         lines.append("")
@@ -194,11 +200,17 @@ def _format_timing_eqnset_markdown(diff: TimingEqnSetDiff) -> List[str]:
             lines.append("|------|-------|-----|-----|")
             for name, (old_s, new_s) in diff.specs_changed.items():
                 if old_s.value != new_s.value:
-                    lines.append(f"| `{name}` | value | `{old_s.value}` | `{_fmt_val(new_s.value)}` |")
+                    lines.append(
+                        f"| `{name}` | value | `{old_s.value}` | `{_fmt_val(new_s.value)}` |"
+                    )
                 if old_s.units != new_s.units:
-                    lines.append(f"| `{name}` | units | `{old_s.units}` | `{_fmt_val(new_s.units)}` |")
+                    lines.append(
+                        f"| `{name}` | units | `{old_s.units}` | `{_fmt_val(new_s.units)}` |"
+                    )
                 if old_s.comment != new_s.comment:
-                    lines.append(f"| `{name}` | comment | `{old_s.comment}` | `{_fmt_val(new_s.comment)}` |")
+                    lines.append(
+                        f"| `{name}` | comment | `{old_s.comment}` | `{_fmt_val(new_s.comment)}` |"
+                    )
 
     if diff.pins_added or diff.pins_removed or diff.pins_changed:
         lines.append("")
@@ -261,15 +273,14 @@ def _format_timing_eqnset_markdown(diff: TimingEqnSetDiff) -> List[str]:
     return lines
 
 
-def _format_timing_spec_markdown(diff: TimingSpecDiff) -> List[str]:
+def _format_timing_spec_markdown(diff: TimingSpecDiff) -> list[str]:
     """Format a single TimingSpecDiff as Markdown lines."""
     lines = []
 
     # Replacement
     if diff.replaced_from:
         lines.append(
-            f"### {diff.suite_name}: Timing Spec Replaced: "
-            f"{diff.replaced_from} -> {diff.spec_name}"
+            f"### {diff.suite_name}: Timing Spec Replaced: {diff.replaced_from} -> {diff.spec_name}"
         )
         if diff.new_specs:
             lines.append("")
@@ -281,7 +292,7 @@ def _format_timing_spec_markdown(diff: TimingSpecDiff) -> List[str]:
                 lines.append(f"| `{name}` | `{spec.value}` | `{spec.units}` |")
         return lines
 
-    lines.append(f"### {diff.suite_name} ({diff.spec_type} spec \"{diff.spec_name}\")")
+    lines.append(f'### {diff.suite_name} ({diff.spec_type} spec "{diff.spec_name}")')
     if diff.added:
         lines.append("")
         lines.append("**Added:**")
@@ -303,11 +314,13 @@ def _format_timing_spec_markdown(diff: TimingSpecDiff) -> List[str]:
             if old_s.units != new_s.units:
                 lines.append(f"| `{name}` | units | `{old_s.units}` | `{_fmt_val(new_s.units)}` |")
             if old_s.comment != new_s.comment:
-                lines.append(f"| `{name}` | comment | `{old_s.comment}` | `{_fmt_val(new_s.comment)}` |")
+                lines.append(
+                    f"| `{name}` | comment | `{old_s.comment}` | `{_fmt_val(new_s.comment)}` |"
+                )
     return lines
 
 
-def _format_wavetbl_block_markdown(block: "WaveTblBlock", marker: str) -> List[str]:
+def _format_wavetbl_block_markdown(block: "WaveTblBlock", marker: str) -> list[str]:
     """Format full WAVETBL block content in Markdown."""
     lines = []
     for name, group in block.pins_groups.items():
@@ -317,33 +330,35 @@ def _format_wavetbl_block_markdown(block: "WaveTblBlock", marker: str) -> List[s
             lines.append(f"- ~~`{name}`~~")
         for row in group.rows:
             if marker == "+":
-                lines.append(f"  - `{row.label}` \"`{row.edge_spec}`\" `{row.state}`")
+                lines.append(f'  - `{row.label}` "`{row.edge_spec}`" `{row.state}`')
             else:
-                lines.append(f"  - ~~`{row.label}` \"`{row.edge_spec}`\" `{row.state}`~~")
+                lines.append(f'  - ~~`{row.label}` "`{row.edge_spec}`" `{row.state}`~~')
         if group.brk:
             if marker == "+":
-                lines.append(f"  - `brk` \"`{group.brk}`\"")
+                lines.append(f'  - `brk` "`{group.brk}`"')
             else:
-                lines.append(f"  - ~~`brk` \"`{group.brk}`\"~~")
+                lines.append(f'  - ~~`brk` "`{group.brk}`"~~')
         if group.f:
             if marker == "+":
-                lines.append(f"  - `f` \"`{group.f}`\"")
+                lines.append(f'  - `f` "`{group.f}`"')
             else:
-                lines.append(f"  - ~~`f` \"`{group.f}`\"~~")
+                lines.append(f'  - ~~`f` "`{group.f}`"~~')
     return lines
 
 
-def _format_wavetbl_markdown(diff: WaveTblDiff) -> List[str]:
+def _format_wavetbl_markdown(diff: WaveTblDiff) -> list[str]:
     """Format a single WaveTblDiff as Markdown lines."""
     lines = []
     if diff.replaced_from:
-        lines.append(f"### {diff.suite_name}: WAVETBL Replaced: {diff.replaced_from} -> {diff.wavetbl_name}")
+        lines.append(
+            f"### {diff.suite_name}: WAVETBL Replaced: {diff.replaced_from} -> {diff.wavetbl_name}"
+        )
         if diff.new_block:
             lines.append("")
             lines.extend(_format_wavetbl_block_markdown(diff.new_block, "+"))
         return lines
 
-    lines.append(f"### {diff.suite_name} (WAVETBL \"{diff.wavetbl_name}\")")
+    lines.append(f'### {diff.suite_name} (WAVETBL "{diff.wavetbl_name}")')
 
     # Whole block added/removed
     if diff.new_block and not diff.old_block:
@@ -368,11 +383,11 @@ def _format_wavetbl_markdown(diff: WaveTblDiff) -> List[str]:
         for name, group in diff.pins_groups_added.items():
             lines.append(f"- `{name}`")
             for row in group.rows:
-                lines.append(f"  - `{row.label}` \"`{row.edge_spec}`\" `{row.state}`")
+                lines.append(f'  - `{row.label}` "`{row.edge_spec}`" `{row.state}`')
             if group.brk:
-                lines.append(f"  - `brk` \"`{group.brk}`\"")
+                lines.append(f'  - `brk` "`{group.brk}`"')
             if group.f:
-                lines.append(f"  - `f` \"`{group.f}`\"")
+                lines.append(f'  - `f` "`{group.f}`"')
         lines.append("")
 
     if diff.pins_groups_removed:
@@ -380,11 +395,11 @@ def _format_wavetbl_markdown(diff: WaveTblDiff) -> List[str]:
         for name, group in diff.pins_groups_removed.items():
             lines.append(f"- ~~`{name}`~~")
             for row in group.rows:
-                lines.append(f"  - ~~`{row.label}` \"`{row.edge_spec}`\" `{row.state}`~~")
+                lines.append(f'  - ~~`{row.label}` "`{row.edge_spec}`" `{row.state}`~~')
             if group.brk:
-                lines.append(f"  - ~~`brk` \"`{group.brk}`\"~~")
+                lines.append(f'  - ~~`brk` "`{group.brk}`"~~')
             if group.f:
-                lines.append(f"  - ~~`f` \"`{group.f}`\"~~")
+                lines.append(f'  - ~~`f` "`{group.f}`"~~')
         lines.append("")
 
     if diff.pins_groups_changed:
@@ -393,23 +408,67 @@ def _format_wavetbl_markdown(diff: WaveTblDiff) -> List[str]:
         lines.append("|------|-----|-------|-----|-----|")
         for name, pg_diff in diff.pins_groups_changed.items():
             for row in pg_diff.rows_added:
-                lines.append(f"| `{name}` | `{row.label}` | added | | `{row.edge_spec}` `{row.state}` |")
+                lines.append(
+                    f"| `{name}` | `{row.label}` | added | | `{row.edge_spec}` `{row.state}` |"
+                )
             for row in pg_diff.rows_removed:
-                lines.append(f"| `{name}` | `{row.label}` | removed | `{row.edge_spec}` `{row.state}` | |")
+                lines.append(
+                    f"| `{name}` | `{row.label}` | removed | `{row.edge_spec}` `{row.state}` | |"
+                )
             for old_r, new_r in pg_diff.rows_changed:
                 if old_r.edge_spec != new_r.edge_spec:
-                    lines.append(f"| `{name}` | `{old_r.label}` | edge_spec | `{old_r.edge_spec}` | `{new_r.edge_spec}` |")
+                    lines.append(
+                        f"| `{name}` | `{old_r.label}` | edge_spec | `{old_r.edge_spec}` | `{new_r.edge_spec}` |"
+                    )
                 if old_r.state != new_r.state:
-                    lines.append(f"| `{name}` | `{old_r.label}` | state | `{old_r.state}` | `{new_r.state}` |")
+                    lines.append(
+                        f"| `{name}` | `{old_r.label}` | state | `{old_r.state}` | `{new_r.state}` |"
+                    )
             if pg_diff.brk_old != pg_diff.brk_new:
-                lines.append(f"| `{name}` | `brk` | value | `{pg_diff.brk_old}` | `{pg_diff.brk_new}` |")
+                lines.append(
+                    f"| `{name}` | `brk` | value | `{pg_diff.brk_old}` | `{pg_diff.brk_new}` |"
+                )
             if pg_diff.f_old != pg_diff.f_new:
                 lines.append(f"| `{name}` | `f` | value | `{pg_diff.f_old}` | `{pg_diff.f_new}` |")
 
     return lines
 
 
-def _format_testtable_markdown(diff: TestTableSuiteDiff) -> List[str]:
+def _format_testmethod_markdown(diff: TestMethodDiff) -> list[str]:
+    """Format a single TestMethodDiff as Markdown lines."""
+    lines = []
+    lines.append(f"### {diff.suite_name}")
+    if diff.diff_type == "tm_id_changed":
+        lines.append(f"- **TestMethod ID changed**: `{diff.old_tm_id}` → `{diff.new_tm_id}`")
+    elif diff.diff_type == "class_changed":
+        old_cls = diff.old_class or "(none)"
+        new_cls = diff.new_class or "(none)"
+        lines.append(f"- **TestMethod class changed**: `{old_cls}` → `{new_cls}`")
+    elif diff.diff_type == "both_changed":
+        lines.append(
+            f"- **TestMethod ID changed**: `{diff.old_tm_id}` → `{diff.new_tm_id}`"
+        )
+        lines.append(
+            f"- **TestMethod class changed**: `{diff.old_class}` → `{diff.new_class}`"
+        )
+    elif diff.diff_type == "file_not_found":
+        lines.append(
+            f"- **TestMethod source not found**: `{diff.new_class or diff.old_class}`"
+        )
+    elif diff.diff_type == "file_changed":
+        lines.append(
+            f"- **TestMethod source changed**: `{diff.new_class or diff.old_class}`"
+        )
+        if diff.file_diff:
+            lines.append("")
+            lines.append("```diff")
+            for line in diff.file_diff:
+                lines.append(line)
+            lines.append("```")
+    return lines
+
+
+def _format_testtable_markdown(diff: TestTableSuiteDiff) -> list[str]:
     """Format a single TestTableSuiteDiff as Markdown lines."""
     lines = []
     lines.append(f"### {diff.suite_name}")
@@ -436,7 +495,7 @@ def _format_testtable_markdown(diff: TestTableSuiteDiff) -> List[str]:
     return lines
 
 
-def _format_vector_markdown(diff: VectorSuiteDiff) -> List[str]:
+def _format_vector_markdown(diff: VectorSuiteDiff) -> list[str]:
     """Format a single VectorSuiteDiff as Markdown lines."""
     lines = []
     if diff.diff_type == "added":
@@ -484,9 +543,7 @@ def _format_vector_markdown(diff: VectorSuiteDiff) -> List[str]:
             lines.append("| File | Old mtime | New mtime |")
             lines.append("|------|-----------|-----------|")
             for fc in diff.file_date_changes:
-                lines.append(
-                    f"| `{fc.file_path}` | `{fc.old_mtime}` | `{fc.new_mtime}` |"
-                )
+                lines.append(f"| `{fc.file_path}` | `{fc.old_mtime}` | `{fc.new_mtime}` |")
     return lines
 
 
@@ -559,10 +616,12 @@ def format_markdown(report: DiffReport) -> str:
     if report.moved:
         lines.append(f"## Moved Tests ({len(report.moved)})")
         for name in report.moved:
-            entries = [d for d in report.diffs if d.suite_name == name and d.diff_type == DiffType.MOVED]
+            entries = [
+                d for d in report.diffs if d.suite_name == name and d.diff_type == DiffType.MOVED
+            ]
             for d in entries:
-                old_pos = d.old_index + 1 if d.old_index is not None else '?'
-                new_pos = d.new_index + 1 if d.new_index is not None else '?'
+                old_pos = d.old_index + 1 if d.old_index is not None else "?"
+                new_pos = d.new_index + 1 if d.new_index is not None else "?"
                 lines.append(f"- **{name}**: position {old_pos} → {new_pos}")
         lines.append("")
 
@@ -601,7 +660,7 @@ def format_markdown(report: DiffReport) -> str:
 
     if report.eqnset_diffs:
         lines.append("")
-        lines.append("## EQNSET Diff")
+        lines.append("## Level EQNSET Diff")
         lines.append("")
         for diff in report.eqnset_diffs:
             lines.extend(_format_eqnset_markdown(diff))
@@ -640,5 +699,12 @@ def format_markdown(report: DiffReport) -> str:
         lines.append("")
         for diff in report.vector_diffs:
             lines.extend(_format_vector_markdown(diff))
+
+    if report.testmethod_diffs:
+        lines.append("")
+        lines.append("## TestMethod Diff")
+        lines.append("")
+        for diff in report.testmethod_diffs:
+            lines.extend(_format_testmethod_markdown(diff))
 
     return "\n".join(lines)

@@ -2,9 +2,10 @@
 """Tests for level spec parsing and diff functionality."""
 
 import unittest
-from ate_smt7_diff.models import LevelSpec, LevelSpecDiff
-from ate_smt7_diff.parsers.level_parser import LevelLoader
+
 from ate_smt7_diff.diff.level_diff import diff_level_specs
+from ate_smt7_diff.models import LevelSpec
+from ate_smt7_diff.parsers.level_parser import LevelLoader
 
 
 class TestParseSpecs(unittest.TestCase):
@@ -13,12 +14,12 @@ class TestParseSpecs(unittest.TestCase):
     def test_parse_basic_specs(self):
         lines = [
             'SPECSET 1 "TEST"',
-            '',
-            '# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT',
-            'V33              0                                                  [  V] ',
-            'VOH              -0.2                                               [  V] ',
-            'IOH              0.2                                                [ mA] ',
-            '',
+            "",
+            "# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT",
+            "V33              0                                                  [  V] ",
+            "VOH              -0.2                                               [  V] ",
+            "IOH              0.2                                                [ mA] ",
+            "",
             'SPECSET 2 "NEXT"',
         ]
         loader = LevelLoader.__new__(LevelLoader)
@@ -34,9 +35,9 @@ class TestParseSpecs(unittest.TestCase):
     def test_parse_specs_with_min_max(self):
         lines = [
             'SPECSET 1 "TEST"',
-            '# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT',
-            'VT               -1.5             0                0                [  V] ',
-            'DVDD09           0.9              0                0                [  V] ',
+            "# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT",
+            "VT               -1.5             0                0                [  V] ",
+            "DVDD09           0.9              0                0                [  V] ",
         ]
         loader = LevelLoader.__new__(LevelLoader)
         loader.lines = lines
@@ -51,8 +52,8 @@ class TestParseSpecs(unittest.TestCase):
     def test_parse_specs_stops_at_eqnset(self):
         lines = [
             'SPECSET 1 "TEST"',
-            '# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT',
-            'V33              0                                                  [  V] ',
+            "# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT",
+            "V33              0                                                  [  V] ",
             'EQNSET 2 "NEXT"',
         ]
         loader = LevelLoader.__new__(LevelLoader)
@@ -64,9 +65,9 @@ class TestParseSpecs(unittest.TestCase):
     def test_parse_specs_stops_at_at(self):
         lines = [
             'SPECSET 1 "TEST"',
-            '# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT',
-            'V33              0                                                  [  V] ',
-            '@',
+            "# SPECNAME       *****ACTUAL***** *****MINIMUM**** *****MAXIMUM**** UNITS COMMENT",
+            "V33              0                                                  [  V] ",
+            "@",
         ]
         loader = LevelLoader.__new__(LevelLoader)
         loader.lines = lines
@@ -76,7 +77,7 @@ class TestParseSpecs(unittest.TestCase):
     def test_parse_specs_empty_block(self):
         lines = [
             'SPECSET 1 "TEST"',
-            '',
+            "",
             'SPECSET 2 "NEXT"',
         ]
         loader = LevelLoader.__new__(LevelLoader)

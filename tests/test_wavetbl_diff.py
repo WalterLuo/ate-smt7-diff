@@ -1,19 +1,15 @@
 #!/usr/bin/env python3
 """Tests for WAVETBL diff algorithms in timing_diff.py."""
 
-import pytest
-
-from ate_smt7_diff.models import (
-    WaveTblBlock,
-    WaveTblDiff,
-    WaveTblPinsGroup,
-    WaveTblPinsGroupDiff,
-    WaveTblRow,
-)
 from ate_smt7_diff.diff.timing_diff import (
     diff_wavetbl_blocks,
     diff_wavetbl_pins_group,
     diff_wavetbls,
+)
+from ate_smt7_diff.models import (
+    WaveTblBlock,
+    WaveTblPinsGroup,
+    WaveTblRow,
 )
 
 
@@ -38,10 +34,13 @@ class TestDiffWavetblPinsGroup:
 
     def test_row_added(self):
         old = make_group("A", [WaveTblRow("0", "d1:0", "0")])
-        new = make_group("A", [
-            WaveTblRow("0", "d1:0", "0"),
-            WaveTblRow("1", "d1:1", "1"),
-        ])
+        new = make_group(
+            "A",
+            [
+                WaveTblRow("0", "d1:0", "0"),
+                WaveTblRow("1", "d1:1", "1"),
+            ],
+        )
         result = diff_wavetbl_pins_group(old, new)
         assert result is not None
         assert result.rows_added == (WaveTblRow("1", "d1:1", "1"),)
@@ -49,10 +48,13 @@ class TestDiffWavetblPinsGroup:
         assert result.rows_changed == ()
 
     def test_row_removed(self):
-        old = make_group("A", [
-            WaveTblRow("0", "d1:0", "0"),
-            WaveTblRow("1", "d1:1", "1"),
-        ])
+        old = make_group(
+            "A",
+            [
+                WaveTblRow("0", "d1:0", "0"),
+                WaveTblRow("1", "d1:1", "1"),
+            ],
+        )
         new = make_group("A", [WaveTblRow("0", "d1:0", "0")])
         result = diff_wavetbl_pins_group(old, new)
         assert result is not None
@@ -67,10 +69,12 @@ class TestDiffWavetblPinsGroup:
         assert result is not None
         assert result.rows_added == ()
         assert result.rows_removed == ()
-        assert result.rows_changed == ((
-            WaveTblRow("0", "d1:0", "0"),
-            WaveTblRow("0", "d1:1", "1"),
-        ),)
+        assert result.rows_changed == (
+            (
+                WaveTblRow("0", "d1:0", "0"),
+                WaveTblRow("0", "d1:1", "1"),
+            ),
+        )
 
     def test_brk_changed(self):
         old = make_group("A", [WaveTblRow("0", "d1:0", "0")], brk="d1:0")
@@ -119,10 +123,13 @@ class TestDiffWavetblBlocks:
 
     def test_pins_group_added(self):
         old = make_block("wt", [make_group("A", [WaveTblRow("0", "d1:0", "0")])])
-        new = make_block("wt", [
-            make_group("A", [WaveTblRow("0", "d1:0", "0")]),
-            make_group("B", [WaveTblRow("0", "d1:1", "1")]),
-        ])
+        new = make_block(
+            "wt",
+            [
+                make_group("A", [WaveTblRow("0", "d1:0", "0")]),
+                make_group("B", [WaveTblRow("0", "d1:1", "1")]),
+            ],
+        )
         result = diff_wavetbl_blocks("suite", "wt", old, new)
         assert result is not None
         assert "B" in result.pins_groups_added
@@ -130,10 +137,13 @@ class TestDiffWavetblBlocks:
         assert not result.pins_groups_changed
 
     def test_pins_group_removed(self):
-        old = make_block("wt", [
-            make_group("A", [WaveTblRow("0", "d1:0", "0")]),
-            make_group("B", [WaveTblRow("0", "d1:1", "1")]),
-        ])
+        old = make_block(
+            "wt",
+            [
+                make_group("A", [WaveTblRow("0", "d1:0", "0")]),
+                make_group("B", [WaveTblRow("0", "d1:1", "1")]),
+            ],
+        )
         new = make_block("wt", [make_group("A", [WaveTblRow("0", "d1:0", "0")])])
         result = diff_wavetbl_blocks("suite", "wt", old, new)
         assert result is not None
@@ -198,16 +208,22 @@ class TestDiffWavetbls:
 
     def test_replacement_with_content_diff(self):
         old_blocks = {
-            "old_wt": make_block("old_wt", [
-                make_group("A", [WaveTblRow("0", "d1:0", "0")]),
-                make_group("B", [WaveTblRow("0", "d1:1", "1")]),
-            ]),
+            "old_wt": make_block(
+                "old_wt",
+                [
+                    make_group("A", [WaveTblRow("0", "d1:0", "0")]),
+                    make_group("B", [WaveTblRow("0", "d1:1", "1")]),
+                ],
+            ),
         }
         new_blocks = {
-            "new_wt": make_block("new_wt", [
-                make_group("A", [WaveTblRow("0", "d1:0", "0")]),
-                make_group("B", [WaveTblRow("0", "d1:2", "2")]),
-            ]),
+            "new_wt": make_block(
+                "new_wt",
+                [
+                    make_group("A", [WaveTblRow("0", "d1:0", "0")]),
+                    make_group("B", [WaveTblRow("0", "d1:2", "2")]),
+                ],
+            ),
         }
         result = diff_wavetbls("suite", old_blocks, new_blocks)
         assert len(result) == 1

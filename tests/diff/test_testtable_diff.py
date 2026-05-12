@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """Tests for testtable_diff.py."""
 
-import pytest
-
 from ate_smt7_diff.diff.testtable_diff import diff_testtable_suites, diff_testtables
-from ate_smt7_diff.models import TestTableRow, TestTableRowDiff, TestTableSuiteDiff
+from ate_smt7_diff.models import TestTableRow
 
 
 class TestDiffTestTableSuites:
     def test_no_changes_returns_none(self) -> None:
         rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "10", "Usl": "20"}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="100",
+                columns={"Lsl": "10", "Usl": "20"},
             ),
         }
         result = diff_testtable_suites("SuiteA", rows, rows)
@@ -21,18 +21,15 @@ class TestDiffTestTableSuites:
     def test_added_rows(self) -> None:
         old_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "10"}
+                suite_name="SuiteA", test_name="test1", test_number="100", columns={"Lsl": "10"}
             ),
         }
         new_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "10"}
+                suite_name="SuiteA", test_name="test1", test_number="100", columns={"Lsl": "10"}
             ),
             ("SuiteA", "test2", "101"): TestTableRow(
-                suite_name="SuiteA", test_name="test2", test_number="101",
-                columns={"Lsl": "15"}
+                suite_name="SuiteA", test_name="test2", test_number="101", columns={"Lsl": "15"}
             ),
         }
         result = diff_testtable_suites("SuiteA", old_rows, new_rows)
@@ -45,18 +42,15 @@ class TestDiffTestTableSuites:
     def test_removed_rows(self) -> None:
         old_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "10"}
+                suite_name="SuiteA", test_name="test1", test_number="100", columns={"Lsl": "10"}
             ),
             ("SuiteA", "test2", "101"): TestTableRow(
-                suite_name="SuiteA", test_name="test2", test_number="101",
-                columns={"Lsl": "15"}
+                suite_name="SuiteA", test_name="test2", test_number="101", columns={"Lsl": "15"}
             ),
         }
         new_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "10"}
+                suite_name="SuiteA", test_name="test1", test_number="100", columns={"Lsl": "10"}
             ),
         }
         result = diff_testtable_suites("SuiteA", old_rows, new_rows)
@@ -69,14 +63,18 @@ class TestDiffTestTableSuites:
     def test_changed_columns(self) -> None:
         old_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "10", "Usl": "20"}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="100",
+                columns={"Lsl": "10", "Usl": "20"},
             ),
         }
         new_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "12", "Usl": "20"}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="100",
+                columns={"Lsl": "12", "Usl": "20"},
             ),
         }
         result = diff_testtable_suites("SuiteA", old_rows, new_rows)
@@ -91,14 +89,18 @@ class TestDiffTestTableSuites:
     def test_multiple_column_changes(self) -> None:
         old_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "10", "Usl": "20", "Units": "V"}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="100",
+                columns={"Lsl": "10", "Usl": "20", "Units": "V"},
             ),
         }
         new_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "12", "Usl": "25", "Units": "V"}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="100",
+                columns={"Lsl": "12", "Usl": "25", "Units": "V"},
             ),
         }
         result = diff_testtable_suites("SuiteA", old_rows, new_rows)
@@ -109,14 +111,15 @@ class TestDiffTestTableSuites:
     def test_added_column(self) -> None:
         old_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "10"}
+                suite_name="SuiteA", test_name="test1", test_number="100", columns={"Lsl": "10"}
             ),
         }
         new_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "10", "Usl": "20"}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="100",
+                columns={"Lsl": "10", "Usl": "20"},
             ),
         }
         result = diff_testtable_suites("SuiteA", old_rows, new_rows)
@@ -127,14 +130,15 @@ class TestDiffTestTableSuites:
     def test_removed_column(self) -> None:
         old_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "10", "Usl": "20"}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="100",
+                columns={"Lsl": "10", "Usl": "20"},
             ),
         }
         new_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "10"}
+                suite_name="SuiteA", test_name="test1", test_number="100", columns={"Lsl": "10"}
             ),
         }
         result = diff_testtable_suites("SuiteA", old_rows, new_rows)
@@ -148,28 +152,24 @@ class TestDiffTestTables:
         old_rows_by_suite = {
             "SuiteA": {
                 ("SuiteA", "test1", "100"): TestTableRow(
-                    suite_name="SuiteA", test_name="test1", test_number="100",
-                    columns={"Lsl": "10"}
+                    suite_name="SuiteA", test_name="test1", test_number="100", columns={"Lsl": "10"}
                 ),
             },
             "SuiteB": {
                 ("SuiteB", "test1", "200"): TestTableRow(
-                    suite_name="SuiteB", test_name="test1", test_number="200",
-                    columns={"Lsl": "5"}
+                    suite_name="SuiteB", test_name="test1", test_number="200", columns={"Lsl": "5"}
                 ),
             },
         }
         new_rows_by_suite = {
             "SuiteA": {
                 ("SuiteA", "test1", "100"): TestTableRow(
-                    suite_name="SuiteA", test_name="test1", test_number="100",
-                    columns={"Lsl": "15"}
+                    suite_name="SuiteA", test_name="test1", test_number="100", columns={"Lsl": "15"}
                 ),
             },
             "SuiteB": {
                 ("SuiteB", "test1", "200"): TestTableRow(
-                    suite_name="SuiteB", test_name="test1", test_number="200",
-                    columns={"Lsl": "5"}
+                    suite_name="SuiteB", test_name="test1", test_number="200", columns={"Lsl": "5"}
                 ),
             },
         }
@@ -183,8 +183,7 @@ class TestDiffTestTables:
         new_rows_by_suite = {
             "SuiteA": {
                 ("SuiteA", "test1", "100"): TestTableRow(
-                    suite_name="SuiteA", test_name="test1", test_number="100",
-                    columns={"Lsl": "10"}
+                    suite_name="SuiteA", test_name="test1", test_number="100", columns={"Lsl": "10"}
                 ),
             },
         }
@@ -197,8 +196,7 @@ class TestDiffTestTables:
         old_rows_by_suite = {
             "SuiteA": {
                 ("SuiteA", "test1", "100"): TestTableRow(
-                    suite_name="SuiteA", test_name="test1", test_number="100",
-                    columns={"Lsl": "10"}
+                    suite_name="SuiteA", test_name="test1", test_number="100", columns={"Lsl": "10"}
                 ),
             },
         }
@@ -225,14 +223,18 @@ class TestDiffTestTables:
     def test_empty_string_values_not_reported(self) -> None:
         old_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "", "Usl": ""}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="100",
+                columns={"Lsl": "", "Usl": ""},
             ),
         }
         new_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Lsl": "", "Usl": ""}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="100",
+                columns={"Lsl": "", "Usl": ""},
             ),
         }
         result = diff_testtable_suites("SuiteA", old_rows, new_rows)
@@ -241,14 +243,28 @@ class TestDiffTestTables:
     def test_test_number_change_treated_as_changed(self) -> None:
         old_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Suite name": "SuiteA", "Test name": "test1", "Test number": "100", "Lsl": "10"}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="100",
+                columns={
+                    "Suite name": "SuiteA",
+                    "Test name": "test1",
+                    "Test number": "100",
+                    "Lsl": "10",
+                },
             ),
         }
         new_rows = {
             ("SuiteA", "test1", "200"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="200",
-                columns={"Suite name": "SuiteA", "Test name": "test1", "Test number": "200", "Lsl": "10"}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="200",
+                columns={
+                    "Suite name": "SuiteA",
+                    "Test name": "test1",
+                    "Test number": "200",
+                    "Lsl": "10",
+                },
             ),
         }
         result = diff_testtable_suites("SuiteA", old_rows, new_rows)
@@ -264,14 +280,30 @@ class TestDiffTestTables:
     def test_test_number_and_column_change(self) -> None:
         old_rows = {
             ("SuiteA", "test1", "100"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="100",
-                columns={"Suite name": "SuiteA", "Test name": "test1", "Test number": "100", "Lsl": "10", "Usl": "20"}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="100",
+                columns={
+                    "Suite name": "SuiteA",
+                    "Test name": "test1",
+                    "Test number": "100",
+                    "Lsl": "10",
+                    "Usl": "20",
+                },
             ),
         }
         new_rows = {
             ("SuiteA", "test1", "200"): TestTableRow(
-                suite_name="SuiteA", test_name="test1", test_number="200",
-                columns={"Suite name": "SuiteA", "Test name": "test1", "Test number": "200", "Lsl": "15", "Usl": "20"}
+                suite_name="SuiteA",
+                test_name="test1",
+                test_number="200",
+                columns={
+                    "Suite name": "SuiteA",
+                    "Test name": "test1",
+                    "Test number": "200",
+                    "Lsl": "15",
+                    "Usl": "20",
+                },
             ),
         }
         result = diff_testtable_suites("SuiteA", old_rows, new_rows)

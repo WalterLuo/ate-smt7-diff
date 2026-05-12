@@ -3,8 +3,6 @@
 Console formatter for diff reports.
 """
 
-from typing import Dict, List, Tuple
-
 from ate_smt7_diff.models import (
     DiffReport,
     DiffType,
@@ -19,9 +17,10 @@ from ate_smt7_diff.models import (
     TimingPinConfig,
     TimingSetConfig,
     TimingSpecDiff,
+    TestMethodDiff,
     VectorSuiteDiff,
+    WaveTblBlock,
     WaveTblDiff,
-    WaveTblPinsGroupDiff,
 )
 
 
@@ -45,7 +44,7 @@ def _dpspin_fields_str(cfg: DpsPinConfig) -> str:
     return ", ".join(f"{k}={v}" for k, v in fields.items())
 
 
-def _collect_dpspin_changes(old_c: DpsPinConfig, new_c: DpsPinConfig) -> List[str]:
+def _collect_dpspin_changes(old_c: DpsPinConfig, new_c: DpsPinConfig) -> list[str]:
     """Collect changed fields between two DpsPinConfig objects."""
     old_fields = old_c.all_fields()
     new_fields = new_c.all_fields()
@@ -58,7 +57,7 @@ def _collect_dpspin_changes(old_c: DpsPinConfig, new_c: DpsPinConfig) -> List[st
     return changes
 
 
-def _collect_levelset_changes(old_c: LevelSetPinConfig, new_c: LevelSetPinConfig) -> List[str]:
+def _collect_levelset_changes(old_c: LevelSetPinConfig, new_c: LevelSetPinConfig) -> list[str]:
     """Collect changed fields between two LevelSetPinConfig objects."""
     old_fields = old_c.all_fields()
     new_fields = new_c.all_fields()
@@ -71,7 +70,7 @@ def _collect_levelset_changes(old_c: LevelSetPinConfig, new_c: LevelSetPinConfig
     return changes
 
 
-def _format_level_spec_console(diff: LevelSpecDiff) -> List[str]:
+def _format_level_spec_console(diff: LevelSpecDiff) -> list[str]:
     """Format a single LevelSpecDiff as console lines."""
     lines = []
     lines.append("  * level spec changes:")
@@ -95,10 +94,10 @@ def _format_level_spec_console(diff: LevelSpecDiff) -> List[str]:
     return lines
 
 
-def _format_eqnset_console(diff: EqnSetDiff) -> List[str]:
+def _format_eqnset_console(diff: EqnSetDiff) -> list[str]:
     """Format a single EqnSetDiff as console lines."""
     lines = []
-    lines.append(f"{diff.suite_name} (EQNSET {diff.eqnset_index} \"{diff.eqnset_name}\"):")
+    lines.append(f'{diff.suite_name} (EQNSET {diff.eqnset_index} "{diff.eqnset_name}"):')
     if diff.dpspins_added:
         lines.append("  DPSPINS Added:")
         for name, cfg in diff.dpspins_added.items():
@@ -117,13 +116,17 @@ def _format_eqnset_console(diff: EqnSetDiff) -> List[str]:
         for idx, pins in diff.levelsets_added.items():
             lines.append(f"    + LEVELSET {idx}:")
             for name, cfg in pins.items():
-                lines.append(f"      + {name}: vih={cfg.vih}, vil={cfg.vil}, voh={cfg.voh}, vol={cfg.vol}")
+                lines.append(
+                    f"      + {name}: vih={cfg.vih}, vil={cfg.vil}, voh={cfg.voh}, vol={cfg.vol}"
+                )
     if diff.levelsets_removed:
         lines.append("  LEVELSET Removed:")
         for idx, pins in diff.levelsets_removed.items():
             lines.append(f"    - LEVELSET {idx}:")
             for name, cfg in pins.items():
-                lines.append(f"      - {name}: vih={cfg.vih}, vil={cfg.vil}, voh={cfg.voh}, vol={cfg.vol}")
+                lines.append(
+                    f"      - {name}: vih={cfg.vih}, vil={cfg.vil}, voh={cfg.voh}, vol={cfg.vol}"
+                )
     if diff.levelsets_changed:
         lines.append("  LEVELSET Changed:")
         for idx, pins in diff.levelsets_changed.items():
@@ -155,15 +158,15 @@ def _timing_pin_fields_str(cfg: TimingPinConfig) -> str:
 
 
 def _match_pin_list_changes(
-    pins_added: Dict[str, TimingPinConfig],
-    pins_removed: Dict[str, TimingPinConfig],
-) -> Tuple[List[Tuple[str, str, str]], Dict[str, TimingPinConfig], Dict[str, TimingPinConfig]]:
+    pins_added: dict[str, TimingPinConfig],
+    pins_removed: dict[str, TimingPinConfig],
+) -> tuple[list[tuple[str, str, str]], dict[str, TimingPinConfig], dict[str, TimingPinConfig]]:
     """Match added/removed PINS groups with identical edge values.
 
     Returns (matched, remaining_added, remaining_removed) where matched
     is a list of (old_name, new_name, delta_str).
     """
-    matched: List[Tuple[str, str, str]] = []
+    matched: list[tuple[str, str, str]] = []
     remaining_added = dict(pins_added)
     remaining_removed = dict(pins_removed)
 
@@ -188,7 +191,7 @@ def _match_pin_list_changes(
     return matched, remaining_added, remaining_removed
 
 
-def _collect_timing_pin_changes(old_c: TimingPinConfig, new_c: TimingPinConfig) -> List[str]:
+def _collect_timing_pin_changes(old_c: TimingPinConfig, new_c: TimingPinConfig) -> list[str]:
     """Collect changed fields between two TimingPinConfig objects."""
     old_fields = old_c.all_fields()
     new_fields = new_c.all_fields()
@@ -201,7 +204,7 @@ def _collect_timing_pin_changes(old_c: TimingPinConfig, new_c: TimingPinConfig) 
     return changes
 
 
-def _collect_timingset_changes(old_c: TimingSetConfig, new_c: TimingSetConfig) -> List[str]:
+def _collect_timingset_changes(old_c: TimingSetConfig, new_c: TimingSetConfig) -> list[str]:
     """Collect changed fields between two TimingSetConfig objects."""
     old_fields = old_c.all_fields()
     new_fields = new_c.all_fields()
@@ -214,7 +217,7 @@ def _collect_timingset_changes(old_c: TimingSetConfig, new_c: TimingSetConfig) -
     return changes
 
 
-def _format_eqnset_block_console(block: TimingEqnSetBlock) -> List[str]:
+def _format_eqnset_block_console(block: TimingEqnSetBlock) -> list[str]:
     """Format EQNSET block content as console lines."""
     lines = []
     if block.specs:
@@ -232,7 +235,7 @@ def _format_eqnset_block_console(block: TimingEqnSetBlock) -> List[str]:
     return lines
 
 
-def _format_timing_eqnset_console(diff: TimingEqnSetDiff) -> List[str]:
+def _format_timing_eqnset_console(diff: TimingEqnSetDiff) -> list[str]:
     """Format a single TimingEqnSetDiff as console lines."""
     lines = []
 
@@ -240,15 +243,15 @@ def _format_timing_eqnset_console(diff: TimingEqnSetDiff) -> List[str]:
     if diff.replaced_from_name:
         lines.append(
             f"{diff.suite_name}: Timing EQNSET Replaced: "
-            f"{diff.replaced_from_index} \"{diff.replaced_from_name}\" -> "
-            f"{diff.eqnset_index} \"{diff.eqnset_name}\""
+            f'{diff.replaced_from_index} "{diff.replaced_from_name}" -> '
+            f'{diff.eqnset_index} "{diff.eqnset_name}"'
         )
         if diff.new_block:
             lines.append("  New EQNSET content:")
             lines.extend(_format_eqnset_block_console(diff.new_block))
         return lines
 
-    lines.append(f"{diff.suite_name} (EQNSET {diff.eqnset_index} \"{diff.eqnset_name}\"):")
+    lines.append(f'{diff.suite_name} (EQNSET {diff.eqnset_index} "{diff.eqnset_name}"):')
     if diff.specs_added:
         lines.append("  SPECS Added:")
         for name, spec in diff.specs_added.items():
@@ -308,15 +311,14 @@ def _format_timing_eqnset_console(diff: TimingEqnSetDiff) -> List[str]:
     return lines
 
 
-def _format_timing_spec_console(diff: TimingSpecDiff) -> List[str]:
+def _format_timing_spec_console(diff: TimingSpecDiff) -> list[str]:
     """Format a single TimingSpecDiff as console lines."""
     lines = []
 
     # Replacement
     if diff.replaced_from:
         lines.append(
-            f"{diff.suite_name}: Timing Spec Replaced: "
-            f"{diff.replaced_from} -> {diff.spec_name}"
+            f"{diff.suite_name}: Timing Spec Replaced: {diff.replaced_from} -> {diff.spec_name}"
         )
         if diff.new_specs:
             lines.append("  New spec content:")
@@ -324,7 +326,7 @@ def _format_timing_spec_console(diff: TimingSpecDiff) -> List[str]:
                 lines.append(f"    {name}: value={spec.value}, units={spec.units}")
         return lines
 
-    lines.append(f"{diff.suite_name} ({diff.spec_type} spec \"{diff.spec_name}\"):")
+    lines.append(f'{diff.suite_name} ({diff.spec_type} spec "{diff.spec_name}"):')
     if diff.added:
         lines.append("  Added:")
         for name, spec in diff.added.items():
@@ -347,21 +349,21 @@ def _format_timing_spec_console(diff: TimingSpecDiff) -> List[str]:
     return lines
 
 
-def _format_wavetbl_block_content(block: "WaveTblBlock", marker: str) -> List[str]:
+def _format_wavetbl_block_content(block: "WaveTblBlock", marker: str) -> list[str]:
     """Format full WAVETBL block content with a +/- marker."""
     lines = []
     for name, group in block.pins_groups.items():
         lines.append(f"    {marker} {name}")
         for row in group.rows:
-            lines.append(f"      {row.label} \"{row.edge_spec}\" {row.state}")
+            lines.append(f'      {row.label} "{row.edge_spec}" {row.state}')
         if group.brk:
-            lines.append(f"      brk \"{group.brk}\"")
+            lines.append(f'      brk "{group.brk}"')
         if group.f:
-            lines.append(f"      f \"{group.f}\"")
+            lines.append(f'      f "{group.f}"')
     return lines
 
 
-def _format_wavetbl_console(diff: WaveTblDiff) -> List[str]:
+def _format_wavetbl_console(diff: WaveTblDiff) -> list[str]:
     """Format a single WaveTblDiff as console lines."""
     lines = []
 
@@ -374,7 +376,7 @@ def _format_wavetbl_console(diff: WaveTblDiff) -> List[str]:
             lines.extend(_format_wavetbl_block_content(diff.new_block, "+"))
         return lines
 
-    lines.append(f"{diff.suite_name} (WAVETBL \"{diff.wavetbl_name}\"):")
+    lines.append(f'{diff.suite_name} (WAVETBL "{diff.wavetbl_name}"):')
 
     # Whole block added/removed
     if diff.new_block and not diff.old_block:
@@ -390,29 +392,29 @@ def _format_wavetbl_console(diff: WaveTblDiff) -> List[str]:
         for name, group in diff.pins_groups_added.items():
             lines.append(f"    + {name}")
             for row in group.rows:
-                lines.append(f"      {row.label} \"{row.edge_spec}\" {row.state}")
+                lines.append(f'      {row.label} "{row.edge_spec}" {row.state}')
             if group.brk:
-                lines.append(f"      brk \"{group.brk}\"")
+                lines.append(f'      brk "{group.brk}"')
             if group.f:
-                lines.append(f"      f \"{group.f}\"")
+                lines.append(f'      f "{group.f}"')
     if diff.pins_groups_removed:
         lines.append("  PINS Removed:")
         for name, group in diff.pins_groups_removed.items():
             lines.append(f"    - {name}")
             for row in group.rows:
-                lines.append(f"      {row.label} \"{row.edge_spec}\" {row.state}")
+                lines.append(f'      {row.label} "{row.edge_spec}" {row.state}')
             if group.brk:
-                lines.append(f"      brk \"{group.brk}\"")
+                lines.append(f'      brk "{group.brk}"')
             if group.f:
-                lines.append(f"      f \"{group.f}\"")
+                lines.append(f'      f "{group.f}"')
     if diff.pins_groups_changed:
         lines.append("  PINS Changed:")
         for name, pg_diff in diff.pins_groups_changed.items():
             lines.append(f"    ~ {name}")
             for row in pg_diff.rows_added:
-                lines.append(f"      + {row.label} \"{row.edge_spec}\" {row.state}")
+                lines.append(f'      + {row.label} "{row.edge_spec}" {row.state}')
             for row in pg_diff.rows_removed:
-                lines.append(f"      - {row.label} \"{row.edge_spec}\" {row.state}")
+                lines.append(f'      - {row.label} "{row.edge_spec}" {row.state}')
             for old_r, new_r in pg_diff.rows_changed:
                 changes = []
                 if old_r.edge_spec != new_r.edge_spec:
@@ -421,13 +423,13 @@ def _format_wavetbl_console(diff: WaveTblDiff) -> List[str]:
                     changes.append(f'state "{old_r.state}" -> "{new_r.state}"')
                 lines.append(f"      ~ {old_r.label}: {', '.join(changes)}")
             if pg_diff.brk_old != pg_diff.brk_new:
-                lines.append(f"      ~ brk \"{pg_diff.brk_old}\" -> \"{pg_diff.brk_new}\"")
+                lines.append(f'      ~ brk "{pg_diff.brk_old}" -> "{pg_diff.brk_new}"')
             if pg_diff.f_old != pg_diff.f_new:
-                lines.append(f"      ~ f \"{pg_diff.f_old}\" -> \"{pg_diff.f_new}\"")
+                lines.append(f'      ~ f "{pg_diff.f_old}" -> "{pg_diff.f_new}"')
     return lines
 
 
-def _format_testtable_console(diff: TestTableSuiteDiff) -> List[str]:
+def _format_testtable_console(diff: TestTableSuiteDiff) -> list[str]:
     """Format a single TestTableSuiteDiff as console lines."""
     lines = []
     lines.append(f"{diff.suite_name}:")
@@ -450,7 +452,7 @@ def _format_testtable_console(diff: TestTableSuiteDiff) -> List[str]:
     return lines
 
 
-def _format_vector_console(diff: VectorSuiteDiff) -> List[str]:
+def _format_vector_console(diff: VectorSuiteDiff) -> list[str]:
     """Format a single VectorSuiteDiff as console lines."""
     lines = []
     if diff.diff_type == "added":
@@ -489,6 +491,40 @@ def _format_vector_console(diff: VectorSuiteDiff) -> List[str]:
         lines.append(f"{diff.suite_name}: Pattern File Date Changed")
         for fc in diff.file_date_changes:
             lines.append(f"    ~ {fc.file_path}: mtime changed")
+    return lines
+
+
+def _format_testmethod_console(diff: TestMethodDiff) -> list[str]:
+    """Format a single TestMethodDiff as console lines."""
+    lines = []
+    if diff.diff_type == "tm_id_changed":
+        lines.append(
+            f"{diff.suite_name}: TestMethod ID changed: {diff.old_tm_id} -> {diff.new_tm_id}"
+        )
+    elif diff.diff_type == "class_changed":
+        old_cls = diff.old_class or "(none)"
+        new_cls = diff.new_class or "(none)"
+        lines.append(
+            f"{diff.suite_name}: TestMethod class changed: {old_cls} -> {new_cls}"
+        )
+    elif diff.diff_type == "both_changed":
+        lines.append(
+            f"{diff.suite_name}: TestMethod both changed: "
+            f"ID {diff.old_tm_id} -> {diff.new_tm_id}, "
+            f"class {diff.old_class} -> {diff.new_class}"
+        )
+    elif diff.diff_type == "file_not_found":
+        lines.append(
+            f"{diff.suite_name}: TestMethod source not found "
+            f"({diff.new_class or diff.old_class})"
+        )
+    elif diff.diff_type == "file_changed":
+        lines.append(
+            f"{diff.suite_name}: TestMethod source changed "
+            f"({diff.new_class or diff.old_class})"
+        )
+        for line in diff.file_diff:
+            lines.append(f"  {line}")
     return lines
 
 
@@ -560,12 +596,14 @@ def format_console(report: DiffReport) -> str:
         lines.append(f"Moved Tests ({len(report.moved)}):")
         for name in report.moved:
             # Find the diff entries for this move
-            entries = [d for d in report.diffs if d.suite_name == name and d.diff_type == DiffType.MOVED]
+            entries = [
+                d for d in report.diffs if d.suite_name == name and d.diff_type == DiffType.MOVED
+            ]
             for d in entries:
-                old_pos = d.old_index + 1 if d.old_index is not None else '?'
-                new_pos = d.new_index + 1 if d.new_index is not None else '?'
-                old_grp = ' / '.join(d.old_group_path) if d.old_group_path else '(root)'
-                new_grp = ' / '.join(d.new_group_path) if d.new_group_path else '(root)'
+                old_pos = d.old_index + 1 if d.old_index is not None else "?"
+                new_pos = d.new_index + 1 if d.new_index is not None else "?"
+                old_grp = " / ".join(d.old_group_path) if d.old_group_path else "(root)"
+                new_grp = " / ".join(d.new_group_path) if d.new_group_path else "(root)"
                 move_info = f"    pos {old_pos} -> {new_pos}"
                 if old_grp != new_grp:
                     move_info += f", group [{old_grp}] -> [{new_grp}]"
@@ -588,7 +626,9 @@ def format_console(report: DiffReport) -> str:
     for d in report.diffs:
         if d.diff_type == DiffType.UNCHANGED:
             continue
-        symbol = {DiffType.ADDED: "+", DiffType.REMOVED: "-", DiffType.MOVED: "~"}.get(d.diff_type, "?")
+        symbol = {DiffType.ADDED: "+", DiffType.REMOVED: "-", DiffType.MOVED: "~"}.get(
+            d.diff_type, "?"
+        )
         pos_info = ""
         if d.old_index is not None:
             pos_info += f" [old:{d.old_index + 1}]"
@@ -606,44 +646,52 @@ def format_console(report: DiffReport) -> str:
         lines.append(format_suite_console(report.suite_config_report))
 
     if report.old_suite_views is not None and report.new_suite_views is not None:
-        lines.append("")
-        lines.append("=" * 60)
-        lines.append("Associated Config Views")
-        lines.append("=" * 60)
-        common = sorted(
-            set(report.old_suite_views.keys()) & set(report.new_suite_views.keys())
-        )
+        common = sorted(set(report.old_suite_views.keys()) & set(report.new_suite_views.keys()))
         # Build lookup for level spec diffs
-        spec_diff_by_suite: Dict[str, LevelSpecDiff] = {}
+        spec_diff_by_suite: dict[str, LevelSpecDiff] = {}
         if report.level_spec_diffs:
             for diff in report.level_spec_diffs:
                 spec_diff_by_suite[diff.suite_name] = diff
+
+        changed_suite_lines: list[str] = []
         for suite_name in common:
             old_v = report.old_suite_views[suite_name]
             new_v = report.new_suite_views[suite_name]
-            lines.append(f"{suite_name}:")
+            suite_lines: list[str] = []
+
             if old_v.timing_spec_set or new_v.timing_spec_set:
                 old_t = old_v.timing_spec_set or "-"
                 new_t = new_v.timing_spec_set or "-"
-                marker = "  " if old_t == new_t else "* "
-                lines.append(f"  {marker}timing spec: {old_t} -> {new_t}")
+                if old_t != new_t:
+                    suite_lines.append(f"    timing spec: {old_t} -> {new_t}")
             if old_v.level_eqn_set is not None or new_v.level_eqn_set is not None:
                 old_e = old_v.level_eqn_set if old_v.level_eqn_set is not None else "-"
                 new_e = new_v.level_eqn_set if new_v.level_eqn_set is not None else "-"
-                marker = "  " if old_e == new_e else "* "
-                lines.append(f"  {marker}level EQNSET: {old_e} -> {new_e}")
+                if old_e != new_e:
+                    suite_lines.append(f"    level EQNSET: {old_e} -> {new_e}")
             if old_v.level_spec_set is not None or new_v.level_spec_set is not None:
                 old_s = old_v.level_spec_set if old_v.level_spec_set is not None else "-"
                 new_s = new_v.level_spec_set if new_v.level_spec_set is not None else "-"
-                marker = "  " if old_s == new_s else "* "
-                lines.append(f"  {marker}level SPECSET: {old_s} -> {new_s}")
+                if old_s != new_s:
+                    suite_lines.append(f"    level SPECSET: {old_s} -> {new_s}")
             if suite_name in spec_diff_by_suite:
-                lines.extend(_format_level_spec_console(spec_diff_by_suite[suite_name]))
+                suite_lines.extend(_format_level_spec_console(spec_diff_by_suite[suite_name]))
+
+            if suite_lines:
+                changed_suite_lines.append(f"{suite_name}:")
+                changed_suite_lines.extend(suite_lines)
+
+        if changed_suite_lines:
+            lines.append("")
+            lines.append("=" * 60)
+            lines.append("Level SPEC Diff")
+            lines.append("=" * 60)
+            lines.extend(changed_suite_lines)
 
     if report.eqnset_diffs:
         lines.append("")
         lines.append("=" * 60)
-        lines.append("EQNSET Diff")
+        lines.append("Level EQNSET Diff")
         lines.append("=" * 60)
         for diff in report.eqnset_diffs:
             lines.extend(_format_eqnset_console(diff))
@@ -687,5 +735,13 @@ def format_console(report: DiffReport) -> str:
         lines.append("=" * 60)
         for diff in report.vector_diffs:
             lines.extend(_format_vector_console(diff))
+
+    if report.testmethod_diffs:
+        lines.append("")
+        lines.append("=" * 60)
+        lines.append("TestMethod Diff")
+        lines.append("=" * 60)
+        for diff in report.testmethod_diffs:
+            lines.extend(_format_testmethod_console(diff))
 
     return "\n".join(lines)

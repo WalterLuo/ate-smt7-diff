@@ -8,7 +8,6 @@ building a lookup from pattern name to its mapped files.
 
 import logging
 from pathlib import Path
-from typing import Dict, Optional, Tuple
 
 from ate_smt7_diff.models import VectorPatternMapping
 
@@ -37,9 +36,7 @@ class VectorLoader:
     def __init__(self, path: str) -> None:
         self.path = path
         # pattern_name -> (path_dir, Tuple[VectorPatternMapping, ...])
-        self.pattern_lookup: Dict[
-            str, Tuple[str, Tuple[VectorPatternMapping, ...]]
-        ] = {}
+        self.pattern_lookup: dict[str, tuple[str, tuple[VectorPatternMapping, ...]]] = {}
         self._load()
 
     def _load(self) -> None:
@@ -50,7 +47,7 @@ class VectorLoader:
             return
 
         lines = text.splitlines()
-        current_path: Optional[str] = None
+        current_path: str | None = None
         in_files = False
 
         for raw_line in lines:
@@ -127,6 +124,6 @@ class VectorLoader:
         else:
             self.pattern_lookup[pattern_name] = (path_dir, (mapping,))
 
-    def lookup(self, pattern_name: str) -> Optional[Tuple[str, Tuple[VectorPatternMapping, ...]]]:
+    def lookup(self, pattern_name: str) -> tuple[str, tuple[VectorPatternMapping, ...]] | None:
         """Look up a pattern name and return (path_dir, mappings)."""
         return self.pattern_lookup.get(pattern_name)

@@ -7,7 +7,6 @@ Loads testtable files and groups rows by suite name.
 import csv
 import logging
 from pathlib import Path
-from typing import Dict, Tuple
 
 from ate_smt7_diff.models import TestTableRow
 
@@ -23,7 +22,7 @@ class TestTableLoader:
 
     def __init__(self, path: str) -> None:
         self.path = path
-        self.rows_by_suite: Dict[str, Dict[Tuple[str, str, str], TestTableRow]] = {}
+        self.rows_by_suite: dict[str, dict[tuple[str, str, str], TestTableRow]] = {}
         self._load()
 
     def _load(self) -> None:
@@ -62,11 +61,7 @@ class TestTableLoader:
                 continue
 
             key = (suite, test, num)
-            columns = {
-                k: v.strip()
-                for k, v in raw_row.items()
-                if v is not None
-            }
+            columns = {k: v.strip() for k, v in raw_row.items() if v is not None}
             row = TestTableRow(
                 suite_name=suite,
                 test_name=test,
