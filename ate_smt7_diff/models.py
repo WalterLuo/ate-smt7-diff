@@ -645,3 +645,24 @@ class SuiteConfigView:
     testtable_rows: dict[tuple[str, str, str], "TestTableRow"] | None = None
     vector_mappings: VectorSuiteMapping | None = None
     testmethod: TestMethodInfo | None = None
+
+
+@dataclass
+class BatchDiffReport:
+    """Aggregated diff report for multiple flow file pairs."""
+
+    old_package: str
+    new_package: str
+    pairs: list[tuple[str, str, DiffReport]] = field(default_factory=list)
+
+    @property
+    def total_pairs(self) -> int:
+        return len(self.pairs)
+
+    @property
+    def pairs_with_changes(self) -> list[tuple[str, str, DiffReport]]:
+        return [
+            (o, n, r)
+            for o, n, r in self.pairs
+            if r.added or r.removed or r.moved or r.order_changed
+        ]
