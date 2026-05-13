@@ -8,13 +8,15 @@ from __future__ import annotations
 import argparse
 import datetime
 import hashlib
-import json
 import logging
 import sys
 from pathlib import Path
 
 from ate_smt7_diff.builder import diff_flow_files
 from ate_smt7_diff.flow_matcher import FlowMatcher
+from ate_smt7_diff.formatters.batch_console import format_batch_console
+from ate_smt7_diff.formatters.batch_json import format_batch_json
+from ate_smt7_diff.formatters.batch_markdown import format_batch_markdown
 from ate_smt7_diff.formatters.console import format_console
 from ate_smt7_diff.formatters.json import format_json
 from ate_smt7_diff.formatters.markdown import format_markdown
@@ -69,74 +71,6 @@ def _run_batch_diff(
         batch.pairs.append((str(old_flow), str(new_flow), report))
 
     return batch
-
-
-def _format_batch_markdown(batch: BatchDiffReport) -> str:
-    """Format a batch diff report as Markdown."""
-    lines: list[str] = []
-    lines.append("# SMT7 Flow Diff Report")
-    lines.append("")
-    lines.append("## Summary")
-    lines.append("")
-    lines.append("| Item | Value |")
-    lines.append("|------|-------|")
-    lines.append(f"| Old Package | {batch.old_package} |")
-    lines.append(f"| New Package | {batch.new_package} |")
-    lines.append(f"| Total Flows | {batch.total_pairs} |")
-    lines.append(f"| Flows with Changes | {len(batch.pairs_with_changes)} |")
-    lines.append("")
-
-    for old_f, new_f, report in batch.pairs:
-        lines.append("---")
-        lines.append("")
-        lines.append(f"## {Path(old_f).name} vs {Path(new_f).name}")
-        lines.append("")
-        lines.append(format_markdown(report))
-        lines.append("")
-
-    return "\n".join(lines)
-
-
-def _format_batch_json(batch: BatchDiffReport) -> str:
-    """Format a batch diff report as JSON."""
-    return json.dumps(
-        {
-            "old_package": batch.old_package,
-            "new_package": batch.new_package,
-            "total_flows": batch.total_pairs,
-            "flows": [
-                {
-                    "old_file": old_f,
-                    "new_file": new_f,
-                    "report": json.loads(format_json(report)),
-                }
-                for old_f, new_f, report in batch.pairs
-            ],
-        },
-        indent=2,
-    )
-
-
-def _format_batch_console(batch: BatchDiffReport) -> str:
-    """Format a batch diff report for console."""
-    lines: list[str] = []
-    lines.append("=" * 60)
-    lines.append("SMT7 Batch Flow Diff Report")
-    lines.append("=" * 60)
-    lines.append(f"Old Package: {batch.old_package}")
-    lines.append(f"New Package: {batch.new_package}")
-    lines.append(f"Total Flows: {batch.total_pairs}")
-    lines.append(f"Flows with Changes: {len(batch.pairs_with_changes)}")
-    lines.append("")
-
-    for old_f, new_f, report in batch.pairs:
-        lines.append("-" * 60)
-        lines.append(f"{Path(old_f).name} vs {Path(new_f).name}")
-        lines.append("-" * 60)
-        lines.append(format_console(report))
-        lines.append("")
-
-    return "\n".join(lines)
 
 
 def _compute_dir_md5(directory: Path) -> str:
@@ -253,15 +187,15 @@ def main() -> None:
             batch = _run_batch_diff(old_pkg, new_pkg, matcher, args)
 
             formatters = {
-                "markdown": _format_batch_markdown,
-                "json": _format_batch_json,
-                "console": _format_batch_console,
+                "markdown": format_batch_markdown,
+                "json": format_batch_json,
+                "console": format_batch_console,
             }
             output = formatters[args.format](batch)
             print(output)
 
             identity_id = _generate_identity_id(old_pkg, new_pkg)
-            _write_history(new_pkg, _format_batch_markdown(batch), identity_id)
+            _write_history(new_pkg, format_batch_markdown(batch), identity_id)
         else:
             old_path = Path(args.old_file).resolve()
             new_path = Path(args.new_file).resolve()
