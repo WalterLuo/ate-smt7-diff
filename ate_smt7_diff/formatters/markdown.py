@@ -62,6 +62,7 @@ def _format_level_spec_markdown(diff: LevelSpecDiff) -> list[str]:
     if diff.changed:
         lines.append("")
         lines.append("**Changed:**")
+        lines.append("")
         lines.append("| Spec | Field | Old | New |")
         lines.append("|------|-------|-----|-----|")
         for name, (old_s, new_s) in diff.changed.items():
@@ -262,6 +263,7 @@ def _format_eqnset_markdown(diff: EqnSetDiff) -> list[str]:
             lines.append("")
         if diff.dpspins_changed:
             lines.append("**Changed:**")
+            lines.append("")
             lines.append("| Pin | Field | Old | New |")
             lines.append("|-----|-------|-----|-----|")
             for name, (old_c, new_c) in diff.dpspins_changed.items():
@@ -295,6 +297,7 @@ def _format_eqnset_markdown(diff: EqnSetDiff) -> list[str]:
             lines.append("")
         if diff.levelsets_changed:
             lines.append("**Changed:**")
+            lines.append("")
             lines.append("| LEVELSET | PINS | Field | Old | New |")
             lines.append("|----------|------|-------|-----|-----|")
             for idx, pins in diff.levelsets_changed.items():
@@ -423,6 +426,7 @@ def _format_timing_eqnset_markdown(diff: TimingEqnSetDiff) -> list[str]:
             lines.append("")
         if diff.pins_changed:
             lines.append("**Changed:**")
+            lines.append("")
             lines.append("| PINS | Field | Old | New |")
             lines.append("|------|-------|-----|-----|")
             for name, (old_c, new_c) in diff.pins_changed.items():
@@ -452,6 +456,7 @@ def _format_timing_eqnset_markdown(diff: TimingEqnSetDiff) -> list[str]:
             lines.append("")
         if diff.timingsets_changed:
             lines.append("**Changed:**")
+            lines.append("")
             lines.append("| TIMINGSET | Field | Old | New |")
             lines.append("|-----------|-------|-----|-----|")
             for idx, (old_c, new_c) in diff.timingsets_changed.items():
@@ -503,6 +508,7 @@ def _format_timing_spec_markdown(diff: TimingSpecDiff) -> list[str]:
     if diff.changed:
         lines.append("")
         lines.append("**Changed:**")
+        lines.append("")
         lines.append("| Spec | Field | Old | New |")
         lines.append("|------|-------|-----|-----|")
         for name, (old_s, new_s) in diff.changed.items():
@@ -616,6 +622,7 @@ def _format_wavetbl_markdown(diff: WaveTblDiff) -> list[str]:
 
     if diff.pins_groups_changed:
         lines.append("**Changed:**")
+        lines.append("")
         lines.append("| PINS | Row | Field | Old | New |")
         lines.append("|------|-----|-------|-----|-----|")
         for name, pg_diff in diff.pins_groups_changed.items():
@@ -737,6 +744,7 @@ def _format_testtable_markdown(diff: TestTableSuiteDiff) -> list[str]:
     if diff.rows_changed:
         lines.append("")
         lines.append("**Rows Changed:**")
+        lines.append("")
         lines.append("| Test | Number | Column | Old | New |")
         lines.append("|------|--------|--------|-----|-----|")
         for rd in diff.rows_changed:

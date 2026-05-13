@@ -19,12 +19,31 @@ class FlowMatcher:
 
     @classmethod
     def from_config(cls, config_path: Path | str | None = None) -> FlowMatcher:
-        """Create matcher from config file, or use smart defaults."""
+        """Create matcher from config file, or auto-discover / use smart defaults."""
         if config_path:
             path = Path(config_path)
             config = FlowMatchConfig.from_json(path)
             return cls(config)
+
+        discovered = cls._discover_config()
+        if discovered:
+            logger.info("Auto-discovered config: %s", discovered)
+            config = FlowMatchConfig.from_json(discovered)
+            return cls(config)
+
         return cls(FlowMatchConfig())
+
+    @classmethod
+    def _discover_config(cls) -> Path | None:
+        """Search common locations for a config file."""
+        candidates = [
+            Path(".smt7-diff-config.json"),
+            Path.home() / ".smt7-diff-config.json",
+        ]
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate.resolve()
+        return None
 
     def _should_exclude(self, filename: str) -> bool:
         """Check if filename matches any exclusion pattern."""

@@ -1,6 +1,0 @@
-{
-  "regex": "^(?P<product>.+?)_(?P<platform>.+?)_(?P<site>.+?)_(?P<station>.+?)_(?P<version>.+?)\\.flow$",
-  "match_by": ["product", "platform", "site", "station"],
-  "version_field": "version",
-  "exclude": ["*SETUP*"]
-}

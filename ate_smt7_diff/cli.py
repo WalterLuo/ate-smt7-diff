@@ -6,6 +6,8 @@ CLI entry point for the SMT7 diff engine.
 from __future__ import annotations
 
 import argparse
+import datetime
+import hashlib
 import json
 import logging
 import sys
@@ -72,7 +74,7 @@ def _run_batch_diff(
 def _format_batch_markdown(batch: BatchDiffReport) -> str:
     """Format a batch diff report as Markdown."""
     lines: list[str] = []
-    lines.append("# SMT7 Batch Flow Diff Report")
+    lines.append("# SMT7 Flow Diff Report")
     lines.append("")
     lines.append("## Summary")
     lines.append("")
@@ -80,8 +82,8 @@ def _format_batch_markdown(batch: BatchDiffReport) -> str:
     lines.append("|------|-------|")
     lines.append(f"| Old Package | {batch.old_package} |")
     lines.append(f"| New Package | {batch.new_package} |")
-    lines.append(f"| Total Pairs | {batch.total_pairs} |")
-    lines.append(f"| Pairs with Changes | {len(batch.pairs_with_changes)} |")
+    lines.append(f"| Total Flows | {batch.total_pairs} |")
+    lines.append(f"| Flows with Changes | {len(batch.pairs_with_changes)} |")
     lines.append("")
 
     for old_f, new_f, report in batch.pairs:
@@ -101,8 +103,8 @@ def _format_batch_json(batch: BatchDiffReport) -> str:
         {
             "old_package": batch.old_package,
             "new_package": batch.new_package,
-            "total_pairs": batch.total_pairs,
-            "pairs": [
+            "total_flows": batch.total_pairs,
+            "flows": [
                 {
                     "old_file": old_f,
                     "new_file": new_f,
@@ -123,8 +125,8 @@ def _format_batch_console(batch: BatchDiffReport) -> str:
     lines.append("=" * 60)
     lines.append(f"Old Package: {batch.old_package}")
     lines.append(f"New Package: {batch.new_package}")
-    lines.append(f"Total Pairs: {batch.total_pairs}")
-    lines.append(f"Pairs with Changes: {len(batch.pairs_with_changes)}")
+    lines.append(f"Total Flows: {batch.total_pairs}")
+    lines.append(f"Flows with Changes: {len(batch.pairs_with_changes)}")
     lines.append("")
 
     for old_f, new_f, report in batch.pairs:
@@ -135,6 +137,60 @@ def _format_batch_console(batch: BatchDiffReport) -> str:
         lines.append("")
 
     return "\n".join(lines)
+
+
+def _compute_dir_md5(directory: Path) -> str:
+    """Compute a composite MD5 of all files under a directory.
+
+    Files are sorted by relative path for stable hashing.
+    ``history.md`` is excluded to avoid self-referential loops.
+    """
+    hasher = hashlib.md5()
+    for file_path in sorted(directory.rglob("*")):
+        if not file_path.is_file() or file_path.name == "history.md":
+            continue
+        try:
+            rel_path = str(file_path.relative_to(directory))
+            hasher.update(rel_path.encode())
+            with file_path.open("rb") as f:
+                while chunk := f.read(8192):
+                    hasher.update(chunk)
+        except (OSError, PermissionError):
+            continue
+    return hasher.hexdigest()
+
+
+def _generate_identity_id(old_dir: Path, new_dir: Path) -> str:
+    """Generate a short identity ID from the MD5 of two directories."""
+    old_md5 = _compute_dir_md5(old_dir)
+    new_md5 = _compute_dir_md5(new_dir)
+    combined = f"{old_md5}:{new_md5}"
+    return hashlib.md5(combined.encode()).hexdigest()[:12]
+
+
+def _write_history(program_root: Path, content: str, identity_id: str) -> None:
+    """Append diff report to history.md if identity_id is not already present."""
+    history_file = program_root / "history.md"
+    marker = f"<!-- DIFF_ID: {identity_id} -->"
+
+    if history_file.exists():
+        try:
+            existing = history_file.read_text(encoding="utf-8")
+            if marker in existing:
+                logging.info("History entry %s already exists, skipping.", identity_id)
+                return
+        except (OSError, PermissionError):
+            pass
+
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    section = f"\n---\n\n{marker}\n**Diff Time:** {timestamp}\n\n{content}\n"
+
+    try:
+        with history_file.open("a", encoding="utf-8") as f:
+            f.write(section)
+        logging.info("Appended diff report to %s", history_file)
+    except (OSError, PermissionError) as e:
+        logging.warning("Failed to write history file %s: %s", history_file, e)
 
 
 def main() -> None:
@@ -201,7 +257,11 @@ def main() -> None:
                 "json": _format_batch_json,
                 "console": _format_batch_console,
             }
-            print(formatters[args.format](batch))
+            output = formatters[args.format](batch)
+            print(output)
+
+            identity_id = _generate_identity_id(old_pkg, new_pkg)
+            _write_history(new_pkg, _format_batch_markdown(batch), identity_id)
         else:
             old_path = Path(args.old_file).resolve()
             new_path = Path(args.new_file).resolve()
@@ -220,7 +280,13 @@ def main() -> None:
                 "json": format_json,
                 "console": format_console,
             }
-            print(formatters[args.format](report))
+            output = formatters[args.format](report)
+            print(output)
+
+            old_root = old_path.parent.parent
+            new_root = new_path.parent.parent
+            identity_id = _generate_identity_id(old_root, new_root)
+            _write_history(new_root, format_markdown(report), identity_id)
 
     except (FileNotFoundError, PermissionError, ValueError) as e:
         print(f"Error: {e}", file=sys.stderr)
