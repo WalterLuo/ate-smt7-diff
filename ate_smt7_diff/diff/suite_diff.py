@@ -5,6 +5,7 @@ Suite configuration diff algorithms.
 
 from pathlib import Path
 
+from ate_smt7_diff.diff.utils import diff_dicts
 from ate_smt7_diff.models import SuiteConfigDiff, SuiteConfigReport
 from ate_smt7_diff.parsers.suite_parser import (
     extract_test_suites_section,
@@ -16,16 +17,7 @@ def compute_suite_config_diff(
     suite_name: str, old_config: dict[str, str], new_config: dict[str, str]
 ) -> SuiteConfigDiff:
     """Compute configuration differences for a single suite."""
-    old_keys = set(old_config.keys())
-    new_keys = set(new_config.keys())
-
-    changed = {}
-    for key in old_keys & new_keys:
-        if old_config[key] != new_config[key]:
-            changed[key] = (old_config[key], new_config[key])
-
-    added = {key: new_config[key] for key in new_keys - old_keys}
-    removed = {key: old_config[key] for key in old_keys - new_keys}
+    added, removed, changed = diff_dicts(old_config, new_config) or ({}, {}, {})
 
     return SuiteConfigDiff(
         suite_name=suite_name,

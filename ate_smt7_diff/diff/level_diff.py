@@ -3,6 +3,7 @@
 Level spec and EQNSET diff algorithms.
 """
 
+from ate_smt7_diff.diff.utils import diff_dicts
 from ate_smt7_diff.models import (
     EqnSetBlock,
     EqnSetDiff,
@@ -27,23 +28,20 @@ def diff_level_specs(
     if new_specs is None:
         return LevelSpecDiff(suite_name=suite_name, removed=old_specs)
 
-    old_keys = set(old_specs.keys())
-    new_keys = set(new_specs.keys())
-
-    added = {k: new_specs[k] for k in new_keys - old_keys}
-    removed = {k: old_specs[k] for k in old_keys - new_keys}
-    changed = {}
-    for k in old_keys & new_keys:
-        old_s = old_specs[k]
-        new_s = new_specs[k]
-        if (
-            old_s.actual != new_s.actual
-            or old_s.min != new_s.min
-            or old_s.max != new_s.max
-            or old_s.units != new_s.units
-            or old_s.comment != new_s.comment
-        ):
-            changed[k] = (old_s, new_s)
+    result = diff_dicts(
+        old_specs,
+        new_specs,
+        compare=lambda a, b: (
+            a.actual == b.actual
+            and a.min == b.min
+            and a.max == b.max
+            and a.units == b.units
+            and a.comment == b.comment
+        ),
+    )
+    if result is None:
+        return None
+    added, removed, changed = result
 
     return LevelSpecDiff(
         suite_name=suite_name,
@@ -93,23 +91,16 @@ def diff_eqnset_blocks(
         )
 
     # DPSPINS diff
-    old_dps_keys = set(old_block.dpspins.keys())
-    new_dps_keys = set(new_block.dpspins.keys())
-    dpspins_added = {k: new_block.dpspins[k] for k in new_dps_keys - old_dps_keys}
-    dpspins_removed = {k: old_block.dpspins[k] for k in old_dps_keys - new_dps_keys}
-    dpspins_changed = {
-        k: (old_block.dpspins[k], new_block.dpspins[k])
-        for k in old_dps_keys & new_dps_keys
-        if old_block.dpspins[k] != new_block.dpspins[k]
-    }
+    dpspins_added, dpspins_removed, dpspins_changed = diff_dicts(
+        old_block.dpspins, new_block.dpspins
+    ) or ({}, {}, {})
 
     # LEVELSET diff
-    old_ls_keys = set(old_block.levelsets.keys())
-    new_ls_keys = set(new_block.levelsets.keys())
-    levelsets_added = {k: new_block.levelsets[k] for k in new_ls_keys - old_ls_keys}
-    levelsets_removed = {k: old_block.levelsets[k] for k in old_ls_keys - new_ls_keys}
+    levelsets_added, levelsets_removed, _ = diff_dicts(
+        old_block.levelsets, new_block.levelsets
+    ) or ({}, {}, {})
     levelsets_changed: dict[int, dict[str, tuple[LevelSetPinConfig, LevelSetPinConfig]]] = {}
-    for k in old_ls_keys & new_ls_keys:
+    for k in set(old_block.levelsets.keys()) & set(new_block.levelsets.keys()):
         old_pins = old_block.levelsets[k]
         new_pins = new_block.levelsets[k]
         pin_diff = _diff_levelset_pins(old_pins, new_pins)

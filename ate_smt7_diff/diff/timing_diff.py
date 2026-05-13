@@ -3,6 +3,7 @@
 Timing spec diff algorithms.
 """
 
+from ate_smt7_diff.diff.utils import diff_dicts
 from ate_smt7_diff.models import (
     TimingEqnSetBlock,
     TimingEqnSetDiff,
@@ -44,22 +45,16 @@ def diff_timing_specs(
             removed=old_specs,
         )
 
-    old_keys = set(old_specs.keys())
-    new_keys = set(new_specs.keys())
-
-    added = {k: new_specs[k] for k in new_keys - old_keys}
-    removed = {k: old_specs[k] for k in old_keys - new_keys}
-    changed = {}
-    for k in old_keys & new_keys:
-        old_s = old_specs[k]
-        new_s = new_specs[k]
-        if (
-            old_s.value != new_s.value
-            or old_s.units != new_s.units
-            or old_s.comment != new_s.comment
-        ):
-            changed[k] = (old_s, new_s)
-
+    result = diff_dicts(
+        old_specs,
+        new_specs,
+        compare=lambda a, b: (
+            a.value == b.value and a.units == b.units and a.comment == b.comment
+        ),
+    )
+    if result is None:
+        return None
+    added, removed, changed = result
     if not added and not removed and not changed:
         return None
 
@@ -158,34 +153,24 @@ def diff_timing_eqnset_blocks_full(
         )
 
     # SPECS diff
-    old_spec_keys = set(old_block.specs.keys())
-    new_spec_keys = set(new_block.specs.keys())
-    specs_added = {k: new_block.specs[k] for k in new_spec_keys - old_spec_keys}
-    specs_removed = {k: old_block.specs[k] for k in old_spec_keys - new_spec_keys}
-    specs_changed = {}
-    for k in old_spec_keys & new_spec_keys:
-        old_s = old_block.specs[k]
-        new_s = new_block.specs[k]
-        if (
-            old_s.value != new_s.value
-            or old_s.units != new_s.units
-            or old_s.comment != new_s.comment
-        ):
-            specs_changed[k] = (old_s, new_s)
+    specs_result = diff_dicts(
+        old_block.specs,
+        new_block.specs,
+        compare=lambda a, b: (
+            a.value == b.value and a.units == b.units and a.comment == b.comment
+        ),
+    )
+    specs_added, specs_removed, specs_changed = specs_result or ({}, {}, {})
 
     # PINS diff
-    old_pin_keys = set(old_block.pins_groups.keys())
-    new_pin_keys = set(new_block.pins_groups.keys())
-    pins_added = {k: new_block.pins_groups[k] for k in new_pin_keys - old_pin_keys}
-    pins_removed = {k: old_block.pins_groups[k] for k in old_pin_keys - new_pin_keys}
-    pins_changed = _diff_pins_group(old_block.pins_groups, new_block.pins_groups)
+    pins_added, pins_removed, pins_changed = diff_dicts(
+        old_block.pins_groups, new_block.pins_groups
+    ) or ({}, {}, {})
 
     # TIMINGSET diff
-    old_ts_keys = set(old_block.timingsets.keys())
-    new_ts_keys = set(new_block.timingsets.keys())
-    timingsets_added = {k: new_block.timingsets[k] for k in new_ts_keys - old_ts_keys}
-    timingsets_removed = {k: old_block.timingsets[k] for k in old_ts_keys - new_ts_keys}
-    timingsets_changed = _diff_timingsets(old_block.timingsets, new_block.timingsets)
+    timingsets_added, timingsets_removed, timingsets_changed = diff_dicts(
+        old_block.timingsets, new_block.timingsets
+    ) or ({}, {}, {})
 
     if not (
         specs_added
