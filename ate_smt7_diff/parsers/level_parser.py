@@ -6,6 +6,7 @@ Loads and indexes level files, parses SPECSET, EQNSET, DPSPINS, and LEVELSET blo
 
 import re
 
+from ate_smt7_diff.filesystem import FileSystem, RealFileSystem
 from ate_smt7_diff.models import (
     DpsPinConfig,
     EqnSetBlock,
@@ -17,18 +18,17 @@ from ate_smt7_diff.models import (
 class LevelLoader:
     """Loads and indexes a level file."""
 
-    def __init__(self, path: str) -> None:
+    def __init__(self, path: str, fs: FileSystem | None = None) -> None:
         self.path = path
+        self._fs = fs or RealFileSystem()
         self.lines: list[str] = []
         self.eqnsets: dict[int, int] = {}
         self.eqnset_specs: dict[tuple[int, int], int] = {}
         self._load()
 
     def _load(self) -> None:
-        from pathlib import Path
-
         try:
-            raw = Path(self.path).read_text(encoding="utf-8")
+            raw = self._fs.read_text(self.path, encoding="utf-8")
         except (FileNotFoundError, PermissionError, UnicodeDecodeError) as e:
             raise ValueError(f"Failed to read level file {self.path}: {e}") from e
 

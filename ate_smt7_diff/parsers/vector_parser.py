@@ -7,8 +7,7 @@ building a lookup from pattern name to its mapped files.
 """
 
 import logging
-from pathlib import Path
-
+from ate_smt7_diff.filesystem import FileSystem, RealFileSystem
 from ate_smt7_diff.models import VectorPatternMapping
 
 
@@ -33,15 +32,16 @@ class VectorLoader:
         pattern_name -> (path_dir, Tuple[VectorPatternMapping, ...])
     """
 
-    def __init__(self, path: str) -> None:
+    def __init__(self, path: str, fs: FileSystem | None = None) -> None:
         self.path = path
+        self._fs = fs or RealFileSystem()
         # pattern_name -> (path_dir, Tuple[VectorPatternMapping, ...])
         self.pattern_lookup: dict[str, tuple[str, tuple[VectorPatternMapping, ...]]] = {}
         self._load()
 
     def _load(self) -> None:
         try:
-            text = Path(self.path).read_text(encoding="utf-8")
+            text = self._fs.read_text(self.path, encoding="utf-8")
         except (FileNotFoundError, PermissionError) as e:
             logging.warning("Failed to read vector file %s: %s", self.path, e)
             return

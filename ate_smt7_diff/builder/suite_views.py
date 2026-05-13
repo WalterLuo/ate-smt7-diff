@@ -8,8 +8,8 @@ from pathlib import Path
 from ate_smt7_diff.builder.context import load_program_context
 from ate_smt7_diff.builder.extractors import _extract_level_data, _extract_timing_data
 from ate_smt7_diff.builder.resolvers import _resolve_level_config, _resolve_timing_config
+from ate_smt7_diff.filesystem import FileSystem, RealFileSystem
 from ate_smt7_diff.models import (
-    ProgramContext,
     SuiteConfigView,
     TestMethodInfo,
     VectorSuiteMapping,
@@ -25,6 +25,7 @@ from ate_smt7_diff.parsers.vector_parser import VectorLoader
 def build_suite_views(
     flow_path: str,
     common_suites: set[str],
+    fs: FileSystem | None = None,
 ) -> dict[str, SuiteConfigView]:
     """
     Build SuiteConfigView for each common suite.
@@ -32,25 +33,26 @@ def build_suite_views(
     Loads program context, parses test_suites, and extracts relevant
     timing/level snippets based on override indices.
     """
-    ctx = load_program_context(flow_path)
+    fs = fs or RealFileSystem()
+    ctx = load_program_context(flow_path, fs)
 
     timing_loader: TimingLoader | None = None
-    if ctx.timing_path and ctx.timing_path.exists():
-        timing_loader = TimingLoader(ctx.timing_path)
+    if ctx.timing_path and fs.exists(ctx.timing_path):
+        timing_loader = TimingLoader(str(ctx.timing_path), fs)
 
     level_loader: LevelLoader | None = None
-    if ctx.levels_path and ctx.levels_path.exists():
-        level_loader = LevelLoader(ctx.levels_path)
+    if ctx.levels_path and fs.exists(ctx.levels_path):
+        level_loader = LevelLoader(str(ctx.levels_path), fs)
 
     testtable_loader: TestTableLoader | None = None
-    if ctx.testtable_path and ctx.testtable_path.exists():
-        testtable_loader = TestTableLoader(str(ctx.testtable_path))
+    if ctx.testtable_path and fs.exists(ctx.testtable_path):
+        testtable_loader = TestTableLoader(str(ctx.testtable_path), fs)
 
     vector_loader: VectorLoader | None = None
-    if ctx.vector_path and ctx.vector_path.exists():
-        vector_loader = VectorLoader(str(ctx.vector_path))
+    if ctx.vector_path and fs.exists(ctx.vector_path):
+        vector_loader = VectorLoader(str(ctx.vector_path), fs)
 
-    flow_lines = Path(flow_path).read_text(encoding="utf-8").splitlines()
+    flow_lines = fs.read_text(flow_path, encoding="utf-8").splitlines()
     ts_lines = extract_test_suites_section(flow_lines)
     suite_configs = parse_suite_config(ts_lines)
 
@@ -113,9 +115,9 @@ def build_suite_views(
                 rel_path = tm_class.replace(".", "/") + ".cpp"
                 tm_file_path = ctx.program_root / rel_path
                 content: str | None = None
-                if tm_file_path.exists():
+                if fs.exists(str(tm_file_path)):
                     try:
-                        content = tm_file_path.read_text(encoding="utf-8")
+                        content = fs.read_text(str(tm_file_path), encoding="utf-8")
                     except (UnicodeDecodeError, PermissionError, OSError):
                         content = None
                 testmethod = TestMethodInfo(

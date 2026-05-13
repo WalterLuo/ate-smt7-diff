@@ -7,8 +7,7 @@ and EQSP TIM,SPS region lookups.
 
 import contextlib
 import re
-from pathlib import Path
-
+from ate_smt7_diff.filesystem import FileSystem, RealFileSystem
 from ate_smt7_diff.models import (
     TimingEqnSetBlock,
     TimingPinConfig,
@@ -23,8 +22,9 @@ from ate_smt7_diff.models import (
 class TimingLoader:
     """Loads and indexes a timing file."""
 
-    def __init__(self, path: str) -> None:
+    def __init__(self, path: str, fs: FileSystem | None = None) -> None:
         self.path = path
+        self._fs = fs or RealFileSystem()
         self.lines: list[str] = []
         self.spec_sets: dict[str, int] = {}  # SPST TIM,,name -> line index
         self.wavetbls: dict[str, int] = {}  # WAVETBL name -> line index
@@ -36,7 +36,7 @@ class TimingLoader:
     def _load(self) -> None:
         if not self.lines:
             try:
-                raw = Path(self.path).read_text(encoding="utf-8")
+                raw = self._fs.read_text(self.path, encoding="utf-8")
             except (FileNotFoundError, PermissionError, UnicodeDecodeError) as e:
                 raise ValueError(f"Failed to read timing file {self.path}: {e}") from e
             self.lines = raw.splitlines()

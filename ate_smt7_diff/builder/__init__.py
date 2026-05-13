@@ -3,8 +3,6 @@
 Builder package: orchestrates parsing, diff computation, and config view building.
 """
 
-from pathlib import Path
-
 from ate_smt7_diff.builder.context import load_program_context
 from ate_smt7_diff.builder.suite_views import build_suite_views
 from ate_smt7_diff.builder.timing_diff_dispatch import _diff_port_timing, _diff_regular_timing
@@ -15,6 +13,7 @@ from ate_smt7_diff.diff.testmethod_diff import diff_testmethods
 from ate_smt7_diff.diff.testtable_diff import diff_testtables
 from ate_smt7_diff.diff.timing_diff import diff_wavetbls
 from ate_smt7_diff.diff.vector_diff import diff_vectors
+from ate_smt7_diff.filesystem import FileSystem, RealFileSystem
 from ate_smt7_diff.models import (
     DiffReport,
     EqnSetDiff,
@@ -38,11 +37,13 @@ def diff_flow_files(
     include_config_views: bool = False,
     include_testtable_diff: bool = False,
     include_testmethod_diff: bool = False,
+    fs: FileSystem | None = None,
 ) -> DiffReport:
     """Main entry: parse two flow files and compute diff."""
+    fs = fs or RealFileSystem()
     try:
-        old_lines = Path(old_path).read_text(encoding="utf-8").splitlines()
-        new_lines = Path(new_path).read_text(encoding="utf-8").splitlines()
+        old_lines = fs.read_text(old_path, encoding="utf-8").splitlines()
+        new_lines = fs.read_text(new_path, encoding="utf-8").splitlines()
     except FileNotFoundError as e:
         raise FileNotFoundError(f"Flow file not found: {e.filename}") from e
     except PermissionError as e:
@@ -65,7 +66,7 @@ def diff_flow_files(
         old_names = {t.suite_name for t in old_tests}
         new_names = {t.suite_name for t in new_tests}
         common_suites = old_names & new_names
-        suite_report = diff_suite_configs(old_path, new_path, common_suites)
+        suite_report = diff_suite_configs(old_path, new_path, common_suites, fs)
 
     old_views: dict[str, SuiteConfigView] | None = None
     new_views: dict[str, SuiteConfigView] | None = None
@@ -80,8 +81,8 @@ def diff_flow_files(
         old_names = {t.suite_name for t in old_tests}
         new_names = {t.suite_name for t in new_tests}
         common_suites = old_names & new_names
-        old_views = build_suite_views(old_path, common_suites)
-        new_views = build_suite_views(new_path, common_suites)
+        old_views = build_suite_views(old_path, common_suites, fs)
+        new_views = build_suite_views(new_path, common_suites, fs)
 
         level_spec_diffs = []
         eqnset_diffs = []
@@ -164,13 +165,17 @@ def diff_flow_files(
                 if view.testtable_rows is not None
             }
         else:
-            old_ctx = load_program_context(old_path)
-            new_ctx = load_program_context(new_path)
+            old_ctx = load_program_context(old_path, fs)
+            new_ctx = load_program_context(new_path, fs)
             old_testtable = (
-                TestTableLoader(str(old_ctx.testtable_path)) if old_ctx.testtable_path else None
+                TestTableLoader(str(old_ctx.testtable_path), fs)
+                if old_ctx.testtable_path
+                else None
             )
             new_testtable = (
-                TestTableLoader(str(new_ctx.testtable_path)) if new_ctx.testtable_path else None
+                TestTableLoader(str(new_ctx.testtable_path), fs)
+                if new_ctx.testtable_path
+                else None
             )
             old_rows_by_suite = old_testtable.rows_by_suite if old_testtable else {}
             new_rows_by_suite = new_testtable.rows_by_suite if new_testtable else {}

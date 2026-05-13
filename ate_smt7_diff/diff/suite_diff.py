@@ -3,9 +3,8 @@
 Suite configuration diff algorithms.
 """
 
-from pathlib import Path
-
 from ate_smt7_diff.diff.utils import diff_dicts
+from ate_smt7_diff.filesystem import FileSystem, RealFileSystem
 from ate_smt7_diff.models import SuiteConfigDiff, SuiteConfigReport
 from ate_smt7_diff.parsers.suite_parser import (
     extract_test_suites_section,
@@ -31,6 +30,7 @@ def diff_suite_configs(
     old_path: str,
     new_path: str,
     common_suites: set[str],
+    fs: FileSystem | None = None,
 ) -> SuiteConfigReport:
     """
     Main entry: parse two flow files' test_suites and compute config diff.
@@ -43,9 +43,10 @@ def diff_suite_configs(
         PermissionError: If either flow file is not readable.
         ValueError: If file encoding is not UTF-8.
     """
+    fs = fs or RealFileSystem()
     try:
-        old_lines = Path(old_path).read_text(encoding="utf-8").splitlines()
-        new_lines = Path(new_path).read_text(encoding="utf-8").splitlines()
+        old_lines = fs.read_text(old_path, encoding="utf-8").splitlines()
+        new_lines = fs.read_text(new_path, encoding="utf-8").splitlines()
     except FileNotFoundError as e:
         raise FileNotFoundError(f"Flow file not found: {e.filename}") from e
     except PermissionError as e:

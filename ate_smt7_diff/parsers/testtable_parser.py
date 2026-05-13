@@ -6,8 +6,7 @@ Loads testtable files and groups rows by suite name.
 
 import csv
 import logging
-from pathlib import Path
-
+from ate_smt7_diff.filesystem import FileSystem, RealFileSystem
 from ate_smt7_diff.models import TestTableRow
 
 
@@ -20,17 +19,18 @@ class TestTableLoader:
 
     REQUIRED_COLUMNS = {"Suite name", "Test name", "Test number"}
 
-    def __init__(self, path: str) -> None:
+    def __init__(self, path: str, fs: FileSystem | None = None) -> None:
         self.path = path
+        self._fs = fs or RealFileSystem()
         self.rows_by_suite: dict[str, dict[tuple[str, str, str], TestTableRow]] = {}
         self._load()
 
     def _load(self) -> None:
         try:
-            text = Path(self.path).read_text(encoding="utf-8")
+            text = self._fs.read_text(self.path, encoding="utf-8")
         except UnicodeDecodeError:
             try:
-                text = Path(self.path).read_text(encoding="latin-1")
+                text = self._fs.read_text(self.path, encoding="latin-1")
             except UnicodeDecodeError as e:
                 raise ValueError(f"Failed to decode testtable {self.path}: {e}") from e
         except (FileNotFoundError, PermissionError) as e:
