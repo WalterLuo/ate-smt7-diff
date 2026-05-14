@@ -3,9 +3,9 @@
 Timing diff dispatch: port-spec vs regular timing diff logic.
 """
 
-from ate_smt7_diff.diff.timing_diff import (
+from ate_smt7_diff.diff.timing_eqnset_diff import diff_timing_eqnset_blocks_full
+from ate_smt7_diff.diff.timing_spec_diff import (
     diff_timing_eqnset_blocks,
-    diff_timing_eqnset_blocks_full,
     diff_timing_specs,
 )
 from ate_smt7_diff.models import (
