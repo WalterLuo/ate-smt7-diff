@@ -18,7 +18,6 @@ def _extract_timing_data(
     timing_loader: TimingLoader | None,
     timing_spec: str | None,
     timing_eqn: int | None,
-    timing_timset: str | None,
 ) -> tuple[
     str | None,
     dict[str, TimingSpec] | None,

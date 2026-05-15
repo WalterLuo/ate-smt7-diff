@@ -3,8 +3,6 @@
 Suite config view builder.
 """
 
-from pathlib import Path
-
 from ate_smt7_diff.builder.context import load_program_context
 from ate_smt7_diff.builder.extractors import _extract_level_data, _extract_timing_data
 from ate_smt7_diff.builder.resolvers import _resolve_level_config, _resolve_timing_config
@@ -64,10 +62,10 @@ def build_suite_views(
     for suite_name in sorted(common_suites):
         cfg = suite_configs.get(suite_name, {})
 
-        timing_spec, timing_eqn, timing_spec_idx, timing_timset = _resolve_timing_config(
+        timing_spec, timing_eqn, timing_spec_idx = _resolve_timing_config(
             cfg, suite_name
         )
-        level_eqn, level_spec, level_levset = _resolve_level_config(cfg, suite_name)
+        level_eqn, level_spec = _resolve_level_config(cfg, suite_name)
 
         (
             timing_snippet,
@@ -77,7 +75,7 @@ def build_suite_views(
             timing_eqnset_blocks,
             timing_wavetbl_names,
             timing_wavetbl_blocks,
-        ) = _extract_timing_data(timing_loader, timing_spec, timing_eqn, timing_timset)
+        ) = _extract_timing_data(timing_loader, timing_spec, timing_eqn)
         level_snippet, level_specs, eqnset_block = _extract_level_data(
             level_loader, level_eqn, level_spec
         )
@@ -132,10 +130,8 @@ def build_suite_views(
             flow_config=cfg,
             timing_spec_set=timing_spec,
             timing_eqn_set=timing_eqn,
-            timing_spec_index=timing_spec_idx,
             level_eqn_set=level_eqn,
             level_spec_set=level_spec,
-            level_levset=level_levset,
             timing_snippet=timing_snippet,
             level_snippet=level_snippet,
             level_specs=level_specs,

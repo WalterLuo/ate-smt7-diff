@@ -151,10 +151,6 @@ class TimingLoader:
         """Return line index of EQNSET in EQSP TIM,SPS region."""
         return self.eqsp_tim_eqnsets.get(eqn_index)
 
-    def lookup_eqsp_specset(self, eqn_index: int, spec_index: int) -> int | None:
-        """Return line index of SPECSET within EQNSET in EQSP TIM,SPS region."""
-        return self.eqsp_tim_specsets.get((eqn_index, spec_index))
-
     # --- Extraction methods ---
 
     def extract_snippet(self, start_idx: int) -> str:

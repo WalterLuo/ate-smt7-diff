@@ -102,8 +102,6 @@ def format_markdown(report: DiffReport) -> str:
     lines.append("# SMT7 Flow Diff Report")
     lines.append("")
 
-    old_prog = _program_name(report.old_file)
-    new_prog = _program_name(report.new_file)
     lines.append("## Diff Summary")
     lines.append("")
     lines.append("| Item | Old | New |")

@@ -47,13 +47,3 @@ class ProgramContext:
         if self.config_file:
             return self.program_root / self.config_file
         return None
-
-    def all_paths(self) -> dict[str, Path | None]:
-        """Return all resolved paths as a dict."""
-        return {
-            "levels": self.levels_path,
-            "timing": self.timing_path,
-            "vectors": self.vector_path,
-            "testtable": self.testtable_path,
-            "config": self.config_path,
-        }

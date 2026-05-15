@@ -20,16 +20,6 @@ def get(name: str) -> DiffPlugin | None:
     return _registry.get(name)
 
 
-def list_plugins() -> list[str]:
-    """Return names of all registered plugins."""
-    return list(_registry.keys())
-
-
-def is_registered(name: str) -> bool:
-    """Check whether a plugin is registered."""
-    return name in _registry
-
-
 def clear() -> None:
     """Clear all registered plugins (useful for testing)."""
     _registry.clear()

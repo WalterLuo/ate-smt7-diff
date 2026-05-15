@@ -6,7 +6,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from functools import cached_property
 
-from ate_smt7_diff.models.context import ProgramContext
 from ate_smt7_diff.models.level import EqnSetBlock, LevelSpec
 from ate_smt7_diff.models.testmethod import TestMethodInfo
 from ate_smt7_diff.models.testtable import TestTableRow
@@ -53,13 +52,11 @@ class SuiteConfigView:
     timing_spec_set: str | None
     level_eqn_set: int | None
     level_spec_set: int | None
-    level_levset: int | None
     timing_snippet: str | None
     level_snippet: str | None
     level_specs: dict[str, LevelSpec] | None
     eqnset_block: EqnSetBlock | None = None
     timing_eqn_set: int | None = None
-    timing_spec_index: int | None = None
     timing_specs: dict[str, TimingSpec] | None = None
     timing_eqnset_block: TimingEqnSetBlock | None = None
     timing_spec_eqnsets: list[tuple[int, str]] | None = None

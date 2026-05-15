@@ -23,7 +23,6 @@ def _make_view(tm_id: str | None, cls: str | None, path: Path | None = None, con
         timing_spec_set=None,
         level_eqn_set=None,
         level_spec_set=None,
-        level_levset=None,
         timing_snippet=None,
         level_snippet=None,
         level_specs=None,

@@ -14,40 +14,6 @@ from ate_smt7_diff.models import (
 # ---------------------------------------------------------------------------
 
 
-def _format_testmethod_markdown(diff: TestMethodDiff) -> list[str]:
-    """Format a single TestMethodDiff as Markdown lines."""
-    lines = []
-    lines.append(f"### {diff.suite_name}")
-    if diff.diff_type == "tm_id_changed":
-        lines.append(f"- **TestMethod ID changed**: `{diff.old_tm_id}` -> `{diff.new_tm_id}`")
-    elif diff.diff_type == "class_changed":
-        old_cls = diff.old_class or "(none)"
-        new_cls = diff.new_class or "(none)"
-        lines.append(f"- **TestMethod class changed**: `{old_cls}` -> `{new_cls}`")
-    elif diff.diff_type == "both_changed":
-        lines.append(
-            f"- **TestMethod ID changed**: `{diff.old_tm_id}` -> `{diff.new_tm_id}`"
-        )
-        lines.append(
-            f"- **TestMethod class changed**: `{diff.old_class}` -> `{diff.new_class}`"
-        )
-    elif diff.diff_type == "file_not_found":
-        lines.append(
-            f"- **TestMethod source not found**: `{diff.new_class or diff.old_class}`"
-        )
-    elif diff.diff_type == "file_changed":
-        lines.append(
-            f"- **TestMethod source changed**: `{diff.new_class or diff.old_class}`"
-        )
-        if diff.file_diff:
-            lines.append("")
-            lines.append("```diff")
-            for line in diff.file_diff:
-                lines.append(line)
-            lines.append("```")
-    return lines
-
-
 def _format_testmethod_table(diffs: list[TestMethodDiff]) -> list[str]:
     """Format all TestMethod diffs as a single Markdown table."""
     lines = []

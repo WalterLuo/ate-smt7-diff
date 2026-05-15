@@ -2,8 +2,7 @@
 """
 Testtable diff algorithms.
 Compares rows between old and new testtable files per suite.
-Rows are matched by (suite_name, test_name); test_number is treated
-as a regular column and reported in changed when it differs.
+Only USL and LSL column changes are reported for matching test items.
 """
 
 from ate_smt7_diff.models import TestTableRow, TestTableRowDiff, TestTableSuiteDiff
@@ -20,6 +19,15 @@ def _rows_by_test_name(
     return result
 
 
+def _get_limit_value(columns: dict[str, str], target: str) -> str:
+    """Get column value by case-insensitive target name (e.g. 'usl', 'lsl')."""
+    target_lower = target.lower()
+    for col, val in columns.items():
+        if col.strip().lower() == target_lower:
+            return val
+    return ""
+
+
 def diff_testtable_suites(
     suite_name: str,
     old_rows: dict[tuple[str, str, str], TestTableRow],
@@ -27,11 +35,10 @@ def diff_testtable_suites(
 ) -> TestTableSuiteDiff | None:
     """Compare testtable rows for a single suite.
 
-    Rows are matched by (suite_name, test_name).  test_number is treated
-    as a regular column.  Suite name and Test name are excluded from
-    column-level change detection because they are the matching keys.
+    Only rows present in both old and new are compared.
+    Only USL and LSL column changes are reported.
 
-    Returns None if there are no differences.
+    Returns None if there are no USL/LSL differences.
     """
     old_by_name = _rows_by_test_name(old_rows)
     new_by_name = _rows_by_test_name(new_rows)
@@ -39,22 +46,22 @@ def diff_testtable_suites(
     old_names = set(old_by_name.keys())
     new_names = set(new_by_name.keys())
 
-    added = tuple(new_by_name[k] for k in sorted(new_names - old_names))
-    removed = tuple(old_by_name[k] for k in sorted(old_names - new_names))
-
     changed_rows: list[TestTableRowDiff] = []
     for k in sorted(old_names & new_names):
         old_row = old_by_name[k]
         new_row = new_by_name[k]
         column_changes: dict[str, tuple[str, str]] = {}
-        all_cols = set(old_row.columns.keys()) | set(new_row.columns.keys())
-        for col in sorted(all_cols):
-            if col in ("Suite name", "Test name"):
-                continue
-            old_val = old_row.columns.get(col, "")
-            new_val = new_row.columns.get(col, "")
-            if old_val != new_val:
-                column_changes[col] = (old_val, new_val)
+
+        old_usl = _get_limit_value(old_row.columns, "usl")
+        new_usl = _get_limit_value(new_row.columns, "usl")
+        if old_usl != new_usl:
+            column_changes["USL"] = (old_usl, new_usl)
+
+        old_lsl = _get_limit_value(old_row.columns, "lsl")
+        new_lsl = _get_limit_value(new_row.columns, "lsl")
+        if old_lsl != new_lsl:
+            column_changes["LSL"] = (old_lsl, new_lsl)
+
         if column_changes:
             changed_rows.append(
                 TestTableRowDiff(
@@ -64,13 +71,13 @@ def diff_testtable_suites(
                 )
             )
 
-    if not added and not removed and not changed_rows:
+    if not changed_rows:
         return None
 
     return TestTableSuiteDiff(
         suite_name=suite_name,
-        rows_added=added,
-        rows_removed=removed,
+        rows_added=(),
+        rows_removed=(),
         rows_changed=tuple(changed_rows),
     )
 
