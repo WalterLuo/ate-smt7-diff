@@ -7,6 +7,9 @@ name = "ate-smt7-diff"
 version = "0.1.0"
 description = "SMT7 ATE test program diff engine"
 requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.0.0",
+]
 
 [project.scripts]
 ate-smt7-diff = "ate_smt7_diff.cli:main"

@@ -3,3 +3,18 @@ __pycache__/
 .DS_Store
 .claude/
 *.txt
+*.egg-info/
+uv.lock
+.smt7-diff-config.json
+
+# Test data (not committed to git)
+Test1/
+Test2/
+
+# Build artifacts
+Debug/
+*.o
+*.d
+.cproject
+.project
+.settings/
