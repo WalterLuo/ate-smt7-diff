@@ -6,6 +6,7 @@ __pycache__/
 *.egg-info/
 uv.lock
 .smt7-diff-config.json
+.worktrees/
 
 # Test data (not committed to git)
 Test1/
