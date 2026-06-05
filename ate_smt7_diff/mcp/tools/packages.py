@@ -33,9 +33,7 @@ def list_program_packages(directory: str) -> str:
     return json_response({"directory": str(root), "packages": packages})
 
 
-def suggest_flow_pairs(
-    old_package: str, new_package: str, match_config: str | None = None
-) -> str:
+def suggest_flow_pairs(old_package: str, new_package: str, match_config: str | None = None) -> str:
     """Suggest paired flow files between two program packages."""
     old_dir = Path(old_package).expanduser().resolve() / "testflow"
     new_dir = Path(new_package).expanduser().resolve() / "testflow"

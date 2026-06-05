@@ -29,7 +29,7 @@ def test_list_program_packages_reports_packages_with_testflow(tmp_path) -> None:
         {
             "name": "pkg_a",
             "path": str(pkg.resolve()),
-            "flow_files": "[\"main.flow\"]",
+            "flow_files": '["main.flow"]',
         }
     ]
 
@@ -50,9 +50,7 @@ def test_suggest_flow_pairs_returns_matches_and_unmatched_old(tmp_path) -> None:
     old_flow_dir.mkdir(parents=True)
     new_flow_dir.mkdir(parents=True)
     (old_flow_dir / "main.flow").write_text("test_flow\nrun(S1);\nend\n", encoding="utf-8")
-    (old_flow_dir / "old_only.flow").write_text(
-        "test_flow\nrun(S2);\nend\n", encoding="utf-8"
-    )
+    (old_flow_dir / "old_only.flow").write_text("test_flow\nrun(S2);\nend\n", encoding="utf-8")
     (new_flow_dir / "main.flow").write_text("test_flow\nrun(S1);\nend\n", encoding="utf-8")
 
     payload = json.loads(suggest_flow_pairs(str(old_pkg), str(new_pkg)))
