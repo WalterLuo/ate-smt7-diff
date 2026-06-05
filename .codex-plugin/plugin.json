@@ -1,0 +1,42 @@
+{
+  "name": "ate-smt7-diff",
+  "version": "0.1.0",
+  "description": "SMT7 ATE test program diff MCP tools and agent workflow.",
+  "author": {
+    "name": "Walter Luo"
+  },
+  "homepage": "https://github.com/WalterLuo/ate-smt7-diff",
+  "repository": "https://github.com/WalterLuo/ate-smt7-diff",
+  "license": "MIT",
+  "keywords": [
+    "ate",
+    "smt7",
+    "advantest",
+    "mcp",
+    "diff"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "ATE SMT7 Diff",
+    "shortDescription": "Compare SMT7 flow packages through MCP",
+    "longDescription": "Use ATE SMT7 Diff to compare Advantest 93K SMT7 flow files and program packages from Codex. The plugin bundles a local stdio MCP server plus a skill that guides package discovery, flow diffing, report querying, validation, and export workflows.",
+    "developerName": "Walter Luo",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/WalterLuo/ate-smt7-diff",
+    "privacyPolicyURL": "https://github.com/WalterLuo/ate-smt7-diff",
+    "termsOfServiceURL": "https://github.com/WalterLuo/ate-smt7-diff",
+    "defaultPrompt": [
+      "Compare two SMT7 program packages.",
+      "Explain this SMT7 diff report.",
+      "Validate SMT7 package changes."
+    ],
+    "brandColor": "#2563EB",
+    "screenshots": []
+  }
+}

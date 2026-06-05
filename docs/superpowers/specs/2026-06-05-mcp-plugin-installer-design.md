@@ -64,14 +64,14 @@ The installer supports:
 
 ### Codex Plugin Bundle
 
-Create `plugins/ate-smt7-diff/` containing:
+Create a repository-root Codex plugin bundle containing:
 
 - `.codex-plugin/plugin.json`
 - `.mcp.json`
 - `skills/ate-smt7-diff/SKILL.md`
-- `scripts/ate-smt7-diff-mcp`
+- `scripts/ate-smt7-diff-mcp-launcher`
 
-The plugin's `.mcp.json` starts the script inside the plugin bundle. The script locates the source checkout from `ATE_SMT7_DIFF_REPO` first, then from the repository layout used by this project. It delegates to the same runtime launcher.
+The plugin's `.mcp.json` starts the repository-local launcher with `--repo .`. Keeping the plugin root at the repository root makes the plugin cache self-contained: the Python package source, launcher, skills, and MCP manifest travel together.
 
 ### Skill Behavior
 

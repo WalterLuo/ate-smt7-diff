@@ -39,15 +39,14 @@
 ### Task 3: Codex Plugin Bundle and Skill
 
 **Files:**
-- Create: `plugins/ate-smt7-diff/.codex-plugin/plugin.json`
-- Create: `plugins/ate-smt7-diff/.mcp.json`
-- Create: `plugins/ate-smt7-diff/scripts/ate-smt7-diff-mcp`
-- Create: `plugins/ate-smt7-diff/skills/ate-smt7-diff/SKILL.md`
+- Create: `.codex-plugin/plugin.json`
+- Create: `.mcp.json`
+- Create: `skills/ate-smt7-diff/SKILL.md`
 - Test: `tests/mcp/test_plugin_bundle.py`
 
 - [ ] Add tests that validate plugin manifest paths, MCP command shape, and skill frontmatter.
 - [ ] Implement plugin metadata with `skills` and `mcpServers`.
-- [ ] Implement a small script that delegates to `python -m ate_smt7_diff.mcp.runtime --repo <repo>`.
+- [ ] Configure `.mcp.json` to call `python3 ./scripts/ate-smt7-diff-mcp-launcher --repo .` from the plugin root.
 - [ ] Write a concise skill describing when to call `smart_diff_discover`, `diff_flows`, query, and export tools.
 - [ ] Run plugin validator if available and run `uv run pytest tests/mcp/test_plugin_bundle.py -v`.
 - [ ] Commit plugin changes.

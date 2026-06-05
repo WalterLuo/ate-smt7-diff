@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "ate-smt7-diff": {
+      "title": "ATE SMT7 Diff",
+      "description": "Compare Advantest 93K SMT7 flow files and program packages.",
+      "cwd": ".",
+      "command": "python3",
+      "args": [
+        "./scripts/ate-smt7-diff-mcp-launcher",
+        "--repo",
+        "."
+      ]
+    }
+  }
+}
