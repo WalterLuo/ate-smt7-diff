@@ -137,7 +137,9 @@ def doctor(repo: Path, *, python: str = "python3") -> list[str]:
     resolved_repo = repo.resolve()
     script = resolved_repo / "scripts" / "ate-smt7-diff-mcp-launcher"
     messages = [f"repo: {resolved_repo}"]
-    messages.append(f"pyproject: {'ok' if (resolved_repo / 'pyproject.toml').exists() else 'missing'}")
+    messages.append(
+        f"pyproject: {'ok' if (resolved_repo / 'pyproject.toml').exists() else 'missing'}"
+    )
     messages.append(f"launcher: {'ok' if script.exists() else 'missing'}")
     messages.append(f"command: {' '.join(launcher_command(resolved_repo, python=python))}")
     return messages
@@ -254,17 +256,29 @@ def _install_parser() -> argparse.ArgumentParser:
         default="all",
         help="Comma-separated clients: codex,claude,cursor,gemini,opencode,copilot, or all.",
     )
-    parser.add_argument("--repo", default=str(Path.cwd()), help="ate-smt7-diff source checkout path.")
-    parser.add_argument("--python", default="python3", help="Python command for the first-hop launcher.")
-    parser.add_argument("--dry-run", action="store_true", help="Preview actions without writing files.")
-    parser.add_argument("--force", action="store_true", help="Replace existing ate-smt7-diff entries.")
+    parser.add_argument(
+        "--repo", default=str(Path.cwd()), help="ate-smt7-diff source checkout path."
+    )
+    parser.add_argument(
+        "--python", default="python3", help="Python command for the first-hop launcher."
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Preview actions without writing files."
+    )
+    parser.add_argument(
+        "--force", action="store_true", help="Replace existing ate-smt7-diff entries."
+    )
     return parser
 
 
 def _doctor_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Check ate-smt7-diff MCP launcher setup")
-    parser.add_argument("--repo", default=str(Path.cwd()), help="ate-smt7-diff source checkout path.")
-    parser.add_argument("--python", default="python3", help="Python command for the first-hop launcher.")
+    parser.add_argument(
+        "--repo", default=str(Path.cwd()), help="ate-smt7-diff source checkout path."
+    )
+    parser.add_argument(
+        "--python", default="python3", help="Python command for the first-hop launcher."
+    )
     return parser
 
 

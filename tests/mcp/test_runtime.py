@@ -53,7 +53,7 @@ def test_private_venv_python_uses_cache_home(tmp_path) -> None:
 def test_ensure_runtime_creates_venv_and_uses_uv_when_available(tmp_path) -> None:
     repo = tmp_path / "repo"
     repo.mkdir()
-    (repo / "pyproject.toml").write_text("[project]\nname = \"demo\"\n", encoding="utf-8")
+    (repo / "pyproject.toml").write_text('[project]\nname = "demo"\n', encoding="utf-8")
     home = tmp_path / "home"
     calls: list[list[str]] = []
 
@@ -80,7 +80,7 @@ def test_ensure_runtime_creates_venv_and_uses_uv_when_available(tmp_path) -> Non
 def test_ensure_runtime_skips_install_when_stamp_matches(tmp_path) -> None:
     repo = tmp_path / "repo"
     repo.mkdir()
-    (repo / "pyproject.toml").write_text("[project]\nname = \"demo\"\n", encoding="utf-8")
+    (repo / "pyproject.toml").write_text('[project]\nname = "demo"\n', encoding="utf-8")
     home = tmp_path / "home"
     calls: list[list[str]] = []
 
