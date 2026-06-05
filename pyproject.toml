@@ -13,6 +13,8 @@ dependencies = [
 
 [project.scripts]
 ate-smt7-diff = "ate_smt7_diff.cli:main"
+ate-smt7-diff-mcp = "ate_smt7_diff.mcp.server:run_stdio"
+ate-smt7-diff-mcp-launcher = "ate_smt7_diff.mcp.runtime:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=9.0", "ruff>=0.11", "mypy>=1.15", "bandit>=1.8"]

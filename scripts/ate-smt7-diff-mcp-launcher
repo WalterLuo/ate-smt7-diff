@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+"""Source-checkout launcher for the ate-smt7-diff MCP private runtime."""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+
+def main() -> None:
+    repo = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(repo))
+    from ate_smt7_diff.mcp.runtime import main as runtime_main
+
+    runtime_main(sys.argv[1:])
+
+
+if __name__ == "__main__":
+    main()
