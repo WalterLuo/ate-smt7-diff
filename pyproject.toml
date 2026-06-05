@@ -14,6 +14,7 @@ dependencies = [
 [project.scripts]
 ate-smt7-diff = "ate_smt7_diff.cli:main"
 ate-smt7-diff-mcp = "ate_smt7_diff.mcp.server:run_stdio"
+ate-smt7-diff-mcp-install = "ate_smt7_diff.mcp.install:main"
 ate-smt7-diff-mcp-launcher = "ate_smt7_diff.mcp.runtime:main"
 
 [project.optional-dependencies]
