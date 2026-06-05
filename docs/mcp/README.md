@@ -18,6 +18,62 @@ After editable install:
 python -m ate_smt7_diff.mcp.server
 ```
 
+Direct MCP console script:
+
+```bash
+ate-smt7-diff-mcp
+```
+
+Self-healing launcher with a private Python runtime:
+
+```bash
+python3 scripts/ate-smt7-diff-mcp-launcher --repo .
+```
+
+The launcher creates or repairs a private virtual environment under
+`~/.cache/ate-smt7-diff-mcp` by default. Override that location with
+`ATE_SMT7_DIFF_MCP_HOME`.
+
+## One-Command Client Install
+
+Preview changes:
+
+```bash
+ate-smt7-diff-mcp-install --clients all --repo . --dry-run
+```
+
+Install into supported clients:
+
+```bash
+ate-smt7-diff-mcp-install --clients codex,claude,cursor,gemini,opencode,copilot --repo .
+```
+
+Check launcher paths:
+
+```bash
+ate-smt7-diff-mcp-install doctor --repo .
+```
+
+The installer configures local stdio MCP entries for Codex CLI, Claude Code,
+Cursor, Gemini CLI, OpenCode, and GitHub Copilot CLI. It skips existing
+`ate-smt7-diff` entries unless `--force` is passed.
+
+## Codex Plugin
+
+This repository is also a Codex plugin bundle:
+
+- `.codex-plugin/plugin.json`
+- `.mcp.json`
+- `skills/ate-smt7-diff/SKILL.md`
+
+The plugin MCP entry runs:
+
+```bash
+python3 ./scripts/ate-smt7-diff-mcp-launcher --repo .
+```
+
+This keeps the plugin self-contained when Codex caches the repository root.
+
 ## Capabilities
 
 - List SMT7 program packages.

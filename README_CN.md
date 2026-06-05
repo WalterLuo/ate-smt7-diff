@@ -46,6 +46,30 @@ python -m ate_smt7_diff.cli old.flow new.flow
 ate-smt7-diff old.flow new.flow
 ```
 
+## 本地 MCP 与 Agent 客户端
+
+`ate-smt7-diff` 同时提供本地 stdio MCP server，可供多个 agent 客户端使用。
+
+```bash
+# 预览跨客户端 MCP 安装动作
+uv run ate-smt7-diff-mcp-install --clients all --repo . --dry-run
+
+# 配置 Codex CLI、Claude Code、Cursor、Gemini CLI、OpenCode 和 Copilot CLI
+uv run ate-smt7-diff-mcp-install --clients all --repo .
+
+# 检查自修复 launcher
+uv run ate-smt7-diff-mcp-install doctor --repo .
+```
+
+安装后的客户端配置会调用 `python3 scripts/ate-smt7-diff-mcp-launcher --repo .`。
+该 launcher 会在 `~/.cache/ate-smt7-diff-mcp` 下创建私有 Python 环境，
+然后启动 `python -m ate_smt7_diff.mcp.server`。
+
+本仓库也是一个 Codex plugin bundle，包含 `.codex-plugin/plugin.json`、
+`.mcp.json` 和 `skills/ate-smt7-diff/SKILL.md`。
+
+各客户端配置细节见 `docs/mcp/clients.md`。
+
 ## 使用说明
 
 ### 单流程差异对比

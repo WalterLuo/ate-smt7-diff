@@ -46,6 +46,30 @@ python -m ate_smt7_diff.cli old.flow new.flow
 ate-smt7-diff old.flow new.flow
 ```
 
+## Local MCP and Agent Clients
+
+`ate-smt7-diff` also ships a local stdio MCP server for agent clients.
+
+```bash
+# Preview cross-client MCP installation
+uv run ate-smt7-diff-mcp-install --clients all --repo . --dry-run
+
+# Configure Codex CLI, Claude Code, Cursor, Gemini CLI, OpenCode, and Copilot CLI
+uv run ate-smt7-diff-mcp-install --clients all --repo .
+
+# Check the self-healing launcher
+uv run ate-smt7-diff-mcp-install doctor --repo .
+```
+
+The installed client entries call `python3 scripts/ate-smt7-diff-mcp-launcher --repo .`.
+That launcher creates a private Python environment under `~/.cache/ate-smt7-diff-mcp`
+and starts `python -m ate_smt7_diff.mcp.server`.
+
+This repository is also a Codex plugin bundle with `.codex-plugin/plugin.json`,
+`.mcp.json`, and `skills/ate-smt7-diff/SKILL.md`.
+
+See `docs/mcp/clients.md` for per-client configuration details.
+
 ## Usage
 
 ### Single Flow Diff
